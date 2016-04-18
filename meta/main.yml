@@ -1,0 +1,5 @@
+dependencies:
+ - role: tarsnap-ansible
+   tarsnap_tarsnapper_conf: "{{ TARSNAPPER_CONF }}"
+   tarsnap_cache: "{{ TARSNAP_CACHE }}"
+   tarsnap_keyfile: "{{ TARSNAP_KEY_REMOTE_LOCATION }}"

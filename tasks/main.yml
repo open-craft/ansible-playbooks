@@ -2,18 +2,24 @@
 # Tarsnap - backup
 
 - name: Copy key file into place
-  copy: src="keys/{{ inventory_hostname }}.key" dest=/root/tarsnap.key owner=root group=root mode=0600
+  template:
+    src: "{{ TARSNAP_KEY_LOCAL_TEMPLATE }}"
+    dest: "{{ TARSNAP_KEY_REMOTE_LOCATION }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"
 
 - name: Create cache directory
-  file: state=directory path=/var/tarsnap/cache owner=root group=root mode=750
-
-- name: Check if there is a pre-backup script
-  local_action: stat path="{{ role_path }}/files/bin/backup-pre/{{ inventory_hostname }}.sh"
-  register: tarsnap_pre_backup_script
+  file: state=directory path={{ TARSNAP_CACHE }} owner=root group=root mode=750
 
 - name: Copy pre-backup script, if any
-  copy: src="bin/backup-pre/{{ inventory_hostname }}.sh" dest=/usr/sbin/backup-pre.sh owner=root group=root mode=755
-  when: tarsnap_pre_backup_script.stat.exists
+  copy:
+    src: "{{ TARSNAP_PRE_BACKUP_SCRIPT }}"
+    dest: "{{ TARSNAP_PRE_BACKUP_SCRIPT_REMOTE_LOCATION }}"
+    owner: root
+    group: root
+    mode: "755"
+  when: "{{ TARSNAP_PRE_BACKUP_SCRIPT }}"
 
 - name: Check we can access tarsnap and run fsck
-  command: tarsnap --cachedir /var/tarsnap/cache --keyfile /root/tarsnap.key --fsck
+  command: tarsnap --cachedir {{ TARSNAP_CACHE }} --keyfile {{ TARSNAP_KEY_REMOTE_LOCATION }} --fsck
