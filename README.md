@@ -1,0 +1,1 @@
+# ansible-backup-swift-container
