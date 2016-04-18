@@ -1,0 +1,3 @@
+dependencies:
+  - name: geerlingguy.nginx
+    nginx_remove_default_vhost: true
