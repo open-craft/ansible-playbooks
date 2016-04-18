@@ -1,0 +1,4 @@
+---
+
+# MYSQL_OPENSTACK_DB_DEVICE --- volume location e.g.: ``/dev/vdb1``
+MYSQL_OPENSTACK_DB_DEVICE: "/dev/vdb1"
