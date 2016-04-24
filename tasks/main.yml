@@ -12,3 +12,25 @@
 
 - name: chmod /var/lib/mysql
   file: path=/var/lib/mysql mode=700 state=directory
+
+- name: Allow required ports
+  ufw: rule=allow port={{ item }} proto=tcp
+  with_items:
+    - 3306
+
+- name: Copy pre-backup script
+  template:
+    src: backup-pre-mysql.sh
+    dest: /usr/local/sbin/backup-pre.sh
+    owner: root
+    group: root
+    mode: "500"
+
+- name: Copy post-backup script
+  template:
+    src: backup-post-mysql.sh
+    dest: /usr/local/sbin/backup-post.sh
+    owner: root
+    group: root
+    mode: "500"
+
