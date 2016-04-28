@@ -1,0 +1,32 @@
+- name: Create postgres group
+  group: name=postgres system=yes
+
+- name: Create postgres user
+  user: name=postgres group=postgres home=/var/lib/postgresql system=yes
+
+- name: mount /var/lib/postgresql
+  mount: name=/var/lib/postgresql src="{{POSTGRES_OPENSTACK_DB_DEVICE}}" fstype=ext4 state=mounted
+
+- name: chown & chmod /var/lib/postgresql
+  file: path=/var/lib/postgresql owner=postgres group=postgres mode=750 state=directory
+
+- name: Open Postgres port on the firewall
+  ufw: rule=allow port={{ item }} proto=tcp
+  with_items:
+    - 5432
+
+- name: Copy pre-backup script
+  template:
+    src: backup-pre-postgres.sh
+    dest: /usr/local/sbin/backup-pre.sh
+    owner: root
+    group: root
+    mode: "500"
+
+- name: Copy post-backup script
+  template:
+    src: backup-post-postgres.sh
+    dest: /usr/local/sbin/backup-post.sh
+    owner: root
+    group: root
+    mode: "500"
