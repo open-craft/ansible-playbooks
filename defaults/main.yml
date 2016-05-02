@@ -1,0 +1,24 @@
+---
+
+ROLE_INDEPENENT_USEFULL_PACKAGES:
+  - htop
+  - ntp
+  - sudo
+  - vim
+  - iftop
+  - iotop
+  - mosh
+  - git
+  - screen
+  - build-essential
+  - apticron
+  - apt-file
+  - links
+  - tree
+  - pwgen
+  - libxml2-dev
+  - libxslt1-dev
+  - python-dev
+
+# Email to send messages about unattended upgrades to
+UNATTENED_UPGRADES_ERRORS_RELAY_TO: root
