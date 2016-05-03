@@ -1,0 +1,27 @@
+---
+- hostname: name={{ COMMON_SERVER_HOSTNAME }}
+
+- name: Template hosts
+  template: src=hosts dest=/etc/hosts owner=root group=root mode=0544
+
+- name: install depencencies
+  apt: name={{ item }} state=present
+  with_items: "{{ COMMON_SERVER_DEPENDENCIES }}"
+
+- name: Activate tmpreaper
+  lineinfile: dest=/etc/tmpreaper.conf state=absent regexp="^SHOWWARNING=true"
+
+- name: Configure git author
+  shell: git config --global user.name "{{ COMMON_SERVER_ETCKEEPER_COMMIT_USER }}" && git config --global user.email "{{ COMMON_SERVER_ETCKEEPER_COMMIT_EMAIL }}"
+
+- name: etckeeper - Use git
+  copy: src=etckeeper.conf dest=/etc/etckeeper/etckeeper.conf owner=root group=root mode=644 backup=yes
+
+- name: etckeeper - git init && commit
+  shell: etckeeper init && etckeeper commit "Initial commit." creates=/etc/.git
+
+- name: By default allow only ssh
+  ufw: rule=allow port=22 proto=tcp
+
+- name: Set firewall default policy
+  ufw: state=enabled policy=reject
