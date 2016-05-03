@@ -1,0 +1,13 @@
+---
+COMMON_SERVER_HOSTNAME: "{{ inventory_hostname }}"
+COMMON_SERVER_HOSTNAME_SHORT: "{{ inventory_hostname_short }}"
+
+COMMON_SERVER_ETCKEEPER_COMMIT_USER: "Etc Keeper"
+COMMON_SERVER_ETCKEEPER_COMMIT_EMAIL: "ops@example.com"
+
+# Please think twice before setting it
+COMMON_SERVER_NO_BACKUPS: false
+
+COMMON_SERVER_DEPENDENCIES:
+  - etckeeper
+  - tmpreaper
