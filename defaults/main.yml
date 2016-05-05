@@ -6,6 +6,10 @@ OPENCRAFT_WEBSOCKET_DOMAIN_NAME: 'websocket.{{ OPENCRAFT_DOMAIN_NAME }}'
 # set OPENSTACK_SANDBOX_SSH_KEYNAME to the name of the key.
 OPENCRAFT_OPENSTACK_SSH_KEY_FILE: null
 
+# File names of the SSL certificate and key to use for the web server.
+OPENCRAFT_SSL_CERT_FILE: null
+OPENCRAFT_SSL_KEY_FILE: null
+
 # Settings for the OpenCraft Instance manager.  See opencraft/settings.py for details.
 OPENCRAFT_ENV_TOKENS:
   ALLOWED_HOSTS: '["{{ OPENCRAFT_DOMAIN_NAME }}"]'
