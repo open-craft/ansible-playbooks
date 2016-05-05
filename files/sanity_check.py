@@ -1,16 +1,20 @@
 #!/usr/bin/env python
 
-import os
-import subprocess
-import socket
-import sys
-import json
-import urllib2
 import collections
+import json
+import os
+import socket
+import subprocess
+import sys
+import urllib2
+
 
 SanityCheckResult = collections.namedtuple(
     'SanityCheckResult', ['is_ok', 'message']
 )
+
+
+Mount = collections.namedtuple("Mount", ['mount', 'device'])
 
 
 def check_port(host, port):
@@ -64,19 +68,28 @@ def send_message(recipient, subject, body):
     process.communicate(body)
 
 
-def test_global_free_percentage(default_free_space_percentage):
-    # TODO: it would be very good to add test for this one
-    response = []
+def get_dev_mounts():
+    """
+    :return: List of mounted drives, we assume that drives will have
+             device column starting with "/dev".
+    """
+
     with open("/proc/mounts") as f:
         proc_mounts = f.read().strip()
+
+    results = []
+
     for line in proc_mounts.split("\n"):
         parts = line.split()
-        device = parts[0]
-        mount = parts[1]
-        if device.startswith("/dev"):
-            response.append(
-                test_free_space_on_mount(mount, default_free_space_percentage))
-    return response
+        mount = Mount(parts[1], parts[0])
+        if mount.device.startswith("/dev"):
+            results.append(mount)
+    return results
+
+
+def test_global_free_percentage(default_free_space_percentage):
+    for mount in get_dev_mounts():
+        yield test_free_space_on_mount(mount.mount, default_free_space_percentage)
 
 
 def test_ports(ports):
@@ -130,7 +143,7 @@ def sanity_check(json_data):
 
     if report_is_ok(report):
         if 'snitch' in json_data and json_data['snitch']:
-            if not check_heartbeat_url(json_data['snitch']):
+            if not ping_http_endpoint(json_data['snitch']):
                 report.append(SanityCheckResult(False, "Couldn't send snitch"))
 
     if not report_is_ok(report):
@@ -142,14 +155,13 @@ def sanity_check(json_data):
         f.write(report_text)
 
 
-def check_heartbeat_url(url):
+def ping_http_endpoint(url):
     try:
-        response = urllib2.urlopen(url, timeout=1)
+        response = urllib2.urlopen(url, timeout=5)
         code = response.getcode()
         return 200 <= code < 300
     except (urllib2.URLError, urllib2.HTTPError) as e:
         return False
-
 
 if __name__ == "__main__":
     data_file = sys.argv[1]
