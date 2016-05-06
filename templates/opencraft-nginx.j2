@@ -1,0 +1,57 @@
+server {
+    listen *:80;
+
+    server_name {{ OPENCRAFT_DOMAIN_NAME }} www.{{ OPENCRAFT_DOMAIN_NAME }};
+
+    access_log /var/log/nginx/{{ OPENCRAFT_DOMAIN_NAME }}_access.log;
+    error_log /var/log/nginx/{{ OPENCRAFT_DOMAIN_NAME }}_error.log error;
+
+    # Normalize domain name
+    #
+    if ($host = www.{{ OPENCRAFT_DOMAIN_NAME }}) {
+        rewrite ^(.*)$ http://{{ OPENCRAFT_DOMAIN_NAME }}$1 permanent;
+    }
+
+    location / {
+        proxy_pass http://localhost:5000/;
+
+        proxy_set_header Host             $host;
+        proxy_set_header X-Real-IP        $remote_addr;
+        proxy_set_header X-Forwarded-For  $proxy_add_x_forwarded_for;
+        proxy_max_temp_file_size 0;
+
+        client_max_body_size       50m;
+        client_body_buffer_size    128k;
+
+        proxy_connect_timeout      600s;
+        proxy_send_timeout         600s;
+        proxy_read_timeout         600s;
+
+        proxy_buffer_size          4k;
+        proxy_buffers              4 32k;
+        proxy_busy_buffers_size    64k;
+        proxy_temp_file_write_size 64k;
+    }
+
+    # deny access to .htaccess files
+    #
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+server {
+    listen *:80;
+
+    server_name {{ OPENCRAFT_WEBSOCKET_DOMAIN_NAME }};
+
+    access_log /var/log/nginx/{{ OPENCRAFT_WEBSOCKET_DOMAIN_NAME }}_access.log;
+    error_log /var/log/nginx/{{ OPENCRAFT_WEBSOCKET_DOMAIN_NAME }}_error.log error;
+
+    location / {
+        proxy_pass http://localhost:2001/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
