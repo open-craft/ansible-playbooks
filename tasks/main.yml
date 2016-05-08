@@ -35,9 +35,9 @@
 
 - name: Install the SSH private key used for deploying instances.
   copy:
-    src="{{ OPENCRAFT_OPENSTACK_SSH_KEY_FILE }}"
-    dest="{{ www_data_home_dir }}/.ssh/id_rsa"
-    mode=600
+    content: "{{ OPENCRAFT_OPENSTACK_SSH_KEY }}"
+    dest: "{{ www_data_home_dir }}/.ssh/id_rsa"
+    mode: 600
   become_user: www-data
 
 - name: Copy nginx site configuration
@@ -47,10 +47,10 @@
   file: src=/etc/nginx/sites-available/opencraft dest=/etc/nginx/sites-enabled/opencraft state=link
 
 - name: Copy SSL certificate
-  copy: src="{{ OPENCRAFT_SSL_CERT_FILE }}" dest=/etc/ssl/certs/ssl-cert.pem group=ssl-cert mode=640
+  copy: content="{{ OPENCRAFT_SSL_CERT }}" dest=/etc/ssl/certs/ssl-cert.pem group=ssl-cert mode=640
 
 - name: Copy SSL certificate
-  copy: src="{{ OPENCRAFT_SSL_KEY_FILE }}" dest=/etc/ssl/certs/ssl-cert.key group=ssl-cert mode=640
+  copy: content="{{ OPENCRAFT_SSL_KEY }}" dest=/etc/ssl/certs/ssl-cert.key group=ssl-cert mode=640
 
 - name: Restart nginx
   service: name=nginx state=restarted
