@@ -50,7 +50,7 @@
   copy: content="{{ OPENCRAFT_SSL_CERT }}" dest=/etc/ssl/certs/ssl-cert.pem group=ssl-cert mode=640
 
 - name: Copy SSL certificate
-  copy: content="{{ OPENCRAFT_SSL_KEY }}" dest=/etc/ssl/certs/ssl-cert.key group=ssl-cert mode=640
+  copy: content="{{ OPENCRAFT_SSL_KEY }}" dest=/etc/ssl/private/ssl-cert.key group=ssl-cert mode=640
 
 - name: Restart nginx
   service: name=nginx state=restarted
