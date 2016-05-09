@@ -37,7 +37,7 @@
   copy:
     content: "{{ OPENCRAFT_OPENSTACK_SSH_KEY }}"
     dest: "{{ www_data_home_dir }}/.ssh/id_rsa"
-    mode: 600
+    mode: "0600"
   become_user: www-data
 
 - name: Copy nginx site configuration
