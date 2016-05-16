@@ -9,6 +9,8 @@ OPENCRAFT_OPENSTACK_SSH_KEY: null
 # Contents of console ssl certificate
 OPENCRAFT_SSL_CERT: null
 OPENCRAFT_SSL_KEY: null
+OPENCRAFT_WEBSOCKET_SSL_CERT: null
+OPENCRAFT_WEBSOCKET_SSL_KEY: null
 
 # Settings for the OpenCraft Instance manager.  See opencraft/settings.py for details.
 OPENCRAFT_ENV_TOKENS:
