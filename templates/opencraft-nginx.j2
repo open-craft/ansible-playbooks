@@ -74,8 +74,8 @@ server {
     server_name {{ OPENCRAFT_WEBSOCKET_DOMAIN_NAME }};
 
     ssl on;
-    ssl_certificate /etc/ssl/certs/ssl-cert.pem;
-    ssl_certificate_key /etc/ssl/private/ssl-cert.key;
+    ssl_certificate /etc/ssl/certs/ssl-websocket-cert.pem;
+    ssl_certificate_key /etc/ssl/private/ssl-websocket-cert.key;
 
     add_header Strict-Transport-Security "max-age=31536000";
 
