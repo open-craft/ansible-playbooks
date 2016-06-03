@@ -10,10 +10,10 @@
     name: "{{ item }}"
     owner: "www-data"
     group: "root"
-    state: "folder"
+    state: "directory"
   with_items:
-    - {{ OPENCRAFT_BACKUP_SWIFT_TARGET }}
-    - {{ OPENCRAFT_BACKUP_SWIFT_TARSNAP_CACHE_LOCATION }}
+    - "{{ OPENCRAFT_BACKUP_SWIFT_TARGET }}"
+    - "{{ OPENCRAFT_BACKUP_SWIFT_TARSNAP_CACHE_LOCATION }}"
 
 # NOTE: These two tasks are optional.
 
@@ -23,13 +23,14 @@
     state: "mounted"
     name: "{{ OPENCRAFT_BACKUP_SWIFT_TARGET }}"
     src:  "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE }}"
-  when: "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE }}"
+  when: "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE|length }}"
 
 - name: chmod volume
   file:
     path: "{{ OPENCRAFT_BACKUP_SWIFT_TARGET }}"
+    owner: "www-data"
     group: "root"
     state: "folder"
     recurse: "yes"
     state: "directory"
-  when: "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE }}"
+  when: "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE|length }}"

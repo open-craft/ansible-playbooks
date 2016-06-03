@@ -12,10 +12,7 @@ OPENCRAFT_SSL_KEY: null
 OPENCRAFT_WEBSOCKET_SSL_CERT: null
 OPENCRAFT_WEBSOCKET_SSL_KEY: null
 
-OPENCRAFT_DEPLOYED_REFERENCE: master
-
 OPENCRAFT_BACKUP_SWIFT_ENABLED: false
-
 OPENCRAFT_BACKUP_SWIFT_TARGET: /var/cache/swift-data-backup
 OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY_LOCATION: /etc/tarsnap.key
 # Contents of the tarsnap key
@@ -24,11 +21,15 @@ OPENCRAFT_BACKUP_SWIFT_TARSNAP_CACHE_LOCATION:  /var/cache/tarsnap
 # Current date will be appended to the archive name:
 OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY_ARCHIVE_NAME:  im-swift-backup
 OPENCRAFT_BACKUP_SWIFT_SNITCH:  null
-# At some point we'll want to download swift containers to a dedicated volume.
+# At some point we'll want to download swift containers to a dedicated volume,
+# this points to a formatted ext4 partition, this partition will be mounted to
+# {{ OPENCRAFT_BACKUP_SWIFT_TARGET }}.
 OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE: null
 
 # Settings for the OpenCraft Instance manager.  See opencraft/settings.py for details.
 OPENCRAFT_ENV_TOKENS:
+  ALLOWED_HOSTS: '["{{ OPENCRAFT_DOMAIN_NAME }}"]'
+
   DATABASE_URL: 'postgres://db-user:password@postgres.example.com:port/db-name'
   GANDI_API_KEY: 'your-gandi-api-key'
   GANDI_ZONE_ID: 'your-gandi-zone'
@@ -49,7 +50,7 @@ OPENCRAFT_ENV_TOKENS:
 # These env tokes are generated from other ansible variables, entries in
 # this dictionary can be overriden by OPENCRAFT_ENV_TOKENS
 OPENCRAFT_GENERATED_ENV_TOKENS:
-  ALLOWED_HOSTS: '["{{ OPENCRAFT_DOMAIN_NAME }}"]'
+
   DRAGON_URL: 'http://{{ OPENCRAFT_WEBSOCKET_DOMAIN_NAME }}/'
   BACKUP_SWIFT_ENABLED: "{{ OPENCRAFT_BACKUP_SWIFT_ENABLED }}"
   BACKUP_SWIFT_TARSNAP_KEY_LOCATION: "{{ OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY_LOCATION }}"
