@@ -1,0 +1,32 @@
+- name: Clone the opencraft repository
+  git: repo=https://github.com/open-craft/opencraft.git dest="{{ opencraft_root_dir }}" update=no
+  become_user: www-data
+
+- name: Install virtualenv
+  pip: name=virtualenv executable=pip3
+
+- name: Install python requirements
+  pip:
+    requirements="{{ opencraft_root_dir }}/requirements.txt"
+    virtualenv="{{ opencraft_virtualenv_dir }}"
+    virtualenv_python=python3.5
+  become_user: www-data
+
+- name: Install the venv wrapper script
+  copy: src=venv_exec dest="{{ opencraft_virtualenv_dir }}/bin/exec" mode=755
+  become_user: www-data
+
+- name: Install the configuration/environment file
+  template: src=env.j2 dest="{{ opencraft_root_dir }}/.env" mode=600
+  become_user: www-data
+
+- name: "Create directory {{ www_data_home_dir }}/.ssh"
+  file: path="{{ www_data_home_dir }}/.ssh" state=directory
+  become_user: www-data
+
+- name: Install the SSH private key used for deploying instances.
+  copy:
+    content: "{{ OPENCRAFT_OPENSTACK_SSH_KEY }}"
+    dest: "{{ www_data_home_dir }}/.ssh/id_rsa"
+    mode: "0600"
+  become_user: www-data
