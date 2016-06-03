@@ -1,3 +1,5 @@
 - include: base-system.yml
+- include: configure-swift-backups.yml
+  when: "{{ OPENCRAFT_BACKUP_SWIFT_ENABLED }}"
 - include: opencraft-app.yml
 - include: nginx.yml

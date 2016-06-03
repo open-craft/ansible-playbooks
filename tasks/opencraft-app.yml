@@ -1,5 +1,9 @@
 - name: Clone the opencraft repository
-  git: repo=https://github.com/open-craft/opencraft.git dest="{{ opencraft_root_dir }}" update=no
+  git:
+    repo: "https://github.com/open-craft/opencraft.git"
+    update: "no"
+    dest: "{{ opencraft_root_dir }}"
+    reference: "{{ OPENCRAFT_DEPLOYED_REFERENCE }}"
   become_user: www-data
 
 - name: Install virtualenv
