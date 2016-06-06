@@ -15,7 +15,7 @@
     - "{{ OPENCRAFT_BACKUP_SWIFT_TARGET }}"
     - "{{ OPENCRAFT_BACKUP_SWIFT_TARSNAP_CACHE_LOCATION }}"
 
-# NOTE: These two tasks are optional.
+# NOTE: These two tasks are optional:
 
 - name: mount volume
   mount:
@@ -23,7 +23,7 @@
     state: "mounted"
     name: "{{ OPENCRAFT_BACKUP_SWIFT_TARGET }}"
     src:  "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE }}"
-  when: "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE|length }}"
+  when: "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE }}"
 
 - name: chmod volume
   file:
@@ -33,4 +33,4 @@
     state: "folder"
     recurse: "yes"
     state: "directory"
-  when: "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE|length }}"
+  when: "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE }}"

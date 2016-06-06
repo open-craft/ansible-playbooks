@@ -26,10 +26,15 @@ OPENCRAFT_BACKUP_SWIFT_SNITCH:  null
 # {{ OPENCRAFT_BACKUP_SWIFT_TARGET }}.
 OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE: null
 
+# NOTE:
+# Settings for IM are kept in two variables:
+# * OPENCRAFT_ENV_TOKENS: contains things that vary between each deployment (like passwords
+#   image names and so forth), but are not generated from the rest of ansible configuration
+# * OPENCRAFT_GENERATED_ENV_TOKENS: contains tokens generated from the rest of configuration.
+
 # Settings for the OpenCraft Instance manager.  See opencraft/settings.py for details.
 OPENCRAFT_ENV_TOKENS:
   ALLOWED_HOSTS: '["{{ OPENCRAFT_DOMAIN_NAME }}"]'
-
   DATABASE_URL: 'postgres://db-user:password@postgres.example.com:port/db-name'
   GANDI_API_KEY: 'your-gandi-api-key'
   GANDI_ZONE_ID: 'your-gandi-zone'
@@ -48,9 +53,9 @@ OPENCRAFT_ENV_TOKENS:
   WATCH_ORGANIZATION: 'your-github-organization'
 
 # These env tokes are generated from other ansible variables, entries in
-# this dictionary can be overriden by OPENCRAFT_ENV_TOKENS
+# this dictionary can be overriden by OPENCRAFT_ENV_TOKENS.
+# This should contain only tokens generated from the rest of ansible config.
 OPENCRAFT_GENERATED_ENV_TOKENS:
-
   DRAGON_URL: 'http://{{ OPENCRAFT_WEBSOCKET_DOMAIN_NAME }}/'
   BACKUP_SWIFT_ENABLED: "{{ OPENCRAFT_BACKUP_SWIFT_ENABLED }}"
   BACKUP_SWIFT_TARSNAP_KEY_LOCATION: "{{ OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY_LOCATION }}"
@@ -59,7 +64,6 @@ OPENCRAFT_GENERATED_ENV_TOKENS:
   BACKUP_SWIFT_SNITCH: "{{ OPENCRAFT_BACKUP_SWIFT_SNITCH }}"
 
 opencraft_all_env_tokens: "{{ OPENCRAFT_GENERATED_ENV_TOKENS | combine( OPENCRAFT_ENV_TOKENS ) }}"
-
 www_data_home_dir: '/var/www'
 opencraft_root_dir: '/var/www/opencraft'
 opencraft_virtualenv_dir: '/var/www/.virtualenvs/opencraft'
