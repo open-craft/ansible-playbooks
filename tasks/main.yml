@@ -1,7 +1,10 @@
+- include: configure-swift-backups.yml
+  when: "{{ OPENCRAFT_BACKUP_SWIFT_ENABLED }}"
+
 - name: Set login shell for user www-data
   user: name=www-data shell=/bin/bash
 
-- name: "Set permissions on {{ www_data_home_dir }}"
+- name: Create {{ www_data_home_dir }}
   file: path="{{ www_data_home_dir }}" owner=www-data group=www-data mode=750 state=directory
 
 - name: Clone the opencraft repository
