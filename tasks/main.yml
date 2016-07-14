@@ -27,7 +27,7 @@
 - include: deploy-app.yml
 - include: deploy-gunicorn.yml
 - include: configure_nginx.yml
-- include: create_log_volume.yml
+- include: log_volume.yml
 - include: configure_log_download.yml
 
 - name: Allow required ports
