@@ -9,4 +9,5 @@
   mount:
     src: "{{ DALITE_LOG_DOWNLOAD_VOLUME_DEVICE_ID }}"
     name: "{{ DALITE_LOG_DOWNLOAD_USER_HOME }}"
+    fstype: "{{ DALITE_LOG_DOWNLOAD_VOLUME_FILESYSTEM }}"
     state: mounted
