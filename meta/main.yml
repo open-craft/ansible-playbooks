@@ -9,5 +9,4 @@ dependencies:
     TARSNAP_BACKUP_SNITCH : "{{ BACKUP_SWIFT_SNITCH }}"
     TARSNAP_BACKUP_SCRIPT_LOCATION: "/usr/local/sbin/backup-swift-container.sh"
     TARSNAP_CRONTAB_STATE: "present"
-
-
+    TARSNAP_CACHE: "{{ BACKUP_SWIFT_CACHE }}"
