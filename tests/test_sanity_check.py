@@ -24,6 +24,7 @@ import sanity_check
 
 MockStatvfs = collections.namedtuple("MockStatvfs", ['f_bavail', 'f_blocks'])
 
+
 class UrlopenResponse(object):
     def __init__(self, code):
         super(UrlopenResponse, self).__init__()
@@ -34,6 +35,12 @@ class UrlopenResponse(object):
 
 
 class TestSanityCheck(unittest.TestCase):
+    def _make_server_proc(self, host='localhost', port=10123, delay=0):
+        def run():
+            time.sleep(delay)
+            server = SocketServer.TCPServer((host, port), SocketServer.BaseRequestHandler)
+            server.serve_forever()
+        return run
 
     def test_port_negative(self):
         # This port is reserved, and in low range so no one should use it
@@ -41,19 +48,37 @@ class TestSanityCheck(unittest.TestCase):
 
     def test_port_positive(self):
         # We can assume that SSH will be working w
-        def run():
-            server = SocketServer.TCPServer(('localhost', 10123), SocketServer.BaseRequestHandler)
-            server.serve_forever()
-        proc = multiprocessing.Process(target=run)
+        server_proc = self._make_server_proc()
+        proc = multiprocessing.Process(target=server_proc)
         try:
             proc.start()
             has_connection = False
             for ii in range(100):
-                if sanity_check.check_port('localhost', 10123):
+                if sanity_check.check_port('localhost', 10123, retries=0, retry_delay=0):
                     has_connection = True
                     time.sleep(.01)
                     break
             self.assertTrue(has_connection)
+        finally:
+            proc.terminate()
+
+    def test_check_port_retries(self):
+        server_proc = self._make_server_proc(delay=2)
+        proc = multiprocessing.Process(target=server_proc)
+        try:
+            proc.start()
+            has_connection = sanity_check.check_port('localhost', 10123, retries=3, retry_delay=1)
+            self.assertTrue(has_connection)
+        finally:
+            proc.terminate()
+
+    def test_check_port_retries_negative(self):
+        server_proc = self._make_server_proc(delay=2)
+        proc = multiprocessing.Process(target=server_proc)
+        try:
+            proc.start()
+            has_connection = sanity_check.check_port('localhost', 10123, retries=-1, retry_delay=1)
+            self.assertFalse(has_connection)
         finally:
             proc.terminate()
 
