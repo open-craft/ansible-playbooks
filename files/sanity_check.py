@@ -6,6 +6,7 @@ import os
 import socket
 import subprocess
 import sys
+import time
 import urllib2
 
 
@@ -17,7 +18,11 @@ SanityCheckResult = collections.namedtuple(
 Mount = collections.namedtuple("Mount", ['mount', 'device'])
 
 
-def check_port(host, port):
+DEFAULT_PORT_RETRIES = 2
+DEFAULT_PORT_RETRY_DELAY = 5
+
+
+def is_port_open(host, port):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(.1)
@@ -26,6 +31,18 @@ def check_port(host, port):
         return True
     except socket.error:
         return False
+
+
+def check_port(host, port, retries=DEFAULT_PORT_RETRIES, retry_delay=DEFAULT_PORT_RETRY_DELAY):
+    if is_port_open(host, port):
+        return True
+    retry_number = 1
+    while retry_number <= retries:
+        time.sleep(retry_delay)
+        if is_port_open(host, port):
+            return True
+        retry_number += 1
+    return False
 
 
 def check_command(command):
@@ -94,11 +111,15 @@ def test_global_free_percentage(default_free_space_percentage):
 
 def test_ports(ports):
     response = []
-    for port in ports:
-        if not check_port(port['host'], int(port['port'])):
-            response.append(SanityCheckResult(False, port['message']))
+    for port_config in ports:
+        host, port = port_config['host'], int(port_config['port'])
+        message = port_config['message']
+        retries = int(port_config.get('retries', DEFAULT_PORT_RETRIES))
+        retry_delay = float(port_config.get('retry_delay', DEFAULT_PORT_RETRY_DELAY))
+        if not check_port(host, port, retries=retries, retry_delay=retry_delay):
+            response.append(SanityCheckResult(False, message))
         else:
-            message = "Port {}:{} is getting connections".format(port['host'], int(port['port']))
+            message = "Port {}:{} is getting connections".format(host, port)
             response.append(SanityCheckResult(True, message))
     return response
 
