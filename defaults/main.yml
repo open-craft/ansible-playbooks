@@ -1,0 +1,15 @@
+RABBITMQ_VERSION: 3.6.6-1
+
+RABBITMQ_ADMIN_USERNAME: admin
+RABBITMQ_ADMIN_PASSWORD: changeme
+
+RABBITMQ_TLS_PORT: 5671
+RABBITMQ_HTTPS_PORT: 15671
+
+RABBITMQ_CA_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ ansible_fqdn }}/chain.pem"
+RABBITMQ_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ ansible_fqdn }}/cert.pem"
+RABBITMQ_KEY_FILE: "/etc/letsencrypt/live/{{ ansible_fqdn }}/privkey.pem"
+
+RABBITMQ_APT_PACKAGES:
+  - python-software-properties
+  - python-letsencrypt
