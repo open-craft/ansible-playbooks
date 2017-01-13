@@ -1,4 +1,6 @@
 ---
+elasticsearch_repo: "deb http://packages.elastic.co/elasticsearch/2.x/debian stable main"
+elasticsearch_package: "elasticsearch"
 elasticsearch_network_host: localhost
 elasticsearch_http_port: 9200
 elasticsearch_script_inline: true
