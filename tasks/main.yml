@@ -1,3 +1,9 @@
+# edX is currently using MySQL 5.6, which is not available on Xenial by default.
+- name: Add PPA for MySQL 5.6
+  apt_repository:
+    repo: "ppa:ondrej/mysql-5.6"
+    update_cache: yes
+
 - name: Create mysql group
   group: name=mysql system=yes
 
@@ -33,4 +39,3 @@
     owner: root
     group: root
     mode: "500"
-
