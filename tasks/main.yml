@@ -5,6 +5,14 @@
 - include: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
+- name: open ElasticSearch http port on the firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - "{{ elasticsearch_http_port }}"
+
 - name: Configure Elasticsearch.
   template:
     src: elasticsearch.yml.j2
