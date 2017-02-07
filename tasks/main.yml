@@ -1,6 +1,10 @@
 ---
 - hostname: name={{ COMMON_SERVER_HOSTNAME }}
 
+- name: Add network interface for floating IP
+  include: floating_ip.yml
+  when: (COMMON_FLOATING_INTERFACE_NAME and COMMON_FLOATING_IP)
+
 - name: Template hosts
   template: src=hosts dest=/etc/hosts owner=root group=root mode=0544
 
