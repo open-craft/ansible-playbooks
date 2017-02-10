@@ -2,8 +2,42 @@
 COMMON_SERVER_HOSTNAME: "{{ inventory_hostname }}"
 COMMON_SERVER_HOSTNAME_SHORT: "{{ inventory_hostname_short }}"
 
-# Set to create a "floating IP" alias to the primary network interface,
-# for use by external network access and DNS names.
+# Set COMMON_FLOATING_IP and COMMON_FLOATING_INTERFACE_NAME to create a "floating IP" alias
+# to the primary network interface, for use by external network access and DNS names.
+#
+# Follow these steps to determine an appropriate value for COMMON_FLOATING_INTERFACE_NAME:
+#
+# 1. Shell into your new host, and run ifconfig to see the current list of network interfaces. E.g.,
+#
+#     eth0      Link encap:Ethernet  HWaddr 00:1e:8c:f5:1f:1c
+#               inet addr:83.29.101.177  Bcast:83.29.101.255  Mask:255.255.255.0
+#               UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+#               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+#               TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+#               collisions:0 txqueuelen:1000
+#               RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+#               Interrupt:20 Memory:fe500000-fe520000
+#
+#     lo        Link encap:Local Loopback
+#               inet addr:127.0.0.1  Mask:255.0.0.0
+#               UP LOOPBACK RUNNING  MTU:65536  Metric:1
+#               RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+#               TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+#               collisions:0 txqueuelen:0
+#               RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+#
+# 2. If there's already a network interface with an inet addr matching your floating IP,
+#    you don't need to do anything.
+#    Otherwise, determine which interface has an `inet addr` matching your host's IP address.
+#
+#    In the above example, that interface name is eth0, which is common for dedicated servers.
+#    On virtual hosts, interface names can be anything.
+#
+#    Your COMMON_FLOATING_INTERFACE_NAME will be the interface name, followed by a colon,
+#    and an integer index, e.g., `eth0:1`.
+#
+#    When picking an integer index, the convention is to start with :1.
+#    However, the only hard requirement is that the integer index be unique.
 COMMON_FLOATING_IP: !!null
 COMMON_FLOATING_INTERFACE_NAME: !!null
 
