@@ -15,9 +15,9 @@
     - 80
 
 - name: generate certificate for domain
-  command: "letsencrypt certonly --email ops@opencraft.com --authenticator standalone --standalone-supported-challenges http-01 --http-01-port 80 --non-interactive --agree-tos --keep --expand -d {{ ansible_fqdn }}"
+  command: "letsencrypt certonly --email ops@opencraft.com --authenticator standalone --standalone-supported-challenges http-01 --http-01-port 80 --non-interactive --agree-tos --keep --expand -d {{ RABBITMQ_HOSTNAME }}"
   args:
-    creates: "/etc/letsencrypt/live/{{ ansible_fqdn }}/cert.pem"
+    creates: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/cert.pem"
 
 - name: set up cron job for certificate renewal
   cron:
@@ -43,6 +43,22 @@
     name: "rabbitmq-server={{ RABBITMQ_VERSION }}"
     update_cache: yes
     state: installed
+
+- name: Set the file descriptor limit to a high value in the systemd service
+  ini_file:
+    dest: /lib/systemd/system/rabbitmq-server.service
+    section: Service
+    option: "{{ item }}"
+    value: 65535
+    backup: yes
+  with_items:
+    - LimitNOFILE
+    - LimitNPROC
+  notify:
+    - reload systemd
+    - restart rabbitmq
+  tags:
+    - fd_limit
 
 - name: set letsencrypt directory owner
   file:

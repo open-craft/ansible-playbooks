@@ -6,9 +6,11 @@ RABBITMQ_ADMIN_PASSWORD: changeme
 RABBITMQ_TLS_PORT: 5671
 RABBITMQ_HTTPS_PORT: 15671
 
-RABBITMQ_CA_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ ansible_fqdn }}/chain.pem"
-RABBITMQ_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ ansible_fqdn }}/cert.pem"
-RABBITMQ_KEY_FILE: "/etc/letsencrypt/live/{{ ansible_fqdn }}/privkey.pem"
+RABBITMQ_HOSTNAME: "{{ inventory_hostname }}"
+
+RABBITMQ_CA_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/chain.pem"
+RABBITMQ_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/cert.pem"
+RABBITMQ_KEY_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/privkey.pem"
 
 RABBITMQ_APT_PACKAGES:
   - python-software-properties
