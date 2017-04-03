@@ -34,4 +34,4 @@
   template: src=timezone dest=/etc/timezone owner=root group=root mode=0644
 
 - name: Set local timezone to UTC
-  file: src=/usr/share/zoneinfo/Etc/UTC dest=/etc/localtime state=link
+  file: src=/usr/share/zoneinfo/Etc/UTC dest=/etc/localtime state=link force=true
