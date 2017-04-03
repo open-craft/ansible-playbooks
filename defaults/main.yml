@@ -50,3 +50,4 @@ COMMON_SERVER_NO_BACKUPS: false
 COMMON_SERVER_DEPENDENCIES:
   - etckeeper
   - tmpreaper
+  - ufw
