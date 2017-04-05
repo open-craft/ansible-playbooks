@@ -40,7 +40,7 @@
 
 - name: install rabbitmq
   apt:
-    name: "rabbitmq-server={{ RABBITMQ_VERSION }}"
+    name: rabbitmq-server
     update_cache: yes
     state: installed
 
