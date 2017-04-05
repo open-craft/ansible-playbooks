@@ -1,0 +1,4 @@
+#!/bin/bash
+
+DEST="$1"
+python /var/lib/rabbitmq/mnesia/*plugins-expand/rabbitmq_management-*/priv/www/cli/rabbitmqadmin export $DEST -c /etc/rabbitmqadmin.conf -N host_ssl -q

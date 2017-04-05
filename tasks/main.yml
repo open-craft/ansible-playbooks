@@ -60,6 +60,41 @@
   tags:
     - fd_limit
 
+- name: add rabbitmqadmin config
+  template:
+    src: rabbitmqadmin.conf.j2
+    dest: /etc/rabbitmqadmin.conf
+    owner: root
+    group: root
+    mode: 600
+
+- name: add rabbitmq import/export scripts
+  copy:
+    src: "{{ item }}"
+    dest: "{{ RABBITMQ_SCRIPTS_DIR }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 700
+  with_items:
+    - "{{ RABBITMQ_BACKUP_COMMAND }}"
+    - "{{ RABBITMQ_RESTORE_COMMAND }}"
+
+- name: add rabbitmq export directory
+  file:
+    path: "{{ RABBITMQ_EXPORT_DIR }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 700
+
+- name: set up cron job for rabbitmq exporting
+  cron:
+    name: "Export RabbitMQ definitions for backup"
+    job: "{{ RABBITMQ_SCRIPTS_DIR }}/{{ RABBITMQ_BACKUP_COMMAND }} {{ RABBITMQ_EXPORT_DIR }}/rabbitmq.definitions.json"
+    minute: 0
+    cron_file: rabbitmq-backup
+    user: root
+
 - name: set letsencrypt directory owner
   file:
     path: "/etc/letsencrypt/{{ item }}"
