@@ -14,8 +14,8 @@ RABBITMQ_APT_PACKAGES:
   - python-software-properties
   - python-letsencrypt
 
-RABBITMQ_EXPORT_DIR: /usr/local/lib/rabbitmq/backup
-RABBITMQ_SCRIPTS_DIR: /usr/local/bin
+RABBITMQ_EXPORT_DIR: /var/local/rabbitmq/backup
+RABBITMQ_SCRIPTS_DIR: /usr/local/sbin
 
 RABBITMQ_BACKUP_COMMAND: rabbitmq-backup
 RABBITMQ_RESTORE_COMMAND: rabbitmq-restore

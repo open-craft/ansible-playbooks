@@ -69,8 +69,8 @@
     mode: 600
 
 - name: add rabbitmq import/export scripts
-  copy:
-    src: "{{ item }}"
+  template:
+    src: "{{ item }}.j2"
     dest: "{{ RABBITMQ_SCRIPTS_DIR }}/{{ item }}"
     owner: root
     group: root
@@ -86,14 +86,6 @@
     owner: root
     group: root
     mode: 700
-
-- name: set up cron job for rabbitmq exporting
-  cron:
-    name: "Export RabbitMQ definitions for backup"
-    job: "{{ RABBITMQ_SCRIPTS_DIR }}/{{ RABBITMQ_BACKUP_COMMAND }} {{ RABBITMQ_EXPORT_DIR }}/rabbitmq.definitions.json"
-    minute: 0
-    cron_file: rabbitmq-backup
-    user: root
 
 - name: set letsencrypt directory owner
   file:
@@ -128,6 +120,19 @@
     write_priv: .*
     read_priv: .*
     state: present
+
+# RabbitMQ must be restarted after installing the rabbitmq_management plugin in order to use the
+# HTTP API, and we need the HTTP API to fetch the rabbitmqadmin tool, so the handlers are flushed here.
+- meta: flush_handlers
+
+- name: fetch the rabbitmqadmin script from the management webserver
+  get_url:
+    url: "https://{{ RABBITMQ_HOSTNAME }}:{{ RABBITMQ_HTTPS_PORT }}/cli/rabbitmqadmin"
+    dest: "{{ RABBITMQ_SCRIPTS_DIR }}/rabbitmqadmin"
+    checksum: md5:51eb3e163c884bc1b079aafdf71d0d3b
+    owner: root
+    group: root
+    mode: 700
 
 - name: remove default guest user
   rabbitmq_user:
