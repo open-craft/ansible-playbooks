@@ -129,7 +129,6 @@
   get_url:
     url: "https://{{ RABBITMQ_HOSTNAME }}:{{ RABBITMQ_HTTPS_PORT }}/cli/rabbitmqadmin"
     dest: "{{ RABBITMQ_SCRIPTS_DIR }}/rabbitmqadmin"
-    checksum: md5:51eb3e163c884bc1b079aafdf71d0d3b
     owner: root
     group: root
     mode: 700
