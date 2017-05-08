@@ -51,3 +51,8 @@ COMMON_SERVER_DEPENDENCIES:
   - etckeeper
   - tmpreaper
   - ufw
+
+# Use Google public DNS servers as fallback
+COMMON_FALLBACK_DNS_SERVERS:
+  - 8.8.8.8
+  - 8.8.4.4

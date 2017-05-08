@@ -5,6 +5,13 @@
   include: floating_ip.yml
   when: (COMMON_FLOATING_INTERFACE_NAME and COMMON_FLOATING_IP)
 
+- name: Add fallback DNS servers to /etc/dhcp/dhclient.conf.
+  lineinfile:
+     dest: /etc/dhcp/dhclient.conf
+     regexp: '^\s*append\s+domain-name-servers'
+     line: "append domain-name-servers {{ COMMON_FALLBACK_DNS_SERVERS | join(', ') }};"
+  notify: restart networking
+
 - name: Template hosts
   template: src=hosts dest=/etc/hosts owner=root group=root mode=0544
 
