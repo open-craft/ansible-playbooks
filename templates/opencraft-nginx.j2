@@ -30,6 +30,22 @@ server {
     access_log /var/log/nginx/{{ OPENCRAFT_DOMAIN_NAME }}_access.log;
     error_log /var/log/nginx/{{ OPENCRAFT_DOMAIN_NAME }}_error.log error;
 
+    # serve static files
+    #
+    location /static {
+        alias {{ opencraft_static_files_dir }};
+        try_files $uri =404;
+        autoindex off;
+        gzip on;
+        gzip_min_length 1000;
+        gzip_types
+          text/css
+          text/html
+          text/javascript
+          image/svg+xml
+          application/javascript;
+    }
+
     location / {
         proxy_pass http://localhost:5000/;
 
