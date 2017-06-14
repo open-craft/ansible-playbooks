@@ -31,6 +31,9 @@
 - name: etckeeper - git init && commit
   shell: etckeeper init && etckeeper commit "Initial commit." creates=/etc/.git
 
+- name: Configure chkrootkit
+  include: chkrootkit.yml
+
 - name: By default allow only ssh
   ufw: rule=allow port=22 proto=tcp
 

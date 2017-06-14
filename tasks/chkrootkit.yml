@@ -1,0 +1,7 @@
+- name: Add chkrootkit config file
+  copy:
+    src: chkrootkit.conf
+    dest: /etc/chkrootkit.conf
+
+- name: Generate expected chkrootkit output
+  script: gen_chkrootkit_expected_output.sh
