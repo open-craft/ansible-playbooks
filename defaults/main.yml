@@ -48,6 +48,7 @@ COMMON_SERVER_ETCKEEPER_COMMIT_EMAIL: "ops@example.com"
 COMMON_SERVER_NO_BACKUPS: false
 
 COMMON_SERVER_DEPENDENCIES:
+  - chkrootkit
   - etckeeper
   - tmpreaper
   - ufw
