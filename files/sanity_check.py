@@ -20,6 +20,8 @@ Mount = collections.namedtuple("Mount", ['mount', 'device'])
 
 DEFAULT_PORT_RETRIES = 2
 DEFAULT_PORT_RETRY_DELAY = 5
+DEFAULT_HTTP_RETRIES = 3
+DEFAULT_HTTP_RETRY_DELAY = 1
 
 
 def is_port_open(host, port):
@@ -176,13 +178,17 @@ def sanity_check(json_data):
         f.write(report_text)
 
 
-def ping_http_endpoint(url):
-    try:
-        response = urllib2.urlopen(url, timeout=5)
-        code = response.getcode()
-        return 200 <= code < 300
-    except (urllib2.URLError, urllib2.HTTPError) as e:
-        return False
+def ping_http_endpoint(url, max_retries=DEFAULT_HTTP_RETRIES, delay=DEFAULT_HTTP_RETRY_DELAY):
+    for dummy in range(max_retries):
+        try:
+            response = urllib2.urlopen(url, timeout=5)
+        except (urllib2.URLError, urllib2.HTTPError) as e:
+            pass
+        else:
+            if 200 <= response.getcode() < 300:
+                return True
+        time.sleep(delay)
+    return False
 
 if __name__ == "__main__":
     data_file = sys.argv[1]
