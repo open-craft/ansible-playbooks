@@ -113,10 +113,12 @@ class TestSanityCheck(unittest.TestCase):
         self.assertTrue(sanity_check.ping_http_endpoint("https://example.com"))
 
     def test_http_checker_negative_http(self):
-        self.assertFalse(sanity_check.ping_http_endpoint("http://192.168.255.10"))
+        with mock.patch('time.sleep'):
+            self.assertFalse(sanity_check.ping_http_endpoint("http://192.168.255.10"))
 
     def test_http_checker_negative_https(self):
-        self.assertFalse(sanity_check.ping_http_endpoint("https://192.168.255.10"))
+        with mock.patch('time.sleep'):
+            self.assertFalse(sanity_check.ping_http_endpoint("https://192.168.255.10"))
 
     def test_http_checker_statuscode_positive(self):
         with mock.patch('urllib2.urlopen') as patched_open:
@@ -125,16 +127,27 @@ class TestSanityCheck(unittest.TestCase):
             patched_open.assert_called_once_with("http://test", timeout=5)
 
     def test_http_checker_statuscode_negative_100(self):
-        with mock.patch('urllib2.urlopen') as patched_open:
+        with mock.patch('urllib2.urlopen') as patched_open, mock.patch('time.sleep') as patched_sleep:
             patched_open.return_value = UrlopenResponse(102)
             self.assertFalse(sanity_check.ping_http_endpoint("http://test"))
-            patched_open.assert_called_once_with("http://test", timeout=5)
+            patched_open.assert_called_with("http://test", timeout=5)
+            self.assertEqual(patched_open.call_count, sanity_check.DEFAULT_HTTP_RETRIES)
+            self.assertEqual(patched_sleep.call_count, sanity_check.DEFAULT_HTTP_RETRIES)
 
     def test_http_checker_statuscode_negative_500(self):
-        with mock.patch('urllib2.urlopen') as patched_open:
+        with mock.patch('urllib2.urlopen') as patched_open, mock.patch('time.sleep') as patched_sleep:
             patched_open.return_value = UrlopenResponse(500)
             self.assertFalse(sanity_check.ping_http_endpoint("http://test"))
-            patched_open.assert_called_once_with("http://test", timeout=5)
+            patched_open.assert_called_with("http://test", timeout=5)
+            self.assertEqual(patched_open.call_count, sanity_check.DEFAULT_HTTP_RETRIES)
+            self.assertEqual(patched_sleep.call_count, sanity_check.DEFAULT_HTTP_RETRIES)
+
+    def test_http_checker_retry_and_succeed(self):
+        with mock.patch('urllib2.urlopen') as patched_open, mock.patch('time.sleep') as patched_sleep:
+            patched_open.side_effect = [UrlopenResponse(500), UrlopenResponse(200)]
+            self.assertTrue(sanity_check.ping_http_endpoint("http://test"))
+            self.assertEqual(patched_open.call_count, 2)
+            self.assertEqual(patched_sleep.call_count, 1)
 
     def test_get_mounts(self):
         mocked_open = mock.mock_open(
