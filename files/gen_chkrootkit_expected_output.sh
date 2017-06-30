@@ -2,9 +2,12 @@
 #
 # This file is based on /etc/cron.daily/chkrootkit provided by the distro.
 #
+CF=/etc/chkrootkit.conf
 LOG_DIR=/var/log/chkrootkit
 
-/usr/sbin/chkrootkit -q > $LOG_DIR/log.today.raw 2>&1
+. $CF
+
+/usr/sbin/chkrootkit $RUN_DAILY_OPTS > $LOG_DIR/log.today.raw 2>&1
 
 # the sed expression replaces the messages about /sbin/dhclient3 /usr/sbin/dhcpd3
 # with a message that is the same whatever order eth0 and eth1 were scanned

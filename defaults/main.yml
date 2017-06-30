@@ -57,3 +57,7 @@ COMMON_SERVER_DEPENDENCIES:
 COMMON_FALLBACK_DNS_SERVERS:
   - 8.8.8.8
   - 8.8.4.4
+
+# List of chkrootkit disabled tests.
+CHKROOTKIT_DISABLED_TESTS:
+  - chkutmp
