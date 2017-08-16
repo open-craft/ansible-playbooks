@@ -11,6 +11,7 @@ RABBITMQ_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/cert.p
 RABBITMQ_KEY_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/privkey.pem"
 
 RABBITMQ_APT_PACKAGES:
+  - apt-transport-https
   - python-software-properties
   - python-letsencrypt
 
