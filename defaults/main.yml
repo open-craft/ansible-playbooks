@@ -10,6 +10,11 @@ RABBITMQ_CA_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/cha
 RABBITMQ_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/cert.pem"
 RABBITMQ_KEY_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/privkey.pem"
 
+RABBITMQ_REPO: "deb https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ {{ ansible_distribution_release }} main"
+RABBITMQ_REPO_KEY: "https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey"
+
+RABBITMQ_VERSION: 3.6.9-1
+
 RABBITMQ_APT_PACKAGES:
   - apt-transport-https
   - python-software-properties

@@ -30,17 +30,17 @@
 
 - name: add rabbitmq repository
   apt_repository:
-    repo: 'deb https://www.rabbitmq.com/debian/ testing main'
+    repo: "{{ RABBITMQ_REPO }}"
     state: present
 
 - name: add rabbitmq trusted key
   apt_key:
-    url: https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
+    url: "{{ RABBITMQ_REPO_KEY }}"
     state: present
 
 - name: install rabbitmq
   apt:
-    name: rabbitmq-server
+    name: "rabbitmq-server={{ RABBITMQ_VERSION }}"
     update_cache: yes
     state: installed
 
