@@ -28,21 +28,31 @@
     cron_file: letsencrypt-renew
     user: root
 
-- name: add rabbitmq repository
+- name: add rabbitmq repositories
   apt_repository:
-    repo: "{{ RABBITMQ_REPO }}"
+    repo: "{{ item }}"
     state: present
+  with_items:
+    - "{{ ERLANG_REPO }}"
+    - "{{ RABBITMQ_REPO }}"
 
-- name: add rabbitmq trusted key
+- name: add trusted repository keys
   apt_key:
-    url: "{{ RABBITMQ_REPO_KEY }}"
+    url: "{{ item }}"
     state: present
+  with_items:
+    - "{{ ERLANG_REPO_KEY }}"
+    - "{{ RABBITMQ_REPO_KEY }}"
 
 - name: install rabbitmq
   apt:
-    name: "rabbitmq-server={{ RABBITMQ_VERSION }}"
+    name: "{{ item }}"
     update_cache: yes
+    force: yes
     state: installed
+  with_items:
+    - "erlang-nox={{ ERLANG_VERSION }}"
+    - "rabbitmq-server={{ RABBITMQ_VERSION }}"
 
 - name: Set the file descriptor limit to a high value in the systemd service
   ini_file:
