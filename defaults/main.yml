@@ -12,6 +12,10 @@ OPENCRAFT_SSL_KEY: null
 OPENCRAFT_WEBSOCKET_SSL_CERT: null
 OPENCRAFT_WEBSOCKET_SSL_KEY: null
 
+# Number of workers to run
+OPENCRAFT_WORKERS: 3
+OPENCRAFT_WORKERS_LOW_PRIORITY: 3
+
 OPENCRAFT_BACKUP_SWIFT_ENABLED: false
 OPENCRAFT_BACKUP_SWIFT_TARGET: /var/cache/swift-data-backup
 OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY_LOCATION: /etc/tarsnap.key
@@ -68,3 +72,4 @@ www_data_home_dir: '/var/www'
 opencraft_root_dir: '/var/www/opencraft'
 opencraft_virtualenv_dir: '/var/www/.virtualenvs/opencraft'
 opencraft_static_files_dir: '{{ opencraft_root_dir }}/build/static'
+opencraft_screenrc_path: '/home/ubuntu/ocim-screenrc'

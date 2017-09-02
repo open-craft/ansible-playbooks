@@ -7,6 +7,13 @@
 - name: Create {{ www_data_home_dir }}
   file: path="{{ www_data_home_dir }}" owner=www-data group=www-data mode=750 state=directory
 
+- name: Copy shell configuration for user www-data
+  template:
+    src: "bashrc"
+    dest: "{{ www_data_home_dir }}/.bashrc"
+    owner: www-data
+    group: www-data
+
 - name: Clone the opencraft repository
   git: repo=https://github.com/open-craft/opencraft.git dest="{{ opencraft_root_dir }}" update=no
   become_user: www-data
@@ -63,6 +70,25 @@
 
 - name: Restart nginx
   service: name=nginx state=restarted
+
+- name: Copy screen session configuration
+  template:
+    src: "ocim-screenrc"
+    dest: "{{ opencraft_screenrc_path }}"
+    owner: ubuntu
+    group: ubuntu
+
+- name: Copy systemd service file
+  template:
+    src: "ocim-screen.service"
+    dest: "/etc/systemd/system/ocim-screen.service"
+
+- name: enable and start the systemd service
+  # The systemd module is only available in Ansible 2.2 or later, so we need to
+  # use command here.
+  command: "systemctl {{ item }} ocim-screen.service"
+  with_items:
+    - ["enable", "start"]
 
 - name: Open HTTP port on the firewall
   ufw: rule=allow port={{ item }} proto=tcp

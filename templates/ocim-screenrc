@@ -1,0 +1,13 @@
+screen
+stuff "sudo -s -H -u www-data\n"
+stuff "cd {{ opencraft_root_dir }}\n"
+stuff "make run\n"
+
+screen
+stuff "sudo -s -H -u www-data\n"
+stuff "cd {{ opencraft_root_dir }}\n"
+stuff "make shell\n"
+
+screen
+stuff "sudo -s -H -u www-data\n"
+stuff "cd {{ opencraft_root_dir }}\n"

@@ -1,0 +1,11 @@
+. {{ opencraft_virtualenv_dir }}/bin/activate
+
+export WORKERS={{ OPENCRAFT_WORKERS }}
+export WORKERS_LOW_PRIORITY={{ OPENCRAFT_WORKERS_LOW_PRIORITY }}
+
+# Prevent accidential closing of shells inside screen or tmux
+case $TERM in
+    screen*)
+        IGNOREEOF=10
+        ;;
+esac
