@@ -5,3 +5,6 @@ elasticsearch_network_host: localhost
 elasticsearch_http_port: 9200
 elasticsearch_script_inline: true
 elasticsearch_script_indexed: true
+elasticsearch_data_dir: "/usr/share/elasticsearch/data"
+elasticsearch_cfg_dir: "/usr/share/elasticsearch/config"
+elasticsearch_log_dir: "/var/log/elasticsearch"

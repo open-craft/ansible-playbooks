@@ -22,6 +22,20 @@
     mode: 0750
   notify: restart elasticsearch
 
+- name: create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: elasticsearch
+    group: elasticsearch
+  with_items:
+    - "{{ elasticsearch_data_dir }}"
+    - "{{ elasticsearch_log_dir }}"
+    - "{{ elasticsearch_cfg_dir }}"
+  tags:
+    - install
+    - install:base
+
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
 
