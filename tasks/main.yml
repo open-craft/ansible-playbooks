@@ -23,6 +23,30 @@
   ufw: rule=allow port={{ item }} proto=tcp
   with_items:
     - 3306
+#
+# Parameters to set the maximum number of open files
+#
+- name: Creating directory for Mysql files limit configuration
+  file:
+    path: /etc/systemd/system/mysql.service.d/
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+# 
+# The limits of processes started by systemd are governed by systemd configuration
+# files and not from security/limits.d
+- name: Set open files limit in mysql through systemd
+  copy:
+    dest: /etc/systemd/system/mysql.service.d/override.conf
+    owner: root
+    group: root
+    content: |
+      # cf https://duntuk.com/how-raise-ulimit-open-files-and-mysql-openfileslimit
+      [Service]
+      LimitNOFILE={{ MYSQL_OPEN_FILES_LIMIT }}
+      LimitNPROC={{ MYSQL_PROCESSES_LIMIT }}
 
 - name: Copy pre-backup script
   template:
