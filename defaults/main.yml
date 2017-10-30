@@ -1,0 +1,39 @@
+---
+
+POSTFIX_HOSTNAME: "{{ inventory_hostname }}"
+POSTFIX_OPS_EMAIL: ops@example.com
+
+# TLS certificate and private key must be set in the configuration when running this role.
+# A self-signed certificate can be generated using a command similar to this one:
+#
+# openssl req -x509 -newkey rsa:4096 -nodes -keyout postfix.key -out postfix-cert.pem -days 3650 \
+#     -subj "/C=DE/ST=Berlin/L=Berlin/O=OpenCraft GmbH/OU=Org/CN=relay.net.opencraft.hosting"
+POSTFIX_TLS_CERT_CONTENT: ""
+POSTFIX_TLS_KEY_CONTENT: ""
+
+# The domain name of mail originating from the mail server (e.g. monitoring emails)
+POSTFIX_MAILNAME: example.com
+
+# The internal domain.  Mail for this domain will be sent to the internal mail server.
+POSTFIX_INTERNAL_DOMAIN: example.com
+POSTFIX_INTERNAL_MAIL_HOST: "[smtp.example.com]:25"
+
+# Outgoing mail server, specified in the format accepted by the Postfix SMTP client
+POSTFIX_RELAY_HOST: "[smtp.external-provider.com]:587"
+POSTFIX_RELAY_USER: user
+POSTFIX_RELAY_PASSWORD: password
+
+# Users who can authenticate against Postfix
+# Example:
+# POSTFIX_SASL_USERS:
+#   - user: jane
+#     password: skVMVk1Fbt3DaJbu
+#   - user: joe
+#     password: hunter2
+POSTFIX_SASL_USERS: []
+
+# Some configuration file paths; paths that shouldn't be changed have been hard-coded.
+POSTFIX_TLS_CERT: /etc/ssl/certs/postfix-cert.pem
+POSTFIX_TLS_KEY: /etc/ssl/private/postfix.key
+POSTFIX_SASL_CLIENT_PASSWORD_FILE: /etc/postfix/sasl/client-passwd
+POSTFIX_SASL_SERVER_PASSWORD_FILE: /etc/dovecot/private/users
