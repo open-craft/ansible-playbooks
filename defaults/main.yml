@@ -9,6 +9,7 @@ RABBITMQ_HOSTNAME: "{{ inventory_hostname }}"
 RABBITMQ_CA_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/chain.pem"
 RABBITMQ_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/cert.pem"
 RABBITMQ_KEY_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/privkey.pem"
+RABBITMQ_HIGH_MEMORY_ALARM: 0.8
 
 ERLANG_REPO: "deb http://binaries.erlang-solutions.com/debian {{ ansible_distribution_release }} contrib"
 ERLANG_REPO_KEY: "http://packages.erlang-solutions.com/debian/erlang_solutions.asc"
