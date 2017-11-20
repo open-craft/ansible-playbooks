@@ -15,6 +15,11 @@
 - name: template canonical
   template: src=canonical dest=/etc/postfix/canonical
 
+- name: create server CA file
+  copy:
+    dest: /etc/postfix/cacert.pem
+    content: "{{ FORWARD_MAIL_SERVER_CERTIFICATE }}"
+
 - name: update aliases
   command: newaliases
 
