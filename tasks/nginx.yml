@@ -1,0 +1,68 @@
+---
+- name: open HTTP ports on the firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - 80
+    - 443
+
+- name: install nginx apt package
+  apt:
+    name: nginx
+
+- name: add certbot PPA
+  apt_repository:
+    repo: ppa:certbot/certbot
+
+- name: install certbot apt package
+  apt:
+    update_cache: yes
+    name: python-certbot-nginx
+
+# We need to stop nginx before requesting a certificate, so we can use the Certbot standalone
+# server.  Using the nginx plugin of Certbot is difficult, because it would compete with Ansible
+# for the ownership of the nginx site configuration file.  nginx will be restarted at the end of
+# the file, so we don't need to start it here.  This task will only be executed when no SSL cert
+# exists yet (in virtue of "creates:"), so we don't have to worry about the downtime.
+- name: generate SSL certificate with certbot
+  shell: >
+    systemctl stop nginx &&
+    certbot --standalone certonly
+        --domain {{ MATTERMOST_HOSTNAME }}
+        --email {{ MATTERMOST_OPS_EMAIL }}
+        --non-interactive
+        --agree-tos
+  args:
+    creates: "/etc/letsencrypt/live/{{ MATTERMOST_HOSTNAME }}/fullchain.pem"
+
+- name: set up cron job for certificate renewal
+  cron:
+    cron_file: letsencrypt-renew
+    user: root
+    name: "Renew SSL certificate using the certbot client"
+    job: certbot renew --quiet
+    hour: "*/12"
+    minute: 42
+
+- name: copy nginx site configuration
+  template:
+    src: mattermost-nginx.j2
+    dest: /etc/nginx/sites-available/mattermost
+
+- name: enable nginx site configuration
+  file:
+    src: /etc/nginx/sites-available/mattermost
+    dest: /etc/nginx/sites-enabled/mattermost
+    state: link
+
+- name: disable nginx default site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
