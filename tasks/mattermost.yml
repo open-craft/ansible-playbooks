@@ -23,7 +23,7 @@
 
 # The configuration file is managed via the web interface, and schema updates are performed
 # automatically by the Mattermost platform.  For this reason, we only provide an initial version
-# of the configuration file and leave the file alone once it exists.
+# of the configuration file and leave the file alone once it exists (in virtue of "force: no").
 - name: create config file if it does not exist yet
   template:
     src: config.json.j2
