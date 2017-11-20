@@ -1,5 +1,8 @@
 ---
-# tasks file for sanity-check
+- name: install mailutils apt package
+  apt:
+    name: mailutils
+
 - name: copy sanity check script
   copy: src=sanity_check.py dest={{ SANITY_CHECK_SCRIPT_LOCATION }} mode=500
 
