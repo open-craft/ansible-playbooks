@@ -35,6 +35,8 @@
   with_items:
     - "{{ ERLANG_REPO }}"
     - "{{ RABBITMQ_REPO }}"
+  tags:
+    - install_rabbitmq
 
 - name: add trusted repository keys
   apt_key:
@@ -43,6 +45,19 @@
   with_items:
     - "{{ ERLANG_REPO_KEY }}"
     - "{{ RABBITMQ_REPO_KEY }}"
+  tags:
+    - install_rabbitmq
+
+- name: Unlock erlang and rabbitmq
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: install
+  with_items:
+    - erlang-nox
+    - rabbitmq-server
+  ignore_errors: yes
+  tags:
+    - install_rabbitmq
 
 - name: install rabbitmq
   apt:
@@ -53,14 +68,38 @@
   with_items:
     - "erlang-nox={{ ERLANG_VERSION }}"
     - "rabbitmq-server={{ RABBITMQ_VERSION }}"
+  tags:
+    - install_rabbitmq
+
+- name: Lock erlang and rabbitmq
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+    - erlang-nox
+    - rabbitmq-server
+  tags:
+    - install_rabbitmq
+
+- name: Create directory for RabbitMQ service overrides
+  file:
+    path: /etc/systemd/system/rabbitmq-server.service.d/
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  tags:
+    - fd_limit
 
 - name: Set the file descriptor limit to a high value in the systemd service
   ini_file:
-    dest: /lib/systemd/system/rabbitmq-server.service
+    dest: /etc/systemd/system/rabbitmq-server.service.d/limits.conf
     section: Service
     option: "{{ item }}"
     value: 65535
-    backup: yes
+    mode: 0644
+    owner: root
+    group: root
   with_items:
     - LimitNOFILE
     - LimitNPROC
