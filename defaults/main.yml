@@ -17,8 +17,8 @@ ERLANG_REPO_KEY: "http://packages.erlang-solutions.com/debian/erlang_solutions.a
 RABBITMQ_REPO: "deb https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ {{ ansible_distribution_release }} main"
 RABBITMQ_REPO_KEY: "https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey"
 
-ERLANG_VERSION: 1:20.0-1
-RABBITMQ_VERSION: 3.6.11-1
+ERLANG_VERSION: 1:20.1-1
+RABBITMQ_VERSION: 3.6.14-1
 
 RABBITMQ_APT_PACKAGES:
   - apt-transport-https
