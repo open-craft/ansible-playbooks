@@ -1,0 +1,20 @@
+[Unit]
+Description=Crafty
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart={{ CRAFTY_HOME }}/venvs/crafty/bin/matterbot
+Restart=always
+RestartSec=10
+WorkingDirectory={{ CRAFTY_HOME }}/crafty
+User=crafty
+Group=crafty
+Environment="MATTERMOST_BOT_URL={{ CRAFTY_MATTERMOST_URL }}"
+Environment="MATTERMOST_BOT_TEAM={{ CRAFTY_TEAM }}"
+Environment="MATTERMOST_BOT_LOGIN={{ CRAFTY_LOGIN }}"
+Environment="MATTERMOST_BOT_PASSWORD={{ CRAFTY_PASSWORD }}"
+Environment="MATTERMOST_BOT_SETTINGS_MODULE=settings"
+
+[Install]
+WantedBy=multi-user.target
