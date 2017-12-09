@@ -1,5 +1,5 @@
 - name: Install Python 2
-  hosts: load-balancer:rabbitmq:elasticsearch:relay:chat:mongodb:backup-prune
+  hosts: accounting:backup-prune:chat:elasticsearch:load-balancer:mongodb:rabbitmq:relay
   become: true
   gather_facts: false
   tasks:
@@ -107,3 +107,13 @@
     - mattermost
     - crafty
     - link-shortener
+
+- name: Set up OpenCraft Accounting Automation application
+  hosts: accounting
+  become: true
+  roles:
+    - common-server
+    - forward-server-mail
+    - geerlingguy.nginx
+    - geerlingguy.certbot
+    - accounting
