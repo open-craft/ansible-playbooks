@@ -1,0 +1,13 @@
+SANITY_CHECK_LIVE_PORTS:
+  - host: localhost
+    port: 80
+    message: "Load balancer does not respond on port 80."
+  - host: localhost
+    port: 443
+    message: "Load balancer does not respond on port 443."
+
+TARSNAP_BACKUP_FOLDERS: "/etc/letsencrypt /etc/haproxy"
+
+LOAD_BALANCER_OPS_EMAIL: "{{ OPS_EMAIL }}"
+
+LOAD_BALANCER_SERVER_IP: "{{ COMMON_FLOATING_IP or ansible_host }}"

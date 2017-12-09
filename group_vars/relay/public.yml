@@ -1,0 +1,9 @@
+---
+COMMON_SERVER_NO_BACKUPS: true
+
+SANITY_CHECK_LIVE_PORTS:
+  - host: localhost
+    port: 25
+    message: "Cannot connect to SMTP port."
+
+POSTFIX_OPS_EMAIL: "{{ OPS_EMAIL }}"

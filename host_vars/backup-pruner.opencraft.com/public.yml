@@ -1,0 +1,20 @@
+FORWARD_MAIL_RELAY_MAIL_TO: "ops@example.com"
+FORWARD_MAIL_SMTP_FROM: "{{ FORWARD_MAIL_RELAY_MAIL_TO }}"
+
+TARSNAPPER_CONF: /etc/tarsnapper.yml
+JOB_LOG: /var/log/backup-pruner-summary.log
+LOG_DIR: /var/log/backup-pruner
+BACKUP_PRUNER_SCRIPT: /usr/local/sbin/backup-pruner.sh
+BACKUP_PRUNER_SNITCH: https://nosnch.in/5e416d313e
+
+# Can be changed to normal tarsnapper once we merge this branch
+# and code winds up on PIP
+TARSNAPPER_VERSION: git+https://github.com/miracle2k/tarsnapper.git@0fedc22bcf8863fecb78c290a42dc28de96363b2
+
+TARSNAPPER_JOBS:
+  - name: "mysql-backup"
+    keypath: "/etc/keyfile"
+    key: "{{ VARIABLE_CONTAINING_TARSNAP_KEY }}"
+    cache: "/var/cache/tarsnap"
+    target: mysql-$date
+    deltas: 1h 1d 7d 30d 360d 18000d

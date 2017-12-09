@@ -1,0 +1,23 @@
+MYSQL_SERVER_DOMAIN: "{{ inventory_hostname }}"
+
+MYSQL_SERVER_BACKUP_DIR: '/var/lib/mysql/backup'
+TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/backup-pre.sh"
+TARSNAP_BACKUP_POST_SCRIPT: "/usr/local/sbin/backup-post.sh"
+TARSNAP_BACKUP_FOLDERS: "{{ MYSQL_SERVER_BACKUP_DIR }}"
+TARSNAP_ARCHIVE_NAME: "{{ MYSQL_SERVER_DOMAIN }}"
+
+mysql_root_password_update: true
+
+mysql_packages:
+  - mysql-server-5.5
+  - mysql-client-5.5
+
+FORWARD_MAIL_MYDOMAIN: "{{ MYSQL_SERVER_DOMAIN }}"
+UNATTENED_UPGRADES_ERRORS_RELAY_TO: "{{ MYSQL_SERVER_DOMAIN }}"
+
+SANITY_CHECK_LIVE_PORTS:
+  - host: localhost
+    port: 3306
+    message: "Can't connect to mysql"
+
+SANITY_CHECK_COMMANDS: []

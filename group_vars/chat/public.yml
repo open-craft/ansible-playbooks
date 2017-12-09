@@ -1,0 +1,9 @@
+---
+COMMON_SERVER_NO_BACKUPS: true
+
+SANITY_CHECK_LIVE_PORTS:
+  - host: localhost
+    port: 443
+    message: "Cannot connect to HTTPS port."
+
+MATTERMOST_OPS_EMAIL: "{{ OPS_EMAIL }}"
