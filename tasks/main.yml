@@ -1,0 +1,16 @@
+- include: base.yml
+- include: accounting.yml
+- include: wkhtmltopdf.yml
+- include: google-integration.yml
+  when: "{{ ACCOUNTING_ENV_TOKENS.ENABLE_GOOGLE }}"
+- include: nginx.yml
+- include: screen.yml
+
+- name: Open HTTP port on the firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - 80
+    - 443
