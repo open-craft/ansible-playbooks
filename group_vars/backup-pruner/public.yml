@@ -1,6 +1,3 @@
-FORWARD_MAIL_RELAY_MAIL_TO: "ops@example.com"
-FORWARD_MAIL_SMTP_FROM: "{{ FORWARD_MAIL_RELAY_MAIL_TO }}"
-
 TARSNAPPER_CONF: /etc/tarsnapper.yml
 JOB_LOG: /var/log/backup-pruner-summary.log
 LOG_DIR: /var/log/backup-pruner
