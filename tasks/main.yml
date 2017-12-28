@@ -83,12 +83,15 @@
     src: "ocim-screen.service"
     dest: "/etc/systemd/system/ocim-screen.service"
 
-- name: enable and start the systemd service
-  # The systemd module is only available in Ansible 2.2 or later, so we need to
-  # use command here.
-  command: "systemctl {{ item }} ocim-screen.service"
-  with_items:
-    - ["enable", "start"]
+- name: Enable the systemd service to start on boot automatically
+  systemd:
+    name: ocim-screen.service
+    enabled: yes
+
+- name: Start the systemd service right now
+  systemd:
+    name: ocim-screen.service
+    state: started
 
 - name: Open HTTP port on the firewall
   ufw: rule=allow port={{ item }} proto=tcp
