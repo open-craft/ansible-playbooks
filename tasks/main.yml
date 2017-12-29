@@ -10,7 +10,7 @@
   template: src=aliases dest=/etc/aliases
 
 - name: template password
-  template: src=sasl_passwd dest=/etc/postfix/sasl_passwd mode=400
+  template: src=sasl_passwd dest=/etc/postfix/sasl_passwd mode=0400
 
 - name: template canonical
   template: src=canonical dest=/etc/postfix/canonical
