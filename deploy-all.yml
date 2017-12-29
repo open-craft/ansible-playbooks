@@ -1,5 +1,5 @@
 - name: Install Python 2
-  hosts: accounting:backup-prune:chat:elasticsearch:load-balancer:mongodb:rabbitmq:relay
+  hosts: accounting:backup-prune:chat:elasticsearch:load-balancer:mongodb:rabbitmq:relay:postgres
   become: true
   gather_facts: false
   tasks:
@@ -35,7 +35,7 @@
   roles:
     - common-server
     - postgres
-    - ANXS.postgresql
+    - geerlingguy.postgresql
     - forward-server-mail
 
 - name: Set up MongoDB servers
