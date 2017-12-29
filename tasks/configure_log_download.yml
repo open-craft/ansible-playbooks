@@ -11,7 +11,7 @@
     name: "{{ DALITE_LOG_DOWNLOAD_USER_HOME }}/.ssh"
     owner: "{{ DALITE_LOG_DOWNLOAD_USER }}"
     group: "{{ DALITE_LOG_DOWNLOAD_USER }}"
-    mode: "700"
+    mode: 0700
 
 - name: create authorized keys
   file:
@@ -19,7 +19,7 @@
     name: "{{ DALITE_LOG_DOWNLOAD_USER_HOME }}/.ssh/authorized_keys"
     owner: "{{ DALITE_LOG_DOWNLOAD_USER }}"
     group: "{{ DALITE_LOG_DOWNLOAD_USER }}"
-    mode: "600"
+    mode: 0600
 
 - name: add authorized keys
   lineinfile:
@@ -45,7 +45,7 @@
     dest: /usr/local/sbin/dalite-pre-backup.sh
     owner: root
     group: root
-    mode: "0700"
+    mode: 0700
 
 - name: copy logrotate
   template: src=logrotate.d dest=/etc/logrotate.d/dalite
