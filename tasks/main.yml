@@ -17,7 +17,10 @@
   file: path=/var/lib/mysql owner=mysql group=mysql recurse=yes state=directory
 
 - name: chmod /var/lib/mysql
-  file: path=/var/lib/mysql mode=700 state=directory
+  file:
+    path: /var/lib/mysql
+    mode: 0700
+    state: directory
 
 - name: Allow required ports
   ufw: rule=allow port={{ item }} proto=tcp
@@ -54,7 +57,7 @@
     dest: /usr/local/sbin/backup-pre.sh
     owner: root
     group: root
-    mode: "500"
+    mode: 0500
 
 - name: Copy post-backup script
   template:
@@ -62,4 +65,4 @@
     dest: /usr/local/sbin/backup-post.sh
     owner: root
     group: root
-    mode: "500"
+    mode: 0500
