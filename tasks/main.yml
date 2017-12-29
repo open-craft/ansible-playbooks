@@ -5,7 +5,12 @@
   user: name=www-data shell=/bin/bash
 
 - name: Create {{ www_data_home_dir }}
-  file: path="{{ www_data_home_dir }}" owner=www-data group=www-data mode=750 state=directory
+  file:
+    path: "{{ www_data_home_dir }}"
+    owner: www-data
+    group: www-data
+    mode: 0750
+    state: directory
 
 - name: Copy shell configuration for user www-data
   template:
@@ -32,11 +37,17 @@
   become_user: www-data
 
 - name: Install the venv wrapper script
-  copy: src=venv_exec dest="{{ opencraft_virtualenv_dir }}/bin/exec" mode=755
+  copy:
+    src: venv_exec
+    dest: "{{ opencraft_virtualenv_dir }}/bin/exec"
+    mode: 0755
   become_user: www-data
 
 - name: Install the configuration/environment file
-  template: src=env.j2 dest="{{ opencraft_root_dir }}/.env" mode=600
+  template:
+    src: env.j2
+    dest: "{{ opencraft_root_dir }}/.env"
+    mode: 0600
   become_user: www-data
 
 - name: "Create directory {{ www_data_home_dir }}/.ssh"
@@ -47,7 +58,7 @@
   copy:
     content: "{{ OPENCRAFT_OPENSTACK_SSH_KEY }}"
     dest: "{{ www_data_home_dir }}/.ssh/id_rsa"
-    mode: "0600"
+    mode: 0600
   become_user: www-data
 
 - name: Copy nginx site configuration
@@ -57,16 +68,32 @@
   file: src=/etc/nginx/sites-available/opencraft dest=/etc/nginx/sites-enabled/opencraft state=link
 
 - name: Copy SSL certificate
-  copy: content="{{ OPENCRAFT_SSL_CERT }}" dest=/etc/ssl/certs/ssl-cert.pem group=ssl-cert mode=640
+  copy:
+    content: "{{ OPENCRAFT_SSL_CERT }}"
+    dest: /etc/ssl/certs/ssl-cert.pem
+    group: ssl-cert
+    mode: 0640
 
 - name: Copy SSL key
-  copy: content="{{ OPENCRAFT_SSL_KEY }}" dest=/etc/ssl/private/ssl-cert.key group=ssl-cert mode=640
+  copy:
+    content: "{{ OPENCRAFT_SSL_KEY }}"
+    dest: /etc/ssl/private/ssl-cert.key
+    group: ssl-cert
+    mode: 0640
 
 - name: Copy websocket SSL certificate
-  copy: content="{{ OPENCRAFT_WEBSOCKET_SSL_CERT }}" dest=/etc/ssl/certs/ssl-websocket-cert.pem group=ssl-cert mode=640
+  copy:
+    content: "{{ OPENCRAFT_WEBSOCKET_SSL_CERT }}"
+    dest: /etc/ssl/certs/ssl-websocket-cert.pem
+    group: ssl-cert
+    mode: 0640
 
 - name: Copy websocket SSL key
-  copy: content="{{ OPENCRAFT_WEBSOCKET_SSL_KEY }}" dest=/etc/ssl/private/ssl-websocket-cert.key group=ssl-cert mode=640
+  copy:
+    content: "{{ OPENCRAFT_WEBSOCKET_SSL_KEY }}"
+    dest: /etc/ssl/private/ssl-websocket-cert.key
+    group: ssl-cert
+    mode: 0640
 
 - name: Restart nginx
   service: name=nginx state=restarted
