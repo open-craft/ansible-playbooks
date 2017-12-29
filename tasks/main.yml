@@ -22,7 +22,7 @@
     content: "{{ POSTFIX_TLS_KEY_CONTENT }}"
     owner: root
     group: ssl-cert
-    mode: "640"
+    mode: 0640
 
 - name: write Postfix main.cf configuration file
   template:
@@ -43,7 +43,7 @@
   copy:
     dest: "{{ POSTFIX_SASL_CLIENT_PASSWORD_FILE }}"
     content: "{{ POSTFIX_RELAY_HOST }} {{POSTFIX_RELAY_USER}}:{{POSTFIX_RELAY_PASSWORD}}\n"
-    mode: "600"
+    mode: 0600
 
 - name: call postmap on SMTP client password file
   command: postmap "{{ POSTFIX_SASL_CLIENT_PASSWORD_FILE }}"
@@ -74,7 +74,7 @@
       {% endfor %}
     owner: root
     group: dovecot
-    mode: "640"
+    mode: 0640
 
 ### Restart services and open firewall
 
