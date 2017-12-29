@@ -1,17 +1,35 @@
 - name: Create postgres group
-  group: name=postgres system=yes
+  group:
+    name: postgres
+    system: yes
 
 - name: Create postgres user
-  user: name=postgres group=postgres home=/var/lib/postgresql system=yes
+  user:
+    name: postgres
+    group: postgres
+    home: /var/lib/postgresql
+    system: yes
 
 - name: mount /var/lib/postgresql
-  mount: name=/var/lib/postgresql src="{{POSTGRES_OPENSTACK_DB_DEVICE}}" fstype=ext4 state=mounted
+  mount:
+    name: /var/lib/postgresql
+    src: "{{ POSTGRES_OPENSTACK_DB_DEVICE }}"
+    fstype: ext4
+    state: mounted
 
 - name: chown & chmod /var/lib/postgresql
-  file: path=/var/lib/postgresql owner=postgres group=postgres mode=750 state=directory
+  file:
+    path: /var/lib/postgresql
+    owner: postgres
+    group: postgres
+    mode: 0750
+    state: directory
 
 - name: Open Postgres port on the firewall
-  ufw: rule=allow port={{ item }} proto=tcp
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
   with_items:
     - 5432
 
