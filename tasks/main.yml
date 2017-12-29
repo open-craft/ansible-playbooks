@@ -14,10 +14,15 @@
     dest: "{{ TARSNAP_KEY_REMOTE_LOCATION }}"
     owner: "root"
     group: "root"
-    mode: "0600"
+    mode: 0600
 
 - name: Create cache directory
-  file: state=directory path={{ TARSNAP_CACHE }} owner=root group=root mode=750
+  file:
+    state: directory
+    path: "{{ TARSNAP_CACHE }}"
+    owner: root
+    group: root
+    mode: 0750
 
 - name: template main backup script
   template:
@@ -25,7 +30,7 @@
     dest: "{{ TARSNAP_BACKUP_SCRIPT_LOCATION }}"
     owner: root
     group: root
-    mode: "500"
+    mode: 0500
 
 - name: Check we can access tarsnap and run fsck
   command: tarsnap --cachedir {{ TARSNAP_CACHE }} --keyfile {{ TARSNAP_KEY_REMOTE_LOCATION }} --fsck
