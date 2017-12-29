@@ -8,14 +8,22 @@
   mount: name=/var/lib/mongodb src="{{ MONGODB_OPENSTACK_DB_DEVICE }}" fstype=ext4 state=mounted
 
 - name: mkdir /var/lib/mongodb/{db,log}
-  file: path="/var/lib/mongodb/{{ item }}" state=directory mode=0750 owner=mongodb group=mongodb
+  file:
+    path: "/var/lib/mongodb/{{ item }}"
+    state: directory
+    mode: 0750
+    owner: mongodb
+    group: mongodb
   with_items: ['db', 'log']
 
 - name: chown -R /var/lib/mongodb
   file: path=/var/lib/mongodb owner=mongodb group=mongodb recurse=yes state=directory
 
 - name: chmod /var/lib/mongodb
-  file: path=/var/lib/mongodb mode=700 state=directory
+  file:
+    path: /var/lib/mongodb
+    mode: 0700
+    state: directory
 
 - name: Open MongoDB port on the firewall
   ufw: rule=allow port={{ item }} proto=tcp
@@ -28,7 +36,7 @@
     dest: /usr/local/sbin/backup-pre.sh
     owner: root
     group: root
-    mode: "500"
+    mode: 0500
 
 - name: Copy post-backup script
   template:
@@ -36,4 +44,4 @@
     dest: /usr/local/sbin/backup-post.sh
     owner: root
     group: root
-    mode: "500"
+    mode: 0500
