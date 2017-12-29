@@ -21,7 +21,7 @@
     dest: /usr/local/sbin/backup-pre.sh
     owner: root
     group: root
-    mode: "500"
+    mode: 0500
 
 - name: Copy post-backup script
   template:
@@ -29,4 +29,4 @@
     dest: /usr/local/sbin/backup-post.sh
     owner: root
     group: root
-    mode: "500"
+    mode: 0500
