@@ -1,3 +1,26 @@
+- name: Configure official PostgreSQL repository
+  apt_repository:
+    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main'
+    state: present
+ 
+- name: Install PostgreSQL repository key
+  apt_key:
+    id: ACCC4CF8
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+ 
+- name: Install required PostgreSQL packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - postgresql-{{postgresql_version}}
+    - postgresql-contrib-{{postgresql_version}}
+    - postgresql-server-dev-{{postgresql_version}}
+    - postgresql-client-{{postgresql_version}}
+    - python3-psycopg2
+
 - name: Create postgres group
   group:
     name: postgres
