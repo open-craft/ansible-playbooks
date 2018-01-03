@@ -1,0 +1,45 @@
+---
+- name: Install database dependencies
+  shell: DEBIAN_FRONTEND=noninteractive make install_system_db_dependencies chdir="{{ opencraft_root_dir }}"
+
+- name: Open HTTP ports needed for dev setup
+  ufw: rule=allow port={{ item }} proto=tcp
+  with_items:
+    - 2001
+    - 5000
+    - 8888
+
+- name: Change directory to ~/opencraft on login
+  blockinfile:
+    path: ~/.bashrc
+    block:
+      . {{ opencraft_virtualenv_dir }}/bin/activate
+      cd ~/opencraft
+  become_user: vagrant
+
+- name: Setup Databases
+  block:
+    - shell: >
+        echo "update user set plugin='mysql_native_password' where user='root' and host='localhost'; flush privileges;" | \
+        sudo -H -u root mysql mysql
+
+    - name: Create Postgres user
+      shell: createuser -d vagrant
+      become_user: postgres
+      ignore_errors: yes
+
+    - name: Allow access to postgres from localhost without password
+      copy:
+        dest: /etc/postgresql/9.5/main/pg_hba.conf
+        content: |
+          local   all             postgres                                peer
+          local   all             all                                     trust
+          host    all             all             127.0.0.1/32            trust
+          host    all             all             ::1/128                 trust
+
+    - name: Restart postgres
+      service: name=postgresql state=restarted
+
+    - name: Create postgres database
+      command: make create_db chdir={{ opencraft_root_dir }}
+      become_user: vagrant

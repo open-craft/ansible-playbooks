@@ -6,8 +6,8 @@ After=nginx.service
 [Service]
 ExecStart=/usr/bin/screen -D -m -c {{ opencraft_screenrc_path }}
 Restart=no
-User=ubuntu
-Group=ubuntu
+User={{ session_user }}
+Group={{ session_user_group }}
 
 [Install]
 WantedBy=multi-user.target

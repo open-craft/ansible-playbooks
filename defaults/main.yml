@@ -73,3 +73,11 @@ opencraft_root_dir: '/var/www/opencraft'
 opencraft_virtualenv_dir: '/var/www/.virtualenvs/opencraft'
 opencraft_static_files_dir: '{{ opencraft_root_dir }}/build/static'
 opencraft_screenrc_path: '/home/ubuntu/ocim-screenrc'
+
+# The user you will log in as in an SSH session and their primary group
+session_user: ubuntu
+session_user_group: ubuntu
+
+# The user and group under which the applicaiton code will run
+www_user: www-data
+www_group: www-data
