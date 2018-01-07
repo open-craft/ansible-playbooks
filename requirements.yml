@@ -8,6 +8,11 @@
   src: https://github.com/geerlingguy/ansible-role-nginx
   version: e81825546577cfb300efbcaec32aae4716561385
 
+# Any version after this requires Ansible >= 2.4.
+- name: geerlingguy.certbot
+  src: https://github.com/geerlingguy/ansible-role-certbot
+  version: 574c0843c8620f299ff67acbf35c9a6aa45121d0
+
 - name: kamaln7.swapfile
   src: https://github.com/kamaln7/ansible-swapfile
   version: 8eb0e18d90a7f25b6658fbf56bcba01b84a664fc
@@ -72,6 +77,10 @@
   src: https://github.com/open-craft/ansible-link-shortener
   version: origin/master
 
+- name: accounting
+  src: https://github.com/open-craft/ansible-accounting
+  version: origin/master
+
 - name: geerlingguy.mysql
   src: https://github.com/geerlingguy/ansible-role-mysql
   version: c71ded56d87c8df606210b59f045ed4c3f1f98ff
@@ -95,4 +104,3 @@
 - name: greendayonfire.mongodb
   src: https://github.com/UnderGreen/ansible-role-mongodb
   version: 1ba531c5c68a4cf684410c50e7286ffd7742b848
-

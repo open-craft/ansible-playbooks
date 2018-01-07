@@ -1,0 +1,15 @@
+---
+
+COMMON_SERVER_NO_BACKUPS: true
+
+# Snitches
+SANITY_CHECK_LIVE_PORTS:
+  - host: localhost
+    port: 443
+    message: "Cannot connect to HTTPS port."
+  - host: localhost
+    port: 1786
+    message: "Accounting API is not responding on port 1786."
+
+# NGINX
+nginx_remove_default_vhost: true
