@@ -8,6 +8,7 @@
                           {keyfile,   "{{ RABBITMQ_KEY_FILE }}"},
                           {versions, ['tlsv1.2', 'tlsv1.1']}
                          ]},
+           {log_levels, [{connection, warning}]},
            {vm_memory_high_watermark, {{ RABBITMQ_HIGH_MEMORY_ALARM }}}
           ]},
  {rabbitmq_management, [
