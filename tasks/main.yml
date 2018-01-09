@@ -4,14 +4,16 @@
     name: mailutils
 
 - name: copy sanity check script
-  copy: src=sanity_check.py dest={{ SANITY_CHECK_SCRIPT_LOCATION }} mode=500
+  copy:
+    src: sanity_check.py
+    dest: "{{ SANITY_CHECK_SCRIPT_LOCATION }}"
+    mode: 0500
 
 - name: copy sanity check config
   copy:
     content: "{{ sanity_check_control_file|to_json }}"
     dest: "{{ SANITY_CHECK_CONFIG }}"
-    mode: "400"
-
+    mode: 0400
 
 - name: install sanity checks crontab
   cron:
