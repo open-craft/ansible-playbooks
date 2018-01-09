@@ -1,17 +1,58 @@
+- name: Configure official PostgreSQL repository
+  apt_repository:
+    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main'
+    state: present
+ 
+- name: Install PostgreSQL repository key
+  apt_key:
+    id: ACCC4CF8
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+ 
+- name: Install required PostgreSQL packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - postgresql-{{postgresql_version}}
+    - postgresql-contrib-{{postgresql_version}}
+    - postgresql-server-dev-{{postgresql_version}}
+    - postgresql-client-{{postgresql_version}}
+    - python3-psycopg2
+
 - name: Create postgres group
-  group: name=postgres system=yes
+  group:
+    name: postgres
+    system: yes
 
 - name: Create postgres user
-  user: name=postgres group=postgres home=/var/lib/postgresql system=yes
+  user:
+    name: postgres
+    group: postgres
+    home: /var/lib/postgresql
+    system: yes
 
 - name: mount /var/lib/postgresql
-  mount: name=/var/lib/postgresql src="{{POSTGRES_OPENSTACK_DB_DEVICE}}" fstype=ext4 state=mounted
+  mount:
+    name: /var/lib/postgresql
+    src: "{{ POSTGRES_OPENSTACK_DB_DEVICE }}"
+    fstype: ext4
+    state: mounted
 
 - name: chown & chmod /var/lib/postgresql
-  file: path=/var/lib/postgresql owner=postgres group=postgres mode=750 state=directory
+  file:
+    path: /var/lib/postgresql
+    owner: postgres
+    group: postgres
+    mode: 0750
+    state: directory
 
 - name: Open Postgres port on the firewall
-  ufw: rule=allow port={{ item }} proto=tcp
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
   with_items:
     - 5432
 
@@ -21,7 +62,7 @@
     dest: /usr/local/sbin/backup-pre.sh
     owner: root
     group: root
-    mode: "500"
+    mode: 0500
 
 - name: Copy post-backup script
   template:
@@ -29,4 +70,4 @@
     dest: /usr/local/sbin/backup-post.sh
     owner: root
     group: root
-    mode: "500"
+    mode: 0500
