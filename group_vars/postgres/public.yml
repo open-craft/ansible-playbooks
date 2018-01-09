@@ -1,20 +1,34 @@
 POSTGRES_SERVER_DOMAIN: "{{ inventory_hostname }}"
 
+# Tarsnap
 TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/backup-pre.sh"
 TARSNAP_BACKUP_POST_SCRIPT: "/usr/local/sbin/backup-post.sh"
 TARSNAP_BACKUP_FOLDERS: "{{ POSTGRES_SERVER_BACKUP_DIR }}"
 TARSNAP_ARCHIVE_NAME: "{{ POSTGRES_SERVER_DOMAIN }}"
 
-postgresql_version: 9.3
-postgresql_listen_addresses:
-  - "*"
-postgresql_pg_hba_passwd_hosts:
-  - "0.0.0.0/0"
-postgresql_ssl: on
+# Postgres
+postgresql_version: 10
+postgresql_data_dir: "/var/lib/postgresql/{{ postgresql_version }}/main"
+postgresql_bin_path: "/usr/lib/postgresql/{{ postgresql_version }}/bin"
+postgresql_config_path: "/etc/postgresql/{{ postgresql_version }}/main"
+postgresql_packages: []
+postgresql_global_config_options:
+  - option: listen_addresses
+    value: '*'
+  - option: ssl
+    value: 'on'
+postgresql_hba_entries:
+  - { type: local, database: all, user: postgres, auth_method: trust }
+  - { type: local, database: all, user: all, auth_method: trust }
+  - { type: host, database: all, user: all, address: '127.0.0.1/32', auth_method: trust }
+  - { type: host, database: all, user: all, address: '::1/128', auth_method: trust }
+  - { type: host, database: all, user: all, address: '0.0.0.0/0', auth_method: password }
 
+# Email
 FORWARD_MAIL_MYDOMAIN: "{{ POSTGRES_SERVER_DOMAIN }}"
 UNATTENED_UPGRADES_ERRORS_RELAY_TO: "{{ POSTGRES_SERVER_DOMAIN }}"
 
+# Sanity
 SANITY_CHECK_LIVE_PORTS:
   - host: localhost
     port: 5432

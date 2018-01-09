@@ -93,9 +93,10 @@
   src: https://github.com/open-craft/ansible-postgres
   version: origin/master
 
-- name: ANXS.postgresql
-  src: https://github.com/ANXS/postgresql
-  version: dda12bcbfa01697f16332adbc1432ea7fe6dfb5f
+# Can change to upstream repo when https://github.com/geerlingguy/ansible-role-postgresql/pull/33 merges
+- name: geerlingguy.postgresql
+  src: https://github.com/open-craft/ansible-role-postgresql
+  version: f7e8cb6bb1633511953069fe72b9440bd2db500a
 
 - name: mongodb
   src: https://github.com/open-craft/ansible-mongodb
