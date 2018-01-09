@@ -115,7 +115,7 @@
     dest: /etc/rabbitmqadmin.conf
     owner: root
     group: root
-    mode: 600
+    mode: 0600
 
 - name: add rabbitmq import/export scripts
   template:
@@ -123,7 +123,7 @@
     dest: "{{ RABBITMQ_SCRIPTS_DIR }}/{{ item }}"
     owner: root
     group: root
-    mode: 700
+    mode: 0700
   with_items:
     - "{{ RABBITMQ_BACKUP_COMMAND }}"
     - "{{ RABBITMQ_RESTORE_COMMAND }}"
@@ -134,7 +134,7 @@
     state: directory
     owner: root
     group: root
-    mode: 700
+    mode: 0700
 
 - name: set letsencrypt directory owner
   file:
@@ -180,7 +180,7 @@
     dest: "{{ RABBITMQ_SCRIPTS_DIR }}/rabbitmqadmin"
     owner: root
     group: root
-    mode: 700
+    mode: 0700
 
 - name: remove default guest user
   rabbitmq_user:
