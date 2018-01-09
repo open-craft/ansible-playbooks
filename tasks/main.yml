@@ -26,7 +26,7 @@
   shell: git config --global user.name "{{ COMMON_SERVER_ETCKEEPER_COMMIT_USER }}" && git config --global user.email "{{ COMMON_SERVER_ETCKEEPER_COMMIT_EMAIL }}"
 
 - name: etckeeper - Use git
-  copy: src=etckeeper.conf dest=/etc/etckeeper/etckeeper.conf owner=root group=root mode=644 backup=yes
+  copy: src=etckeeper.conf dest=/etc/etckeeper/etckeeper.conf owner=root group=root mode=0644 backup=yes
 
 - name: etckeeper - git init && commit
   shell: etckeeper init && etckeeper commit "Initial commit." creates=/etc/.git
