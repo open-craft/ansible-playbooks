@@ -52,6 +52,7 @@ COMMON_SERVER_DEPENDENCIES:
   - etckeeper
   - tmpreaper
   - ufw
+  - apt-show-versions
 
 # Use Google public DNS servers as fallback
 COMMON_FALLBACK_DNS_SERVERS:
@@ -61,3 +62,5 @@ COMMON_FALLBACK_DNS_SERVERS:
 # List of chkrootkit disabled tests.
 CHKROOTKIT_DISABLED_TESTS:
   - chkutmp
+
+SECURITY_UPDATE_SCRIPT_LOCATION: "/usr/local/sbin/security_updates_checker.sh"

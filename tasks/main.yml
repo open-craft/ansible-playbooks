@@ -45,3 +45,18 @@
 
 - name: Set local timezone to UTC
   file: src=/usr/share/zoneinfo/Etc/UTC dest=/etc/localtime state=link force=true
+
+- name: Copy security update check script
+  copy:
+    src: security_updates_checker.sh
+    dest: "{{ SECURITY_UPDATE_SCRIPT_LOCATION }}"
+    owner: root
+    group: root
+    mode: 0500
+
+- name: Schedule cron job to track security updates of held packages
+  cron:
+    name: "Track security updates"
+    minute: "0"
+    hour: "1"
+    job: "bash {{ SECURITY_UPDATE_SCRIPT_LOCATION }}"
