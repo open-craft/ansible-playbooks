@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Acquire backup lock using this script itself as the lockfile. If another
+# backup task is already running, then exit immediately.
+exec 200<$0
+flock -n 200 || { echo "Another backup task is already running."; exit 1; }
+
 # Logic is as follows:
 
 # 1. If pre-script fails exit immediately
