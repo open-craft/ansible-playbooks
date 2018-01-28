@@ -13,24 +13,26 @@
 - name: Install system dependencies for the accounting service
   command: make install_system_dependencies chdir="{{ accounting_root_dir }}"
 
-- name: Install virtualenv for the accounting service
+- name: Install pew because pipenv requires it
   pip:
-    name: virtualenv
+    name: pew
     executable: pip3
+  become: true
 
-- name: Install python requirements
+- name: Install pipenv to later install python dependencies and virtual environments.
   pip:
-    requirements: "{{ accounting_root_dir }}/requirements.txt"
-    virtualenv: "{{ accounting_virtualenv_dir }}"
-    virtualenv_python: python3.6
-  become_user: www-data
+    name: pipenv
+    executable: pip3
+  become: true
 
-- name: Install the venv wrapper script
-  copy:
-    src: venv_exec
-    dest: "{{ accounting_virtualenv_dir }}/bin/exec"
-    mode: 0755
+# Pipfiles and pipenv aren't widespread enough yet so there's no related ansible module today. Update to use it when there is.
+- name: Install all python dependencies and the virtual environment.
+  command: pipenv install --python 3.6 chdir="{{ accounting_root_dir }}"
   become_user: www-data
+  environment:
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8
+    PYTHONIOENCODING: utf-8
 
 - name: Install the configuration/environment file for the accounting service
   template:

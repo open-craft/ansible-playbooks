@@ -1,4 +1,4 @@
-. {{ accounting_virtualenv_dir }}/bin/activate
+cd {{ accounting_root_dir }} && pipenv shell
 
 export WORKERS={{ ACCOUNTING_WORKERS }}
 export WORKERS_LOW_PRIORITY={{ ACCOUNTING_WORKERS_LOW_PRIORITY }}
