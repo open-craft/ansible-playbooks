@@ -11,3 +11,6 @@ security_autoupdate_mail_to: '{{ OPS_EMAIL }}'
 
 # Certbot
 certbot_auto_renew_user: root
+
+# swapfile
+swapfile_size: "{{ '512MB' if (dedicated_server is undefined or not dedicated_server) else false }}"
