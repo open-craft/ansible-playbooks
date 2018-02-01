@@ -39,7 +39,6 @@ wkhtmltopdf_binary_path: '{{ www_data_home_dir }}/wkhtmltox/bin/wkhtmltopdf'
 accounting_root_dir: '{{ www_data_home_dir }}/accounting'
 accounting_static_files_dir: '{{ accounting_root_dir }}/static'
 accounting_media_files_dir: '{{ accounting_root_dir }}/media'
-accounting_virtualenv_dir: '{{ www_data_home_dir }}/.virtualenvs/accounting'
 accounting_env_tokens: "{{ ACCOUNTING_GENERATED_ENV_TOKENS | combine( ACCOUNTING_ENV_TOKENS ) }}"
 
 # Contents of accounting app's SSL certificate/key.
