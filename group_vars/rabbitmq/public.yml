@@ -6,5 +6,9 @@ SANITY_CHECK_LIVE_PORTS:
     port: 15671
     message: "RabbitMQ management does not respond on port 15671."
 
+SANITY_CHECK_COMMANDS:
+  - command: /usr/sbin/rabbitmqctl node_health_check
+    message: "RabbitMQ health check not passing"
+
 TARSNAP_BACKUP_FOLDERS: "{{ RABBITMQ_EXPORT_DIR }} /etc/rabbitmq /etc/letsencrypt"
 TARSNAP_BACKUP_PRE_SCRIPT: "{{ RABBITMQ_SCRIPTS_DIR }}/{{ RABBITMQ_BACKUP_COMMAND }}"
