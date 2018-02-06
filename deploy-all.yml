@@ -29,6 +29,15 @@
     - geerlingguy.mysql
     - forward-server-mail
 
+- name: Set up MySQL slave servers
+  hosts: mysql-slave
+  become: true
+  roles:
+    - common-server
+    - mysql
+    - geerlingguy.mysql
+    - forward-server-mail
+
 - name: Set up PostgreSQL servers
   hosts: postgres
   become: true
