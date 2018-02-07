@@ -73,6 +73,7 @@
   roles:
     - common-server
     - forward-server-mail
+    - geerlingguy.nginx
     - load-balancer
 
 - name: Set up rabbitmq servers
