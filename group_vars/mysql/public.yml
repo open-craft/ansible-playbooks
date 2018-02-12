@@ -12,6 +12,8 @@ mysql_packages:
   - mysql-server-5.5
   - mysql-client-5.5
 
+mysql_table_open_cache: 200000
+
 FORWARD_MAIL_MYDOMAIN: "{{ MYSQL_SERVER_DOMAIN }}"
 UNATTENED_UPGRADES_ERRORS_RELAY_TO: "{{ MYSQL_SERVER_DOMAIN }}"
 
