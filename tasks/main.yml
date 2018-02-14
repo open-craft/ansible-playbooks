@@ -60,3 +60,7 @@
     minute: "0"
     hour: "1"
     job: "bash {{ SECURITY_UPDATE_SCRIPT_LOCATION }}"
+
+- name: Configure New Relic monitoring agent
+  include: newrelic.yml
+  when: COMMON_SERVER_ENABLE_NEWRELIC
