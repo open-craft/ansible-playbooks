@@ -38,3 +38,5 @@ TARSNAP_BACKUP_MINUTE: '10'
 
 TARSNAP_CACHE: "/var/cache/tarsnap"
 
+TARSNAP_BACKUP_LOG_FILE: /var/log/backup.log
+TARSNAP_BACKUP_LOGROTATE_CONFIG: /etc/logrotate.d/backup

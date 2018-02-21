@@ -38,7 +38,12 @@
 - name: Install backup in cron
   cron:
     name: "Backup for this server, archive: {{ TARSNAP_ARCHIVE_NAME }}"
-    job: "{{ TARSNAP_BACKUP_SCRIPT_LOCATION }} > /dev/null 2>&1"
+    job: "{{ TARSNAP_BACKUP_SCRIPT_LOCATION }} >> {{ TARSNAP_BACKUP_LOG_FILE }} 2>&1"
     hour: "{{ TARSNAP_BACKUP_HOUR }}"
     minute: "{{ TARSNAP_BACKUP_MINUTE }}"
     state: "{{ TARSNAP_CRONTAB_STATE }}"
+
+- name: Set up log rotation for backup logs
+  template:
+    src: logrotate
+    dest: "{{ TARSNAP_BACKUP_LOGROTATE_CONFIG }}"
