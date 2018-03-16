@@ -61,6 +61,10 @@
   src: https://github.com/open-craft/ansible-role-elasticsearch
   version: origin/master
 
+- name: filebeat
+  src: https://github.com/open-craft/ansible-role-filebeat
+  version: uman/updates
+
 - name: postfix
   src: https://github.com/open-craft/ansible-postfix
   version: origin/master
