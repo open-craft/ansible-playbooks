@@ -18,3 +18,4 @@ ROLE_INDEPENENT_USEFULL_PACKAGES:
   - libxml2-dev
   - libxslt1-dev
   - python-dev
+  - unzip
