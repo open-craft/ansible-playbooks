@@ -1,3 +1,11 @@
+---
+
+# GENERAL #####################################################################
+
+LOAD_BALANCER_SERVER_IP: "{{ COMMON_FLOATING_IP or ansible_host }}"
+
+# SANITY ######################################################################
+
 SANITY_CHECK_LIVE_PORTS:
   - host: localhost
     port: 80
@@ -6,8 +14,40 @@ SANITY_CHECK_LIVE_PORTS:
     port: 443
     message: "Load balancer does not respond on port 443."
 
-TARSNAP_BACKUP_FOLDERS: "/etc/letsencrypt /etc/haproxy"
+# TARSNAP #####################################################################
+
+TARSNAP_BACKUP_FOLDERS: "/etc/letsencrypt /etc/haproxy {{ consul_data_dir }}"
+
+# Consul produces consistent snapshots with these.
+TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/backup-pre-consul.sh"
+TARSNAP_BACKUP_POST_SCRIPT: "/usr/local/sbin/backup-post-consul.sh"
+
+# MAIL ########################################################################
 
 LOAD_BALANCER_OPS_EMAIL: "{{ OPS_EMAIL }}"
 
-LOAD_BALANCER_SERVER_IP: "{{ COMMON_FLOATING_IP or ansible_host }}"
+# CONSUL ######################################################################
+
+consul_backup: true
+consul_service_config:
+  services:
+    - id: haproxy-http
+      name: "haproxy"
+      tags: ["haproxy"]
+      address: "{{ LOAD_BALANCER_SERVER_IP }}"
+      port: 80
+      enable_tag_override: true
+      checks:
+        - name: "Connect to HAProxy HTTP"
+          tcp: "{{ LOAD_BALANCER_SERVER_IP }}:80"
+          interval: "10m"
+    - id: haproxy-https
+      name: "haproxy"
+      tags: ["haproxy"]
+      address: "{{ LOAD_BALANCER_SERVER_IP }}"
+      port: 443
+      enable_tag_override: true
+      checks:
+        - name: "Connect to HAProxy HTTPS"
+          tcp: "{{ LOAD_BALANCER_SERVER_IP }}:443"
+          interval: "10m"

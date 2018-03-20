@@ -1,16 +1,22 @@
-# Tarsnap
+---
+
+# TARSNAP #####################################################################
+
 tarsnap_version: 1.0.37
 tarsnap_cache: /var/tarsnap/cache
 tarsnap_cron_hour: "*"
 tarsnap_tarsnapper_conf: "{{ playbook_dir }}/opencraft-roles/roles/tarsnap/files/conf/tarsnapper.{{ inventory_hostname }}.conf"
 
-# Email
+# MAIL ########################################################################
+
 FORWARD_MAIL_RELAY_MAIL_TO: '{{ OPS_EMAIL }}'
 COMMON_SERVER_ETCKEEPER_COMMIT_EMAIL: '{{ OPS_EMAIL }}'
 security_autoupdate_mail_to: '{{ OPS_EMAIL }}'
 
-# Certbot
+# CERTBOT #####################################################################
+
 certbot_auto_renew_user: root
 
-# swapfile
+# SWAPFILE ####################################################################
+
 swapfile_size: "{{ '512MB' if (dedicated_server is undefined or not dedicated_server) else false }}"
