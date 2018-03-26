@@ -165,9 +165,10 @@ def sanity_check(json_data):
     )
 
     if report_is_ok(report):
-        if 'snitch' in json_data and json_data['snitch']:
-            if not ping_http_endpoint(json_data['snitch']):
-                report.append(SanityCheckResult(False, "Couldn't send snitch"))
+        if json_data.get('snitch'):
+            report.extend(
+                ping_http_endpoint(json_data['snitch'])
+            )
 
     if not report_is_ok(report):
         report_text = format_report(report)
@@ -179,16 +180,23 @@ def sanity_check(json_data):
 
 
 def ping_http_endpoint(url, max_retries=DEFAULT_HTTP_RETRIES, delay=DEFAULT_HTTP_RETRY_DELAY):
-    for dummy in range(max_retries):
+    report = []
+    for count in range(1, max_retries + 1):
         try:
             response = urllib2.urlopen(url, timeout=5)
         except (urllib2.URLError, urllib2.HTTPError) as e:
-            pass
+            report.append(SanityCheckResult(True, "Attempt {} to contact DMS failed due to:"
+                                                  "\n{}".format(count, str(e))))
         else:
             if 200 <= response.getcode() < 300:
-                return True
+                report.append(SanityCheckResult(True, "Attempt {} to contact DMS succeeded.".format(count)))
+                break
+            report.append(SanityCheckResult(True, "Attempt {} to contact DMS returned code "
+                                                  "{}".format(count, response.getcode())))
         time.sleep(delay)
-    return False
+    else:
+        report.append(SanityCheckResult(False, "Couldn't send snitch after {} attempts".format(max_retries)))
+    return report
 
 if __name__ == "__main__":
     data_file = sys.argv[1]
