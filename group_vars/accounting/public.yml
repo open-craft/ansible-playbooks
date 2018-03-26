@@ -1,8 +1,11 @@
 ---
 
+# GENERAL #####################################################################
+
 COMMON_SERVER_NO_BACKUPS: true
 
-# Snitches
+# SANITY ######################################################################
+
 SANITY_CHECK_LIVE_PORTS:
   - host: localhost
     port: 443
@@ -11,5 +14,10 @@ SANITY_CHECK_LIVE_PORTS:
     port: 1786
     message: "Accounting API is not responding on port 1786."
 
-# NGINX
+# NGINX #######################################################################
+
 nginx_remove_default_vhost: true
+
+# CERTBOT #####################################################################
+
+certbot_auto_renew_options: "--quiet --no-self-upgrade --pre-hook 'service nginx stop' --post-hook 'service nginx start'"
