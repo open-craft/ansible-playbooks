@@ -42,7 +42,7 @@
     cron_file: letsencrypt-renew
     user: root
     name: "Renew SSL certificate using the certbot client"
-    job: certbot renew --quiet
+    job: certbot renew --quiet --pre-hook "service nginx stop" --post-hook "service nginx start"
     hour: "*/12"
     minute: 42
 
