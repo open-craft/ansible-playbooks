@@ -7,6 +7,7 @@ import multiprocessing
 import time
 import unittest
 import mock
+import ddt
 
 
 def patch_path():
@@ -34,6 +35,7 @@ class UrlopenResponse(object):
         return self.code
 
 
+@ddt.ddt
 class TestSanityCheck(unittest.TestCase):
     def _make_server_proc(self, host='localhost', port=10123, delay=0):
         def run():
@@ -106,38 +108,54 @@ class TestSanityCheck(unittest.TestCase):
             self.assertAlmostEqual(20, sanity_check.get_free_percentage_on_mount("/test"))
             patched_statvfs.assert_called_once_with("/test")
 
-    def test_http_checker_positive_http(self):
-        self.assertTrue(sanity_check.ping_http_endpoint("http://example.com"))
+    @ddt.data('http://example.com', 'https://example.com')
+    def test_http_checker_positive(self, url):
+        report = sanity_check.ping_http_endpoint(url)
+        self.assertEqual(len(report), 1)
+        self.assertEqual(
+            report,
+            [sanity_check.SanityCheckResult(True, "Attempt 1 to contact DMS succeeded.")]
+        )
 
-    def test_http_checker_positive_https(self):
-        self.assertTrue(sanity_check.ping_http_endpoint("https://example.com"))
-
-    def test_http_checker_negative_http(self):
+    @ddt.data('http://192.168.255.10', 'https://192.168.255.10')
+    def test_http_checker_negative(self, url):
+        err = "<urlopen error timed out>"
         with mock.patch('time.sleep'):
-            self.assertFalse(sanity_check.ping_http_endpoint("http://192.168.255.10"))
-
-    def test_http_checker_negative_https(self):
-        with mock.patch('time.sleep'):
-            self.assertFalse(sanity_check.ping_http_endpoint("https://192.168.255.10"))
+            report = sanity_check.ping_http_endpoint(url)
+            self.assertEqual(len(report), 4)
+            self.assertEqual(
+                report,
+                [
+                    sanity_check.SanityCheckResult(True, "Attempt 1 to contact DMS failed due to:\n{}".format(err)),
+                    sanity_check.SanityCheckResult(True, "Attempt 2 to contact DMS failed due to:\n{}".format(err)),
+                    sanity_check.SanityCheckResult(True, "Attempt 3 to contact DMS failed due to:\n{}".format(err)),
+                    sanity_check.SanityCheckResult(False, "Couldn't send snitch after 3 attempts"),
+                ]
+            )
 
     def test_http_checker_statuscode_positive(self):
         with mock.patch('urllib2.urlopen') as patched_open:
             patched_open.return_value = UrlopenResponse(201)
-            self.assertTrue(sanity_check.ping_http_endpoint("http://test"))
+            report = sanity_check.ping_http_endpoint('http://test')
+            self.assertEqual(len(report), 1)
+            self.assertEqual(report, [sanity_check.SanityCheckResult(True, "Attempt 1 to contact DMS succeeded.")])
             patched_open.assert_called_once_with("http://test", timeout=5)
 
-    def test_http_checker_statuscode_negative_100(self):
+    @ddt.data(102, 500)
+    def test_http_checker_statuscode_negative(self, code):
         with mock.patch('urllib2.urlopen') as patched_open, mock.patch('time.sleep') as patched_sleep:
-            patched_open.return_value = UrlopenResponse(102)
-            self.assertFalse(sanity_check.ping_http_endpoint("http://test"))
-            patched_open.assert_called_with("http://test", timeout=5)
-            self.assertEqual(patched_open.call_count, sanity_check.DEFAULT_HTTP_RETRIES)
-            self.assertEqual(patched_sleep.call_count, sanity_check.DEFAULT_HTTP_RETRIES)
-
-    def test_http_checker_statuscode_negative_500(self):
-        with mock.patch('urllib2.urlopen') as patched_open, mock.patch('time.sleep') as patched_sleep:
-            patched_open.return_value = UrlopenResponse(500)
-            self.assertFalse(sanity_check.ping_http_endpoint("http://test"))
+            patched_open.return_value = UrlopenResponse(code)
+            report = sanity_check.ping_http_endpoint('http://test')
+            self.assertEqual(len(report), 4)
+            self.assertEqual(
+                report,
+                [
+                    sanity_check.SanityCheckResult(True, "Attempt 1 to contact DMS returned code {}".format(code)),
+                    sanity_check.SanityCheckResult(True, "Attempt 2 to contact DMS returned code {}".format(code)),
+                    sanity_check.SanityCheckResult(True, "Attempt 3 to contact DMS returned code {}".format(code)),
+                    sanity_check.SanityCheckResult(False, "Couldn't send snitch after 3 attempts"),
+                ]
+            )
             patched_open.assert_called_with("http://test", timeout=5)
             self.assertEqual(patched_open.call_count, sanity_check.DEFAULT_HTTP_RETRIES)
             self.assertEqual(patched_sleep.call_count, sanity_check.DEFAULT_HTTP_RETRIES)
@@ -145,7 +163,15 @@ class TestSanityCheck(unittest.TestCase):
     def test_http_checker_retry_and_succeed(self):
         with mock.patch('urllib2.urlopen') as patched_open, mock.patch('time.sleep') as patched_sleep:
             patched_open.side_effect = [UrlopenResponse(500), UrlopenResponse(200)]
-            self.assertTrue(sanity_check.ping_http_endpoint("http://test"))
+            report = sanity_check.ping_http_endpoint("http://test")
+            self.assertEqual(len(report), 2)
+            self.assertEqual(
+                report,
+                [
+                    sanity_check.SanityCheckResult(True, "Attempt 1 to contact DMS returned code 500"),
+                    sanity_check.SanityCheckResult(True, "Attempt 2 to contact DMS succeeded."),
+                ]
+            )
             self.assertEqual(patched_open.call_count, 2)
             self.assertEqual(patched_sleep.call_count, 1)
 
