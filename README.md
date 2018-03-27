@@ -215,19 +215,15 @@ This ansible repository deploys MySQL server on OpenStack provider.
    data will be stored elsewhere.
 1. Attach the data volume that you created earlier to the VM (go to `Volumes` -> data volume -> expand dropdown next to "Edit Volume" ->
    `Edit Attachments`).
-1. Manual step: SSH into the database instance and format `/dev/vdb` using `ext4`.
-   Run `fdisk /dev/vdb` to do this and then issue:
-    1. `o` --- creates new DOS partition table
-    1. `n p` --- creates primary partition, and then `1 <enter> <enter>` will create partition in slot 1 that will span the whole disk.
-    1. `w` --- writes changes to the disk
-    1. Create the file system: `mkfs.ext4 -j /dev/vdb1`
+1. Manual step: SSH into the database instance and format `/dev/vdb` using `zfs`.
+    1. Create the zfs pool: `zpool create -m /var/lib/mysql mysql /dev/vdb`
 1. Go to info page and note the instance public key, ssh to the instance and check whether public key matches,
    save public key to your ssh config.
 
 ### Generate secrets
 
 1. Create `private-extra-vars.yml`, you'll put all the generated variables there
-1. Generate root password, put it in the `private.yaml` for your host, under `MYSQL_ROOT_PASSWORD`.
+1. Generate root password, put it in the `private.yaml` for your host, under `mysql_root_password`.
 1. Create a key, but store it somewhere safe (for example keepassx database), this key shouldn't end on the mysql server.
 1. Generate tarsnap read write key from the master key, see [tarsnap-keymngmt](http://www.tarsnap.com/man-tarsnap-keymgmt.1.html),
    save this key in `MYSQL_TARSNAP_KEY`. **Note**: this key won't be able to delete the backups.
