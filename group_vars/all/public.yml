@@ -20,3 +20,7 @@ certbot_auto_renew_user: root
 # SWAPFILE ####################################################################
 
 swapfile_size: "{{ '512MB' if (dedicated_server is undefined or not dedicated_server) else false }}"
+
+# CONSUL ######################################################################
+
+consul_ip: "{{ COMMON_FLOATING_IP if (COMMON_FLOATING_IP is defined and COMMON_FLOATING_IP) else ansible_default_ipv4.address }}"
