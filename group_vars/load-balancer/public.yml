@@ -28,13 +28,14 @@ LOAD_BALANCER_OPS_EMAIL: "{{ OPS_EMAIL }}"
 
 # CONSUL ######################################################################
 
+consul_server: true
+consul_ui: true
 consul_backup: true
 consul_service_config:
   services:
     - id: haproxy-http
       name: "haproxy"
       tags: ["haproxy"]
-      address: "{{ LOAD_BALANCER_SERVER_IP }}"
       port: 80
       enable_tag_override: true
       checks:
@@ -44,7 +45,6 @@ consul_service_config:
     - id: haproxy-https
       name: "haproxy"
       tags: ["haproxy"]
-      address: "{{ LOAD_BALANCER_SERVER_IP }}"
       port: 443
       enable_tag_override: true
       checks:
