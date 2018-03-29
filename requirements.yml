@@ -53,6 +53,10 @@
   src: https://github.com/open-craft/ansible-load-balancer
   version: origin/master
 
+- name: consul
+  src: https://github.com/open-craft/ansible-role-consul
+  version: origin/master
+
 - name: rabbitmq
   src: https://github.com/open-craft/ansible-rabbitmq
   version: origin/master
