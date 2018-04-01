@@ -10,6 +10,9 @@ mysql_packages:
   - mysql-server-5.5
   - mysql-client-5.5
 
+mysql_table_open_cache: 200000
+mysql_skip_name_resolve: true
+
 # TARSNAP #####################################################################
 
 TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/backup-pre.sh"
