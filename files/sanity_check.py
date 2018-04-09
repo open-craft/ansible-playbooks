@@ -47,15 +47,12 @@ def check_port(host, port, retries=DEFAULT_PORT_RETRIES, retry_delay=DEFAULT_POR
     return False
 
 
-def check_command(command):
+def run_command(command):
     try:
-        devnull = open(os.devnull, 'w')
-        subprocess.check_call(
-            command, shell=True, stdout=devnull, stderr=subprocess.STDOUT
-        )
-        return True
-    except subprocess.CalledProcessError:
-        return False
+        output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
+        return True, output
+    except subprocess.CalledProcessError as error:
+        return False, error.output
 
 
 def get_free_percentage_on_mount(mount):
@@ -129,13 +126,12 @@ def test_ports(ports):
 def test_commands(commands):
     response = []
     for command in commands:
-        if not check_command(command['command']):
-            response.append(SanityCheckResult(False, command['message']))
+        command_passed, command_output = run_command(command['command'])
+        if command_passed:
+            command_message = "Command {} returned exit status 0".format(command['command'])
         else:
-            message = format("Command {} returned exit status 0".format(
-                command['command']
-            ))
-            response.append(SanityCheckResult(True, message))
+            command_message = command['message']
+        response.append(SanityCheckResult(command_passed, '{}\n{}'.format(command_message, command_output)))
     return response
 
 

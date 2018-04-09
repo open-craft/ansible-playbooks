@@ -85,22 +85,39 @@ class TestSanityCheck(unittest.TestCase):
             proc.terminate()
 
     def test_command_positive(self):
-        self.assertTrue(sanity_check.check_command("echo 1"))
+        command_passed, command_output = sanity_check.run_command("echo 1")
+        self.assertTrue(command_passed)
+        self.assertEqual(command_output, "1\n")
 
     def test_command_positive_and(self):
-        self.assertTrue(sanity_check.check_command("echo 1 && echo 2"))
+        command_passed, command_output = sanity_check.run_command("echo 1 && echo 2")
+        self.assertTrue(command_passed)
+        self.assertEqual(command_output, "1\n2\n")
 
     def test_command_positive_redirect(self):
-        self.assertTrue(sanity_check.check_command("echo foo canary bar | grep canary"))
+        command_passed, command_output = sanity_check.run_command("echo foo canary bar | grep canary")
+        self.assertTrue(command_passed)
+        self.assertEqual(command_output, 'foo canary bar\n')
 
     def test_command_negative(self):
-        self.assertFalse(sanity_check.check_command("exit 1"))
+        command_passed, command_output = sanity_check.run_command("exit 1")
+        self.assertFalse(command_passed)
+        self.assertEqual(command_output, '')
 
     def test_command_negative_and(self):
-        self.assertFalse(sanity_check.check_command("exit 1 && echo 1"))
+        command_passed, command_output = sanity_check.run_command("exit 1 && echo 1")
+        self.assertFalse(command_passed)
+        self.assertEqual(command_output, '')
 
     def test_command_negative_pipe(self):
-        self.assertFalse(sanity_check.check_command("echo foo bar | grep canary"))
+        command_passed, command_output = sanity_check.run_command("echo foo bar | grep canary")
+        self.assertFalse(command_passed)
+        self.assertEqual(command_output, '')
+
+    def test_command_negative_with_output(self):
+        command_passed, command_output = sanity_check.run_command("non-existing-command")
+        self.assertFalse(command_passed)
+        self.assertEqual(command_output, '/bin/sh: 1: non-existing-command: not found\n')
 
     def test_free_percentage(self):
         with mock.patch('os.statvfs') as patched_statvfs:
@@ -215,6 +232,7 @@ class TestSanityCheck(unittest.TestCase):
             [mock.call('/', 20), mock.call('/var/lib/mysql', 20)]
         )
         self.assertEqual(report, responses)
+
 
     EXAMPLE_PROC_MOUNTS = """
 sysfs /sys sysfs rw,nosuid,nodev,noexec,relatime 0 0
