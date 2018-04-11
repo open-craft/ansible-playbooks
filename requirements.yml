@@ -86,8 +86,8 @@
   version: origin/master
 
 - name: geerlingguy.mysql
-  src: https://github.com/geerlingguy/ansible-role-mysql
-  version: c71ded56d87c8df606210b59f045ed4c3f1f98ff
+  src: https://github.com/open-craft/ansible-role-mysql
+  version: 03358d3f180b2e6ffa2a5084f794e09f71884de5
 
 - name: mysql
   src: https://github.com/open-craft/ansible-mysql
