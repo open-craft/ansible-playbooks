@@ -10,9 +10,6 @@
 - name: Create mysql user
   user: name=mysql group=mysql system=yes
 
-- name: mount /var/lib/mysql
-  mount: name=/var/lib/mysql src="{{MYSQL_OPENSTACK_DB_DEVICE}}" fstype=ext4 state=mounted
-
 - name: chown -R /var/lib/mysql
   file: path=/var/lib/mysql owner=mysql group=mysql recurse=yes state=directory
 
