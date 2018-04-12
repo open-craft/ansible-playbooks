@@ -2,8 +2,8 @@
 
 # MONGODB #####################################################################
 
-mongodb_version: "2.6"
-mongodb_daemon_name: "mongodb"
+mongodb_version: "3.2"
+mongodb_daemon_name: "mongod"
 mongodb_net_bindip: "0.0.0.0"
 mongodb_security_authorization: "enabled"
 mongodb_storage_dbpath: "/var/lib/mongodb"
@@ -11,6 +11,7 @@ mongodb_storage_dbpath: "/var/lib/mongodb"
 # contexts anyway.  Setting this to 36 results in a quota of 64 GB per database,
 # which ought to be enough for anybody.  (Currently, our by far biggest instance
 # is using 14 GB for the module store.)
+mongodb_storage_engine: 'mmapv1'
 mongodb_storage_quota_maxfiles: 36
 mongodb_systemlog_path: "/var/lib/mongodb/log/{{ mongodb_daemon_name }}.log"
 mongodb_pymongo_from_pip: true
