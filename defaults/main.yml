@@ -23,7 +23,6 @@ RABBITMQ_VERSION: 3.6.14-1
 RABBITMQ_APT_PACKAGES:
   - apt-transport-https
   - python-software-properties
-  - python-letsencrypt
 
 RABBITMQ_EXPORT_DIR: /var/local/rabbitmq/backup
 RABBITMQ_SCRIPTS_DIR: /usr/local/sbin
