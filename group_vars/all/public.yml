@@ -5,12 +5,11 @@
 tarsnap_version: 1.0.37
 tarsnap_cache: /var/tarsnap/cache
 tarsnap_cron_hour: "*"
-tarsnap_tarsnapper_conf: "{{ playbook_dir }}/opencraft-roles/roles/tarsnap/files/conf/tarsnapper.{{ inventory_hostname }}.conf"
 
 # MAIL ########################################################################
 
 FORWARD_MAIL_RELAY_MAIL_TO: '{{ OPS_EMAIL }}'
-COMMON_SERVER_ETCKEEPER_COMMIT_EMAIL: '{{ OPS_EMAIL }}'
+COMMON_SERVER_OPS_EMAIL: '{{ OPS_EMAIL }}'
 security_autoupdate_mail_to: '{{ OPS_EMAIL }}'
 
 # CERTBOT #####################################################################

@@ -1,3 +1,5 @@
+COMMON_SERVER_INSTALL_CERTBOT: false
+
 DALITE_SERVER_DOMAIN: '{{ inventory_hostname }}'
 
 DALITE_REPOSITORY_VERSION: "master"
