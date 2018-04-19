@@ -70,12 +70,3 @@
         --agree-tos
       args:
         creates: "/etc/letsencrypt/live/{{ COMMON_SERVER_HOSTNAME }}/fullchain.pem"
-
-    - name: set up cron job for certificate renewal
-      cron:
-        cron_file: letsencrypt-renew
-        user: root
-        name: "Renew SSL certificate using the certbot client"
-        job: certbot renew --quiet
-        hour: "*/12"
-        minute: 42
