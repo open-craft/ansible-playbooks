@@ -36,6 +36,8 @@
     src: "{{ LINK_SHORTENER_HOME }}/link-shortener/nginx-configuration"
     dest: /etc/nginx/sites-available/link-shortener
     state: link
+  notify:
+    - reload nginx
 
 - name: create symlink to SSL certificate
   file:
@@ -54,8 +56,5 @@
     src: /etc/nginx/sites-available/link-shortener
     dest: /etc/nginx/sites-enabled/link-shortener
     state: link
-
-- name: restart nginx
-  service:
-    name: nginx
-    state: restarted
+  notify:
+    - reload nginx
