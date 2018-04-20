@@ -18,7 +18,7 @@
 
 - name: common-server
   src: https://github.com/open-craft/ansible-common-server
-  version: origin/master
+  version: origin/smarnach/node-exporter
 
 - name: configure-apt
   src: https://github.com/open-craft/ansible-configure-apt
@@ -100,3 +100,11 @@
 - name: greendayonfire.mongodb
   src: https://github.com/UnderGreen/ansible-role-mongodb
   version: 1ba531c5c68a4cf684410c50e7286ffd7742b848
+
+- name: ernestas-poskus.prometheus
+  src: https://github.com/ernestas-poskus/ansible-prometheus
+  version: 4d30cd59a60f50cc23bffc071bb8f99131f2dd8f
+
+- name: node-exporter
+  src: https://github.com/open-craft/ansible-node-exporter
+  version: origin/initial
