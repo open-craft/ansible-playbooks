@@ -1,18 +1,4 @@
 server {
-    listen 80;
-
-    server_name {{ ACCOUNTING_DOMAIN_NAME }} www.{{ ACCOUNTING_DOMAIN_NAME }};
-
-    if ($host = www.{{ ACCOUNTING_DOMAIN_NAME }}) {
-        rewrite ^(.*)$ https://{{ ACCOUNTING_DOMAIN_NAME }}$1 permanent;
-    }
-
-    location / {
-        return 301 https://$host$request_uri;
-    }
-}
-
-server {
     listen 443 ssl;
 
     server_name {{ ACCOUNTING_DOMAIN_NAME }} www.{{ ACCOUNTING_DOMAIN_NAME }};
