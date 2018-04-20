@@ -12,21 +12,6 @@
   with_items:
     - 5671
     - 15671
-    - 80
-
-- name: generate certificate for domain
-  command: "letsencrypt certonly --email ops@opencraft.com --authenticator standalone --standalone-supported-challenges http-01 --http-01-port 80 --non-interactive --agree-tos --keep --expand -d {{ RABBITMQ_HOSTNAME }}"
-  args:
-    creates: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/cert.pem"
-
-- name: set up cron job for certificate renewal
-  cron:
-    name: "Renew SSL certificate using the letsencrypt client"
-    job: letsencrypt renew --standalone-supported-challenges http-01 --http-01-port 80
-    hour: "*/12"
-    minute: 42
-    cron_file: letsencrypt-renew
-    user: root
 
 - name: add rabbitmq repositories
   apt_repository:
