@@ -64,3 +64,6 @@
 - name: Configure New Relic monitoring agent
   include: newrelic.yml
   when: COMMON_SERVER_ENABLE_NEWRELIC
+
+- name: install nginx and Certbot
+  include: nginx.yml
