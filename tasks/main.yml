@@ -6,11 +6,10 @@
 - include: nginx.yml
 - include: screen.yml
 
-- name: Open HTTP port on the firewall
+- name: Open HTTPS port on the firewall
   ufw:
     rule: allow
     port: "{{ item }}"
     proto: tcp
   with_items:
-    - 80
     - 443
