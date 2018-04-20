@@ -1,5 +1,5 @@
 - name: Install Python 2
-  hosts: accounting:backup-pruner:chat:elasticsearch:load-balancer:mongodb:rabbitmq:relay:postgres
+  hosts: all
   become: true
   gather_facts: false
   tasks:
@@ -120,6 +120,4 @@
   roles:
     - common-server
     - forward-server-mail
-    - geerlingguy.nginx
-    - geerlingguy.certbot
     - accounting
