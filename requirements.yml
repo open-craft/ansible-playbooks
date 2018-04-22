@@ -18,7 +18,7 @@
 
 - name: common-server
   src: https://github.com/open-craft/ansible-common-server
-  version: origin/smarnach/node-exporter
+  version: origin/master
 
 - name: configure-apt
   src: https://github.com/open-craft/ansible-configure-apt
@@ -107,4 +107,4 @@
 
 - name: node-exporter
   src: https://github.com/open-craft/ansible-node-exporter
-  version: origin/initial
+  version: origin/master
