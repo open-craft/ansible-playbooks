@@ -1,0 +1,8 @@
+---
+- name: reload nginx
+  service:
+    name: nginx
+    state: reloaded
+
+- name: reload consul
+  shell: "command -v consul && consul reload"
