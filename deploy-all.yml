@@ -66,6 +66,7 @@
     - forward-server-mail
     - dalite
     - backup-swift-container
+    - node-exporter
 
 - name: Set up load-balancing servers
   hosts: load-balancer
@@ -74,6 +75,7 @@
     - common-server
     - forward-server-mail
     - load-balancer
+    - node-exporter
 
 - name: Set up rabbitmq servers
   hosts: rabbitmq

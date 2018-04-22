@@ -4,6 +4,7 @@
 
 LOAD_BALANCER_SERVER_IP: "{{ COMMON_FLOATING_IP or ansible_host }}"
 COMMON_SERVER_INSTALL_CERTBOT: false
+COMMON_SERVER_INSTALL_NODE_EXPORTER: false
 
 # SANITY ######################################################################
 
