@@ -49,7 +49,7 @@
 
 - name: Create Consul service definition file
   copy:
-    content: "{{ consul_service_config | to_nice_json(indent=4) }}"
+    content: "{{ consul_service_config | to_nice_json }}"
     dest: "{{ consul_config_dir }}/service.json"
     owner: root
     group: consul
