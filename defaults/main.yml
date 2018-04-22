@@ -9,7 +9,7 @@ NODE_EXPORTER_USE_SSL: true
 NODE_EXPORTER_SSL_CERT: /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem
 NODE_EXPORTER_SSL_KEY: /etc/letsencrypt/live/{{ inventory_hostname }}/privkey.pem
 
-NODE_EXPLORER_CONSUL_SERVICE:
+NODE_EXPORTER_CONSUL_SERVICE:
   service:
     name: node-exporter
     tags:

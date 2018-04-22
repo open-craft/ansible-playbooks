@@ -37,7 +37,7 @@
 
 - name: create Consul service definition file
   copy:
-    content: "{{ NODE_EXPLORER_CONSUL_SERVICE | to_nice_json(indent=4) }}"
+    content: "{{ NODE_EXPORTER_CONSUL_SERVICE | to_nice_json }}"
     dest: /etc/consul/node-exporter.json
   notify:
     - reload consul
