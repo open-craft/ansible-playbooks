@@ -27,7 +27,6 @@
     - common-server
     - mysql
     - geerlingguy.mysql
-    - consul
     - forward-server-mail
 
 - name: Set up PostgreSQL servers
@@ -37,7 +36,6 @@
     - common-server
     - postgres
     - geerlingguy.postgresql
-    - consul
     - forward-server-mail
 
 - name: Set up MongoDB servers
@@ -47,7 +45,6 @@
     - common-server
     - mongodb
     - greendayonfire.mongodb
-    - consul
     - forward-server-mail
 
 - name: Set up Dalite servers
@@ -77,7 +74,6 @@
     - common-server
     - forward-server-mail
     - load-balancer
-    - consul
 
 - name: Set up rabbitmq servers
   hosts: rabbitmq
@@ -86,7 +82,6 @@
     - common-server
     - forward-server-mail
     - rabbitmq
-    - consul
 
 - name: Set up elasticsearch servers
   hosts: elasticsearch
@@ -95,7 +90,6 @@
     - common-server
     - forward-server-mail
     - elasticsearch
-    - consul
 
 - name: Set up internal mail relay
   hosts: relay

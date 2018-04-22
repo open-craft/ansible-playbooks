@@ -1,3 +1,5 @@
+COMMON_SERVER_INSTALL_CONSUL: false
+
 TARSNAPPER_CONF: /etc/tarsnapper.yml
 JOB_LOG: /var/log/backup-pruner-summary.log
 LOG_DIR: /var/log/backup-pruner
