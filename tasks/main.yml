@@ -67,3 +67,7 @@
 
 - name: install nginx and Certbot
   include: nginx.yml
+
+- name: install the Prometheus node exporter
+  include_role:
+    name: node-exporter
