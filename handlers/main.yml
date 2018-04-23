@@ -5,4 +5,4 @@
     state: reloaded
 
 - name: reload consul
-  shell: "command -v consul && consul reload"
+  shell: "if command -v consul; then consul reload; fi"
