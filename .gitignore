@@ -1,6 +1,6 @@
-/roles/*
-!/roles/consul
-!/roles/node-exporter
+playbooks/roles/*
+!playbooks/roles/consul
+!playbooks/roles/node-exporter
 
 /.vault-pass
 *.retry
