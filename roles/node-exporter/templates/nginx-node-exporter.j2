@@ -1,0 +1,15 @@
+server {
+    listen 0.0.0.0:19100 {% if NODE_EXPORTER_USE_SSL %}ssl {% endif %}http2 default;
+    server_name _;
+
+    {% if NODE_EXPORTER_USE_SSL -%}
+    ssl_certificate {{ NODE_EXPORTER_SSL_CERT }};
+    ssl_certificate_key {{ NODE_EXPORTER_SSL_KEY }};
+    {%- endif %}
+
+    location / {
+        proxy_pass http://localhost:9100/;
+        auth_basic "Prometheus Node Exporter";
+        auth_basic_user_file {{ NODE_EXPORTER_HTPASSWD_PATH }};
+    }
+}
