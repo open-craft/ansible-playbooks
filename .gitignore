@@ -1,6 +1,7 @@
 playbooks/roles/*
 !playbooks/roles/consul
 !playbooks/roles/node-exporter
+!playbooks/roles/ernestas-poskus.prometheus
 
 /.vault-pass
 *.retry
