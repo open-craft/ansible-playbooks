@@ -1,6 +1,15 @@
 ---
 # Playbook to set up common services on any type of appserver.
 
+# Temporary: until we migrate all roles in all playbooks from `deploy-all.yml`, we install
+# Python here separately. Otherwise Ocim will complain about missing dependencies.
+- name: Install Python 2
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - raw: "[ -e /usr/bin/python ] || sudo apt-get update -qq && sudo apt-get install -qq python"
+
 - name: Set up common services on appservers
   hosts: app
   become: true
