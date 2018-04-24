@@ -1,0 +1,44 @@
+---
+consul_version: 1.0.6
+
+consul_ip: "{{ ansible_default_ipv4.address }}"
+consul_nodename: "{{ ansible_nodename }}"
+consul_server: false
+consul_ui: false
+consul_backup: false
+
+consul_bin_dir: "/usr/local/bin"
+consul_config_dir: "/etc/consul"
+consul_data_dir: "/var/lib/consul"
+consul_openstack_data_device: "/dev/sdb1"
+
+consul_log_level: INFO
+consul_enable_syslog: true
+
+consul_encrypt: ""
+
+# Example:
+#
+# consul_servers: [nodeA.domain.com, nodeB.domain.com, nodeC.domain.com]
+consul_servers: []
+consul_rejoin_after_leave: true
+consul_enable_script_checks: false
+
+consul_performance_raft_multiplier: 5
+
+# Example:
+#
+# consul_service_config:
+#   service:
+#   name: "haproxy"
+#   tags: ["haproxy", "stage"]
+#   port: 18888
+#   enable_tag_override: true
+#   checks:
+#     - args: ["/usr/local/bin/haproxy_check.sh"]
+#      	interval: "10s"
+#     - args: ["echo", "HAProxy, are you okay?"]
+#       interval: "1m"
+consul_service_config: ""
+
+consul_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
