@@ -44,10 +44,6 @@
   src: https://github.com/open-craft/ansible-load-balancer
   version: origin/master
 
-- name: consul
-  src: https://github.com/open-craft/ansible-role-consul
-  version: origin/master
-
 - name: rabbitmq
   src: https://github.com/open-craft/ansible-rabbitmq
   version: origin/master
@@ -104,7 +100,3 @@
 - name: ernestas-poskus.prometheus
   src: https://github.com/ernestas-poskus/ansible-prometheus
   version: 4d30cd59a60f50cc23bffc071bb8f99131f2dd8f
-
-- name: node-exporter
-  src: https://github.com/open-craft/ansible-node-exporter
-  version: origin/master
