@@ -1,0 +1,11 @@
+---
+# Playbook for setting up a MySQL server.
+
+- name: Set up MySQL servers
+  hosts: mysql
+  become: true
+  roles:
+    - common-server
+    - mysql
+    - geerlingguy.mysql
+    - forward-server-mail

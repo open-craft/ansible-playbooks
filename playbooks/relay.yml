@@ -1,0 +1,9 @@
+---
+# Playbook for setting up an internal mail relay server.
+
+- name: Set up internal mail relay
+  hosts: relay
+  become: true
+  roles:
+    - common-server
+    - postfix

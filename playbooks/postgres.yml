@@ -1,0 +1,11 @@
+---
+# Playbook for setting up a PostgreSQL server.
+
+- name: Set up PostgreSQL servers
+  hosts: postgres
+  become: true
+  roles:
+    - common-server
+    - postgres
+    - geerlingguy.postgresql
+    - forward-server-mail

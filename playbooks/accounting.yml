@@ -1,0 +1,13 @@
+---
+# Playbook for the Accounting service.
+# See https://github.com/open-craft/accounting
+
+- name: Set up OpenCraft Accounting Automation application
+  hosts: accounting
+  become: true
+  roles:
+    - common-server
+    - forward-server-mail
+    - geerlingguy.nginx
+    - geerlingguy.certbot
+    - accounting

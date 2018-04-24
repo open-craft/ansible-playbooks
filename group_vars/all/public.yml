@@ -18,7 +18,7 @@ certbot_auto_renew_user: root
 
 # SWAPFILE ####################################################################
 
-swapfile_size: "{{ '512MB' if (dedicated_server is undefined or not dedicated_server) else false }}"
+swapfile_size: '512MB'
 
 # CONSUL ######################################################################
 

@@ -10,9 +10,10 @@
 #        --private-key=/path/to/ssh/private/key
 #
 # Note that the comma after the IP address needs to be included.
+# The host must also be a part of a group called 'dedicated' in the inventory.
 
 - name: prepare dedicated servers
-  hosts: all
+  hosts: dedicated
   vars:
     ansible_user: root
   become: false
