@@ -1,3 +1,6 @@
-/roles
+/roles/*
+!/roles/consul
+!/roles/node-exporter
+
 /.vault-pass
 *.retry
