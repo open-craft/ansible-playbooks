@@ -8,6 +8,4 @@
   roles:
     - common-server
     - forward-server-mail
-    - geerlingguy.nginx
-    - geerlingguy.certbot
     - accounting
