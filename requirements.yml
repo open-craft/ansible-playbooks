@@ -43,7 +43,3 @@
 - name: mattermost
   src: https://github.com/open-craft/ansible-mattermost
   version: origin/master
-
-- name: crafty
-  src: https://github.com/open-craft/ansible-crafty
-  version: origin/master
