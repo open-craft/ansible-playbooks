@@ -1,7 +1,7 @@
 ---
 - name: install passlib for htpasswd generation
   apt:
-    name: python-passlib
+    name: python3-passlib
 
 - name: generate htpasswd file for the Prometheus node exporter
   htpasswd:
