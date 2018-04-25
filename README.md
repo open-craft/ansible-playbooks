@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Ansible playbooks for various OpenCraft servers
 
 This repository contains OpenCraft playbooks to deploy many different types of servers.
