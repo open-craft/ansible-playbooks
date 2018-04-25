@@ -4,3 +4,6 @@
 [submodule "playbooks/roles/geerlingguy.security"]
 	path = playbooks/roles/geerlingguy.security
 	url = https://github.com/geerlingguy/ansible-role-security
+[submodule "playbooks/roles/kamaln7.swapfile"]
+	path = playbooks/roles/kamaln7.swapfile
+	url = https://github.com/kamaln7/ansible-swapfile

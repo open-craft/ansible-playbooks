@@ -1,9 +1,5 @@
 # Note: due to security concerns we prefer using git hashes than ansible versions.
 
-- name: kamaln7.swapfile
-  src: https://github.com/kamaln7/ansible-swapfile
-  version: 8eb0e18d90a7f25b6658fbf56bcba01b84a664fc
-
 - name: pmbauer.tarsnap
   src: https://github.com/pmbauer/ansible-tarsnap
   version: 7a625912409a0be2a3bf48967c60c5328ae2f3b2
