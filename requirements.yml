@@ -1,5 +1,0 @@
-# Note: due to security concerns we prefer using git hashes than ansible versions.
-
-- name: backup-to-tarsnap
-  src: https://github.com/open-craft/ansible-backup-to-tarsnap
-  version: origin/master
