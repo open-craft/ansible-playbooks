@@ -47,7 +47,3 @@
 - name: crafty
   src: https://github.com/open-craft/ansible-crafty
   version: origin/master
-
-- name: link-shortener
-  src: https://github.com/open-craft/ansible-link-shortener
-  version: origin/master
