@@ -10,3 +10,6 @@
 [submodule "playbooks/roles/pmbauer.tarsnap"]
 	path = playbooks/roles/pmbauer.tarsnap
 	url = https://github.com/pmbauer/ansible-tarsnap
+[submodule "playbooks/roles/geerlingguy.mysql"]
+	path = playbooks/roles/geerlingguy.mysql
+	url = https://github.com/open-craft/ansible-role-mysql
