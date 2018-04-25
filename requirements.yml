@@ -51,7 +51,3 @@
 - name: link-shortener
   src: https://github.com/open-craft/ansible-link-shortener
   version: origin/master
-
-- name: accounting
-  src: https://github.com/open-craft/ansible-accounting
-  version: origin/master
