@@ -16,3 +16,6 @@
 [submodule "playbooks/roles/geerlingguy.postgresql"]
 	path = playbooks/roles/geerlingguy.postgresql
 	url = https://github.com/open-craft/ansible-role-postgresql
+[submodule "playbooks/roles/greendayonfire.mongodb"]
+	path = playbooks/roles/greendayonfire.mongodb
+	url = https://github.com/UnderGreen/ansible-role-mongodb
