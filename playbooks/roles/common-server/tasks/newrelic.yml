@@ -1,0 +1,33 @@
+# This adds the "New Relic Servers" monitoring agent (nrsysmond)
+
+- name: Add apt key for New Relic
+  apt_key:
+    id: "{{ COMMON_SERVER_NEWRELIC_DEBIAN_KEY_ID }}"
+    url: "{{ COMMON_SERVER_NEWRELIC_DEBIAN_KEY_URL }}"
+    state: present
+
+- name: Install apt repository for New Relic
+  apt_repository:
+    repo: "{{ COMMON_SERVER_NEWRELIC_DEBIAN_REPO }}"
+    state: present
+    update_cache: yes
+
+- name: Install newrelic related system packages for Ubuntu
+  apt:
+    name: "newrelic-sysmond"
+    install_recommends: yes
+    state: present
+
+- name: Configure the agent
+  template:
+    src: "nrsysmond.cfg.j2"
+    dest: "/etc/newrelic/nrsysmond.cfg"
+    owner: "newrelic"
+    group: "newrelic"
+    mode: 0640
+
+- name: Ensure started and enabled
+  service:
+   name: newrelic-sysmond
+   state: restarted
+   enabled: yes

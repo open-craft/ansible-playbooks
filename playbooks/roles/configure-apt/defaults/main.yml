@@ -1,0 +1,21 @@
+---
+
+ROLE_INDEPENENT_USEFULL_PACKAGES:
+  - htop
+  - ntp
+  - sudo
+  - vim
+  - iftop
+  - iotop
+  - mosh
+  - git
+  - screen
+  - build-essential
+  - apt-file
+  - links
+  - tree
+  - pwgen
+  - libxml2-dev
+  - libxslt1-dev
+  - python-dev
+  - unzip

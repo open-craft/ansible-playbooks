@@ -1,6 +1,14 @@
-# Ansible playbooks for various OpenCraft servers
+# Ansible Playbooks & Roles
 
-This repository contains OpenCraft playbooks to deploy many different types of servers.
+This repository contains all OpenCraft playbooks and roles used to deploy many different types of servers.
+
+## Submodules
+
+We have several submodules defined in `.gitmodules` -- they're all either 3rd party roles, or those with CircleCI builds that run on their repositories separately.
+
+If you need to update a submodule in this repository to point to a new commit hash, `cd` into it and `git checkout` that reference. You can then stage and commit those changes.
+
+For our own roles that are in this repository as submodules, they should be on the latest `master`. You can update them with `git submodule update --remote`.
 
 ## How to deploy a Dalite NG server
 
@@ -117,7 +125,7 @@ If you saved the instance's private SSH key to a separate file, rather than into
    in the file `hosts` (create it if necessary):
 
         [load-balancer]
-        load-balancer.host.name ansible_host=xx.xx.xx.xx
+        load-balancer.host.name
 
 ### Generate secrets for the new server
 
@@ -155,8 +163,8 @@ Run these commands:
 1. Add the IP address and host name of the new instance to the Ansible inventory
    in the file `hosts` (create it if necessary):
 
-        [elastic-search]
-        elasticsearch.host.name ansible_host=xx.xx.xx.xx
+        [elasticsearch]
+        elasticsearch.host.name
 
 ### Generate secrets for the new server
 

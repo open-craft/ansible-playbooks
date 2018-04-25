@@ -1,0 +1,12 @@
+---
+# Playbook for setting up a Mattermost chat server.
+
+- name: Set up Mattermost chat server
+  hosts: chat
+  become: true
+  roles:
+    - common-server
+    - forward-server-mail
+    - mattermost
+    - crafty
+    - link-shortener

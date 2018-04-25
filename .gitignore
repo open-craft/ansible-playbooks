@@ -1,3 +1,5 @@
-/roles
 /.vault-pass
-/*.retry
+*.retry
+
+*sanity_checker.egg-info
+*py[co]

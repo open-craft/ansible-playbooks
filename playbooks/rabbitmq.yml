@@ -1,0 +1,10 @@
+---
+# Playbook for setting up a RabbitMQ server.
+
+- name: Set up rabbitmq servers
+  hosts: rabbitmq
+  become: true
+  roles:
+    - common-server
+    - forward-server-mail
+    - rabbitmq

@@ -1,0 +1,10 @@
+# Python settings for Matterbot
+CRAFTY_MATTERMOST_URL: https://chat.example.com/api/v3
+CRAFTY_TEAM: opencraft
+CRAFTY_LOGIN: crafty
+CRAFTY_PASSWORD: set-me-please
+
+# Settings that can be left at their default values
+CRAFTY_REPO: https://gitlab.com/opencraft/dev/crafty.git
+CRAFTY_BRANCH: master
+CRAFTY_HOME: /home/crafty

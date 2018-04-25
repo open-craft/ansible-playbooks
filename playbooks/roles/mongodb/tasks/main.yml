@@ -1,0 +1,47 @@
+- name: Create mongodb group
+  group: name=mongodb system=yes
+
+- name: Create mongodb user
+  user: name=mongodb group=mongodb home=/var/lib/mongodb system=yes
+
+- name: mount /var/lib/mongodb
+  mount: name=/var/lib/mongodb src="{{ MONGODB_OPENSTACK_DB_DEVICE }}" fstype=ext4 state=mounted
+
+- name: mkdir /var/lib/mongodb/{db,log}
+  file:
+    path: "/var/lib/mongodb/{{ item }}"
+    state: directory
+    mode: 0750
+    owner: mongodb
+    group: mongodb
+  with_items: ['db', 'log']
+
+- name: chown -R /var/lib/mongodb
+  file: path=/var/lib/mongodb owner=mongodb group=mongodb recurse=yes state=directory
+
+- name: chmod /var/lib/mongodb
+  file:
+    path: /var/lib/mongodb
+    mode: 0700
+    state: directory
+
+- name: Open MongoDB port on the firewall
+  ufw: rule=allow port={{ item }} proto=tcp
+  with_items:
+    - 27017
+
+- name: Copy pre-backup script
+  template:
+    src: backup-pre-mongodb.sh
+    dest: /usr/local/sbin/backup-pre.sh
+    owner: root
+    group: root
+    mode: 0500
+
+- name: Copy post-backup script
+  template:
+    src: backup-post-mongodb.sh
+    dest: /usr/local/sbin/backup-post.sh
+    owner: root
+    group: root
+    mode: 0500

@@ -1,0 +1,74 @@
+---
+- hostname: name={{ COMMON_SERVER_HOSTNAME }}
+
+- name: Add network interface for floating IP
+  include: floating_ip.yml
+  when: (COMMON_FLOATING_INTERFACE_NAME and COMMON_FLOATING_IP)
+
+- name: Add fallback DNS servers to /etc/dhcp/dhclient.conf.
+  lineinfile:
+     dest: /etc/dhcp/dhclient.conf
+     regexp: '^\s*append\s+domain-name-servers'
+     line: "append domain-name-servers {{ COMMON_FALLBACK_DNS_SERVERS | join(', ') }};"
+  notify: restart networking
+
+- name: Template hosts
+  template: src=hosts dest=/etc/hosts owner=root group=root mode=0544
+
+- name: install depencencies
+  apt: name={{ item }} state=present
+  with_items: "{{ COMMON_SERVER_DEPENDENCIES }}"
+
+- name: Activate tmpreaper
+  lineinfile: dest=/etc/tmpreaper.conf state=absent regexp="^SHOWWARNING=true"
+
+- name: Configure git author
+  shell: git config --global user.name "{{ COMMON_SERVER_ETCKEEPER_COMMIT_USER }}" && git config --global user.email "{{ COMMON_SERVER_ETCKEEPER_COMMIT_EMAIL }}"
+
+- name: etckeeper - Use git
+  template: src=etckeeper.conf dest=/etc/etckeeper/etckeeper.conf owner=root group=root mode=0644 backup=yes
+
+- name: etckeeper - git init && commit
+  shell: etckeeper init && etckeeper commit "Initial commit." creates=/etc/.git
+
+- name: Configure chkrootkit
+  include: chkrootkit.yml
+
+- name: By default allow only ssh
+  ufw: rule=allow port=22 proto=tcp
+
+- name: Set firewall default policy
+  ufw: state=enabled policy=reject
+
+- name: Set system timezone to UTC
+  template: src=timezone dest=/etc/timezone owner=root group=root mode=0644
+
+- name: Set local timezone to UTC
+  file: src=/usr/share/zoneinfo/Etc/UTC dest=/etc/localtime state=link force=true
+
+- name: Copy security update check script
+  copy:
+    src: security_updates_checker.sh
+    dest: "{{ SECURITY_UPDATE_SCRIPT_LOCATION }}"
+    owner: root
+    group: root
+    mode: 0500
+
+- name: Schedule cron job to track security updates of held packages
+  cron:
+    name: "Track security updates"
+    minute: "0"
+    hour: "1"
+    job: "bash {{ SECURITY_UPDATE_SCRIPT_LOCATION }}"
+
+- name: Configure New Relic monitoring agent
+  include: newrelic.yml
+  when: COMMON_SERVER_ENABLE_NEWRELIC
+
+- name: install nginx and Certbot
+  include: nginx.yml
+
+- name: install the Prometheus node exporter
+  include_role:
+    name: node-exporter
+  when: COMMON_SERVER_INSTALL_NODE_EXPORTER

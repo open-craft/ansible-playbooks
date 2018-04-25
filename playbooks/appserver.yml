@@ -1,0 +1,11 @@
+---
+# Playbook to set up common services on any type of appserver.
+
+- name: Set up common services on appservers
+  hosts: app
+  become: true
+  roles:
+    - role: consul
+      when: consul_servers | length > 0
+    - role: node-exporter
+      when: NODE_EXPORTER_PASSWORD != 'set-me-please'

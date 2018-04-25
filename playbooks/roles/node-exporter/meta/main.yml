@@ -1,0 +1,7 @@
+---
+dependencies:
+  - name: ernestas-poskus.prometheus
+    prometheus_node_exporter_install: true
+    prometheus_install: false
+    prometheus_alert_manager_install: false
+    prometheus_install_dir: /opt

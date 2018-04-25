@@ -1,0 +1,28 @@
+[submodule "playbooks/roles/ernestas-poskus.prometheus"]
+	path = playbooks/roles/ernestas-poskus.prometheus
+	url = https://github.com/ernestas-poskus/ansible-prometheus
+[submodule "playbooks/roles/geerlingguy.security"]
+	path = playbooks/roles/geerlingguy.security
+	url = https://github.com/geerlingguy/ansible-role-security
+[submodule "playbooks/roles/kamaln7.swapfile"]
+	path = playbooks/roles/kamaln7.swapfile
+	url = https://github.com/kamaln7/ansible-swapfile
+[submodule "playbooks/roles/pmbauer.tarsnap"]
+	path = playbooks/roles/pmbauer.tarsnap
+	url = https://github.com/pmbauer/ansible-tarsnap
+[submodule "playbooks/roles/geerlingguy.mysql"]
+	path = playbooks/roles/geerlingguy.mysql
+	url = https://github.com/open-craft/ansible-role-mysql
+[submodule "playbooks/roles/geerlingguy.postgresql"]
+	path = playbooks/roles/geerlingguy.postgresql
+	url = https://github.com/open-craft/ansible-role-postgresql
+[submodule "playbooks/roles/greendayonfire.mongodb"]
+	path = playbooks/roles/greendayonfire.mongodb
+	url = https://github.com/UnderGreen/ansible-role-mongodb
+[submodule "playbooks/roles/load-balancer"]
+	path = playbooks/roles/load-balancer
+	url = https://github.com/open-craft/ansible-load-balancer
+	branch = master
+[submodule "playbooks/roles/geerlingguy.java"]
+	path = playbooks/roles/geerlingguy.java
+	url = https://github.com/geerlingguy/ansible-role-java
