@@ -31,7 +31,3 @@
 - name: rabbitmq
   src: https://github.com/open-craft/ansible-rabbitmq
   version: origin/master
-
-- name: elasticsearch
-  src: https://github.com/open-craft/ansible-role-elasticsearch
-  version: origin/master
