@@ -19,7 +19,3 @@
 - name: forward-server-mail
   src: https://github.com/open-craft/ansible-forward-server-mail
   version: origin/master
-
-- name: backup-swift-container
-  src: https://github.com/open-craft/ansible-backup-swift-container
-  version: origin/master
