@@ -3,7 +3,3 @@
 - name: backup-to-tarsnap
   src: https://github.com/open-craft/ansible-backup-to-tarsnap
   version: origin/master
-
-- name: common-server
-  src: https://github.com/open-craft/ansible-common-server
-  version: origin/master

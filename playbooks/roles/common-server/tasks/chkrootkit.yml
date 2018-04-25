@@ -1,0 +1,11 @@
+- name: Generate list of enabled chkrootkit tests
+  shell: chkrootkit -l 2>&1 | cut -d ' ' -f 3- | sed -r 's/\b({{CHKROOTKIT_DISABLED_TESTS | join("|")}})\b//g'
+  register: enabled_tests_output
+
+- name: Add chkrootkit config file
+  template:
+    src: chkrootkit.conf
+    dest: /etc/chkrootkit.conf
+
+- name: Generate expected chkrootkit output
+  script: gen_chkrootkit_expected_output.sh
