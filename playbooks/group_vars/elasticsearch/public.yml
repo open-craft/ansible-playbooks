@@ -21,3 +21,11 @@ consul_service_config:
       - name: "Connect to Elasticsearch"
         tcp: "{{ inventory_hostname }}:9200"
         interval: "10m"
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "elasticsearch"
+    paths:
+      - "{{ elasticsearch_log_dir }}/*.log"

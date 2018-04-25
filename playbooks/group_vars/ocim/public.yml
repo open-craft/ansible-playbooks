@@ -1,6 +1,33 @@
+---
+
+# COMMON ######################################################################
+
 COMMON_SERVER_NO_BACKUPS: true
 COMMON_SERVER_INSTALL_CERTBOT: false
 COMMON_SERVER_INSTALL_NODE_EXPORTER: false
 
+# PROMETHEUS ##################################################################
+
 NODE_EXPORTER_SSL_CERT: /etc/ssl/certs/ssl-cert.pem
 NODE_EXPORTER_SSL_KEY: /etc/ssl/private/ssl-cert.key
+
+# CONSUL ######################################################################
+
+consul_service_config:
+  service:
+    name: "ocim"
+    tags: ["ocim"]
+    port: 443
+    enable_tag_override: true
+    checks:
+      - name: "Connect to Ocim HTTPS"
+        tcp: "{{ OPENCRAFT_DOMAIN_NAME }}:443"
+        interval: "10m"
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "ocim"
+    paths:
+      - "{{ opencraft_root_dir }}/log/im.*.log"

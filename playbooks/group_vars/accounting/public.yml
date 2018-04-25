@@ -14,3 +14,11 @@ SANITY_CHECK_LIVE_PORTS:
   - host: localhost
     port: 1786
     message: "Accounting API is not responding on port 1786."
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "accounting"
+    paths:
+      - /var/www/accounting/log/accounting.*.log

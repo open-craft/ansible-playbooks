@@ -1,2 +1,14 @@
+---
+
+# COMMON ######################################################################
+
 COMMON_SERVER_NO_BACKUPS: true
 COMMON_SERVER_INSTALL_CONSUL: false
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "backup-pruner"
+    paths:
+      - "{{ BACKUP_PRUNER_LOG_DIR }}/*.log"
