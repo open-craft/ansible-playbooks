@@ -11,7 +11,3 @@
 - name: configure-apt
   src: https://github.com/open-craft/ansible-configure-apt
   version: origin/master
-
-- name: sanity-checker
-  src: https://github.com/open-craft/ansible-sanity-checker/
-  version: origin/master
