@@ -1,0 +1,65 @@
+# edX is currently using MySQL 5.6, which is not available on Xenial by default.
+- name: Add PPA for MySQL 5.6
+  apt_repository:
+    repo: "ppa:ondrej/mysql-5.6"
+    update_cache: yes
+
+- name: Create mysql group
+  group: name=mysql system=yes
+
+- name: Create mysql user
+  user: name=mysql group=mysql system=yes
+
+- name: chown -R /var/lib/mysql
+  file: path=/var/lib/mysql owner=mysql group=mysql recurse=yes state=directory
+
+- name: chmod /var/lib/mysql
+  file:
+    path: /var/lib/mysql
+    mode: 0700
+    state: directory
+
+- name: Allow required ports
+  ufw: rule=allow port={{ item }} proto=tcp
+  with_items:
+    - 3306
+#
+# Parameters to set the maximum number of open files
+#
+- name: Creating directory for Mysql files limit configuration
+  file:
+    path: /etc/systemd/system/mysql.service.d/
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+# 
+# The limits of processes started by systemd are governed by systemd configuration
+# files and not from security/limits.d
+- name: Set open files limit in mysql through systemd
+  copy:
+    dest: /etc/systemd/system/mysql.service.d/override.conf
+    owner: root
+    group: root
+    content: |
+      # cf https://duntuk.com/how-raise-ulimit-open-files-and-mysql-openfileslimit
+      [Service]
+      LimitNOFILE={{ MYSQL_OPEN_FILES_LIMIT }}
+      LimitNPROC={{ MYSQL_PROCESSES_LIMIT }}
+
+- name: Copy pre-backup script
+  template:
+    src: backup-pre-mysql.sh
+    dest: /usr/local/sbin/backup-pre.sh
+    owner: root
+    group: root
+    mode: 0500
+
+- name: Copy post-backup script
+  template:
+    src: backup-post-mysql.sh
+    dest: /usr/local/sbin/backup-post.sh
+    owner: root
+    group: root
+    mode: 0500

@@ -55,7 +55,3 @@
 - name: accounting
   src: https://github.com/open-craft/ansible-accounting
   version: origin/master
-
-- name: mysql
-  src: https://github.com/open-craft/ansible-mysql
-  version: origin/master
