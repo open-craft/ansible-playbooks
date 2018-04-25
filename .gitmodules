@@ -13,3 +13,6 @@
 [submodule "playbooks/roles/geerlingguy.mysql"]
 	path = playbooks/roles/geerlingguy.mysql
 	url = https://github.com/open-craft/ansible-role-mysql
+[submodule "playbooks/roles/geerlingguy.postgresql"]
+	path = playbooks/roles/geerlingguy.postgresql
+	url = https://github.com/open-craft/ansible-role-postgresql
