@@ -27,7 +27,3 @@
 - name: dalite
   src: https://github.com/open-craft/ansible-dalite
   version: origin/master
-
-- name: rabbitmq
-  src: https://github.com/open-craft/ansible-rabbitmq
-  version: origin/master
