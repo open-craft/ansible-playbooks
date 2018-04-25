@@ -39,7 +39,3 @@
 - name: postfix
   src: https://github.com/open-craft/ansible-postfix
   version: origin/master
-
-- name: mattermost
-  src: https://github.com/open-craft/ansible-mattermost
-  version: origin/master
