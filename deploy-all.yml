@@ -6,6 +6,7 @@
     - raw: "[ -e /usr/bin/python ] || sudo apt-get update -qq && sudo apt-get install -qq python"
 
 - include: playbooks/accounting.yml
+- include: playbooks/appserver.yml
 - include: playbooks/backup-pruner.yml
 - include: playbooks/bootstrap-dedicated.yml
 - include: playbooks/chat.yml
