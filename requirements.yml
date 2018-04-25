@@ -7,7 +7,3 @@
 - name: common-server
   src: https://github.com/open-craft/ansible-common-server
   version: origin/master
-
-- name: configure-apt
-  src: https://github.com/open-craft/ansible-configure-apt
-  version: origin/master
