@@ -63,7 +63,3 @@
 - name: postgres
   src: https://github.com/open-craft/ansible-postgres
   version: origin/master
-
-- name: mongodb
-  src: https://github.com/open-craft/ansible-mongodb
-  version: origin/master
