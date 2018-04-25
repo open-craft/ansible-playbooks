@@ -15,7 +15,3 @@
 - name: sanity-checker
   src: https://github.com/open-craft/ansible-sanity-checker/
   version: origin/master
-
-- name: forward-server-mail
-  src: https://github.com/open-craft/ansible-forward-server-mail
-  version: origin/master

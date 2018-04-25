@@ -1,0 +1,33 @@
+---
+- name: install deps
+  apt: name={{ item }} state=present
+  with_items: "{{ FORWARD_MAIL_OS_PACKAGES }}"
+
+- name: template postfix
+  template: src=postfix.conf dest=/etc/postfix/main.cf
+
+- name: template aliases
+  template: src=aliases dest=/etc/aliases
+
+- name: template password
+  template: src=sasl_passwd dest=/etc/postfix/sasl_passwd mode=0400
+
+- name: template canonical
+  template: src=canonical dest=/etc/postfix/canonical
+
+- name: create server CA file
+  copy:
+    dest: /etc/postfix/cacert.pem
+    content: "{{ FORWARD_MAIL_SERVER_CERTIFICATE }}"
+
+- name: update aliases
+  command: newaliases
+
+- name: run postmap on sasl password
+  command: postmap /etc/postfix/sasl_passwd
+
+- name: run postmap on canonical file
+  command: postmap /etc/postfix/canonical
+
+- name: restart
+  service: name=postfix state=restarted
