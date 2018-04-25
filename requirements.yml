@@ -1,9 +1,5 @@
 # Note: due to security concerns we prefer using git hashes than ansible versions.
 
-- name: geerlingguy.security
-  src: https://github.com/geerlingguy/ansible-role-security
-  version: af8b13833290ccae2ce1d2c9cce78862ddd3666c
-
 - name: kamaln7.swapfile
   src: https://github.com/kamaln7/ansible-swapfile
   version: 8eb0e18d90a7f25b6658fbf56bcba01b84a664fc
