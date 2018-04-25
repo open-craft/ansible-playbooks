@@ -1,0 +1,20 @@
+- name: Install Python 2
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - raw: "[ -e /usr/bin/python ] || sudo apt-get update -qq && sudo apt-get install -qq python"
+
+- include: accounting.yml
+- include: appserver.yml
+- include: backup-pruner.yml
+- include: bootstrap-dedicated.yml
+- include: chat.yml
+- include: dalite.yml
+- include: elasticsearch.yml
+- include: load-balancer.yml
+- include: mongodb.yml
+- include: mysql.yml
+- include: postgres.yml
+- include: rabbitmq.yml
+- include: relay.yml
