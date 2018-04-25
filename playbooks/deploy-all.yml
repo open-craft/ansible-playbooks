@@ -6,7 +6,6 @@
     - raw: "[ -e /usr/bin/python ] || sudo apt-get update -qq && sudo apt-get install -qq python"
 
 - include: accounting.yml
-- include: appserver.yml
 - include: backup-pruner.yml
 - include: bootstrap-dedicated.yml
 - include: chat.yml
