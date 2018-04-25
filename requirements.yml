@@ -23,7 +23,3 @@
 - name: backup-swift-container
   src: https://github.com/open-craft/ansible-backup-swift-container
   version: origin/master
-
-- name: dalite
-  src: https://github.com/open-craft/ansible-dalite
-  version: origin/master
