@@ -1,9 +1,5 @@
 # Note: due to security concerns we prefer using git hashes than ansible versions.
 
-- name: pmbauer.tarsnap
-  src: https://github.com/pmbauer/ansible-tarsnap
-  version: 7a625912409a0be2a3bf48967c60c5328ae2f3b2
-
 - name: backup-to-tarsnap
   src: https://github.com/open-craft/ansible-backup-to-tarsnap
   version: origin/master
