@@ -1,6 +1,5 @@
 - import_playbook: accounting.yml
 - import_playbook: backup-pruner.yml
-- import_playbook: bootstrap-dedicated.yml
 - import_playbook: chat.yml
 - import_playbook: dalite.yml
 - import_playbook: elasticsearch.yml
