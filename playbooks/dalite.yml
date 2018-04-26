@@ -18,7 +18,6 @@
       # Backup of logs is initiated by logrotate, which incidentally
       # also creates data to be backed up.
       TARSNAP_CRONTAB_STATE: "absent"
-    - forward-server-mail
     - dalite
     - backup-swift-container
     - node-exporter

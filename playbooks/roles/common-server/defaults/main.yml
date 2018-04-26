@@ -100,3 +100,6 @@ COMMON_SERVER_INSTALL_CONSUL: true
 
 # Prometheus node exporter
 COMMON_SERVER_INSTALL_NODE_EXPORTER: true
+
+# Install Postfix to forward local mail
+COMMON_SERVER_INSTALL_POSTFIX: true

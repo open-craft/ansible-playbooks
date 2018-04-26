@@ -11,3 +11,5 @@ dependencies:
     when: COMMON_SERVER_INSTALL_CONSUL
   - name: node-exporter
     when: COMMON_SERVER_INSTALL_NODE_EXPORTER
+  - name: forward-server-mail
+    when: COMMON_SERVER_INSTALL_POSTFIX
