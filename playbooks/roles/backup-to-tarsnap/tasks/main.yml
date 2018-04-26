@@ -32,9 +32,6 @@
     group: root
     mode: 0500
 
-- name: Check we can access tarsnap and run fsck
-  command: tarsnap --cachedir {{ TARSNAP_CACHE }} --keyfile {{ TARSNAP_KEY_REMOTE_LOCATION }} --fsck
-
 - name: Install backup in cron
   cron:
     name: "Backup for this server, archive: {{ TARSNAP_ARCHIVE_NAME }}"
