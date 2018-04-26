@@ -1,0 +1,50 @@
+---
+- name: Set the hostname
+  hostname:
+    name: "{{ COMMON_SERVER_HOSTNAME }}"
+
+- name: Set system timezone to UTC
+  template:
+    src: timezone
+    dest: /etc/timezone
+    mode: 0644
+
+- name: Set local timezone to UTC
+  file:
+    src: /usr/share/zoneinfo/Etc/UTC
+    dest: /etc/localtime
+    state: link
+    force: true
+
+- name: apt-get update, dist-upgrade and autoremove
+  apt:
+    update_cache: yes
+    upgrade: dist
+    cache_valid_time: 43200
+    autoremove: yes
+
+- name: install depencencies
+  apt:
+    name: "{{ COMMON_SERVER_DEPENDENCIES }}"
+    state: present
+
+- name: Activate tmpreaper
+  lineinfile:
+    dest: /etc/tmpreaper.conf
+    regexp: "^SHOWWARNING=true"
+    state: absent
+
+- name: Copy security update check script
+  copy:
+    src: security_updates_checker.sh
+    dest: "{{ SECURITY_UPDATE_SCRIPT_LOCATION }}"
+    owner: root
+    group: root
+    mode: 0500
+
+- name: Schedule cron job to track security updates of held packages
+  cron:
+    name: Track security updates
+    minute: 0
+    hour: 1
+    job: "bash {{ SECURITY_UPDATE_SCRIPT_LOCATION }}"

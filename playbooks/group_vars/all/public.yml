@@ -14,6 +14,7 @@ tarsnap_cron_hour: "*"
 
 FORWARD_MAIL_RELAY_MAIL_TO: '{{ OPS_EMAIL }}'
 COMMON_SERVER_OPS_EMAIL: '{{ OPS_EMAIL }}'
+CERTBOT_OPS_EMAIL: '{{ OPS_EMAIL }}'
 security_autoupdate_mail_to: '{{ OPS_EMAIL }}'
 
 # CERTBOT #####################################################################
