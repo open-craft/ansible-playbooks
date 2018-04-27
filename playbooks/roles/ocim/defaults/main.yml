@@ -1,0 +1,83 @@
+OPENCRAFT_DOMAIN_NAME: '{{ inventory_hostname }}'
+OPENCRAFT_WEBSOCKET_DOMAIN_NAME: 'websocket.{{ OPENCRAFT_DOMAIN_NAME }}'
+
+# Private key used to access OpenStack servers.  You must upload the
+# corresponding public key to the OpenStack project configured in OPENCRAFT_ENV_TOKENS below and
+# set OPENSTACK_SANDBOX_SSH_KEYNAME to the name of the key.
+OPENCRAFT_OPENSTACK_SSH_KEY: null
+
+# Contents of console ssl certificate
+OPENCRAFT_SSL_CERT: null
+OPENCRAFT_SSL_KEY: null
+OPENCRAFT_WEBSOCKET_SSL_CERT: null
+OPENCRAFT_WEBSOCKET_SSL_KEY: null
+
+# Number of workers to run
+OPENCRAFT_WORKERS: 3
+OPENCRAFT_WORKERS_LOW_PRIORITY: 3
+
+OPENCRAFT_BACKUP_SWIFT_ENABLED: false
+OPENCRAFT_BACKUP_SWIFT_TARGET: /var/cache/swift-data-backup
+OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY_LOCATION: /etc/tarsnap.key
+# Contents of the tarsnap key
+OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY: null
+OPENCRAFT_BACKUP_SWIFT_TARSNAP_CACHE_LOCATION:  /var/cache/tarsnap
+# Current date will be appended to the archive name:
+OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY_ARCHIVE_NAME:  im-swift-backup
+OPENCRAFT_BACKUP_SWIFT_SNITCH:  null
+# At some point we'll want to download swift containers to a dedicated volume,
+# this points to a formatted ext4 partition, this partition will be mounted to
+# {{ OPENCRAFT_BACKUP_SWIFT_TARGET }}.
+OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE: null
+
+# NOTE:
+# Settings for IM are kept in two variables:
+# * OPENCRAFT_ENV_TOKENS: contains things that vary between each deployment (like passwords
+#   image names and so forth), but are not generated from the rest of ansible configuration
+# * OPENCRAFT_GENERATED_ENV_TOKENS: contains tokens generated from the rest of configuration.
+
+# Settings for the OpenCraft Instance manager.  See opencraft/settings.py for details.
+OPENCRAFT_ENV_TOKENS:
+  ALLOWED_HOSTS: '["{{ OPENCRAFT_DOMAIN_NAME }}"]'
+  DATABASE_URL: 'postgres://db-user:password@postgres.example.com:port/db-name'
+  GANDI_API_KEY: 'your-gandi-api-key'
+  GANDI_ZONE_ID: 'your-gandi-zone'
+  GITHUB_ACCESS_TOKEN: 'your-github-access-token'
+  INSTANCES_BASE_DOMAIN: 'example.com'
+  OPENSTACK_AUTH_URL: 'your-openstack-auth-url'
+  OPENSTACK_PASSWORD: 'your-openstack-password'
+  OPENSTACK_REGION: 'your-openstack-zone'
+  OPENSTACK_SANDBOX_BASE_IMAGE: '{"name": "your-ubuntu-12.04-image"}'
+  OPENSTACK_SANDBOX_FLAVOR: '{"name": "your-vps-flavor"}'
+  OPENSTACK_SANDBOX_SSH_KEYNAME: 'your-ssh-key-name'
+  OPENSTACK_SANDBOX_SSH_USERNAME: 'ubuntu'
+  OPENSTACK_TENANT: 'your-openstack-tenant'
+  OPENSTACK_USER: 'your-openstack-user'
+  SECRET_KEY: 'your-random-secret-key'
+  WATCH_ORGANIZATION: 'your-github-organization'
+
+# These env tokes are generated from other ansible variables, entries in
+# this dictionary can be overriden by OPENCRAFT_ENV_TOKENS.
+# This should contain only tokens generated from the rest of ansible config.
+OPENCRAFT_GENERATED_ENV_TOKENS:
+  DRAGON_URL: 'http://{{ OPENCRAFT_WEBSOCKET_DOMAIN_NAME }}/'
+  BACKUP_SWIFT_ENABLED: "{{ OPENCRAFT_BACKUP_SWIFT_ENABLED }}"
+  BACKUP_SWIFT_TARSNAP_KEY_LOCATION: "{{ OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY_LOCATION }}"
+  BACKUP_SWIFT_TARSNAP_CACHE_LOCATION: "{{ OPENCRAFT_BACKUP_SWIFT_TARSNAP_CACHE_LOCATION }}"
+  BACKUP_SWIFT_TARSNAP_KEY_ARCHIVE_NAME: "{{ OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY_ARCHIVE_NAME }}"
+  BACKUP_SWIFT_SNITCH: "{{ OPENCRAFT_BACKUP_SWIFT_SNITCH }}"
+
+opencraft_all_env_tokens: "{{ OPENCRAFT_GENERATED_ENV_TOKENS | combine( OPENCRAFT_ENV_TOKENS ) }}"
+www_data_home_dir: '/var/www'
+opencraft_root_dir: '/var/www/opencraft'
+opencraft_virtualenv_dir: '/var/www/.virtualenvs/opencraft'
+opencraft_static_files_dir: '{{ opencraft_root_dir }}/build/static'
+opencraft_screenrc_path: '/home/ubuntu/ocim-screenrc'
+
+# The user you will log in as in an SSH session and their primary group
+session_user: ubuntu
+session_user_group: ubuntu
+
+# The user and group under which the applicaiton code will run
+www_user: www-data
+www_group: www-data
