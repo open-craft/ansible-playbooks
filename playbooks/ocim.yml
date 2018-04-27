@@ -1,0 +1,8 @@
+---
+- name: Deploy the OpenCraft Instance Manager
+  hosts: ocim
+  become: true
+  roles:
+    - common-server
+    - ocim
+    - node-exporter

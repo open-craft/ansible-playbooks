@@ -23,14 +23,13 @@
     state: "mounted"
     name: "{{ OPENCRAFT_BACKUP_SWIFT_TARGET }}"
     src:  "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE }}"
-  when: "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE }}"
+  when: OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE
 
 - name: chmod volume
   file:
     path: "{{ OPENCRAFT_BACKUP_SWIFT_TARGET }}"
     owner: "{{ www_user }}"
     group: "root"
-    state: "folder"
     recurse: "yes"
     state: "directory"
-  when: "{{ OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE }}"
+  when: OPENCRAFT_BACKUP_SWIFT_MOUNT_DEVICE
