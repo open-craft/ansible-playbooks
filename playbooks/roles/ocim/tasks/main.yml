@@ -1,8 +1,8 @@
-- include: configure-swift-backups.yml
-  when: OPENCRAFT_BACKUP_SWIFT_ENABLED
-
+---
 - name: Set login shell for user {{ www_user }}
-  user: name={{ www_user }} shell=/bin/bash
+  user:
+    name: "{{ www_user }}"
+    shell: /bin/bash
 
 - name: Create {{ www_data_home_dir }}
   file:
@@ -13,36 +13,17 @@
     state: directory
 
 - name: Copy shell configuration for user {{ www_user }}
-  when: vagrant_mode is undefined or not vagrant_mode
   template:
-    src: "bashrc"
+    src: bashrc
     dest: "{{ www_data_home_dir }}/.bashrc"
-    owner: '{{ www_user }}'
-    group: '{{ www_group }}'
+    owner: "{{ www_user }}"
+    group: "{{ www_group }}"
 
 - name: Clone the opencraft repository
-  when: vagrant_mode is undefined or not vagrant_mode
-  git: repo=https://github.com/open-craft/opencraft.git dest="{{ opencraft_root_dir }}" update=no
-  become_user: "{{ www_user }}"
-
-- name: Install system dependencies
-  command: make install_system_dependencies chdir="{{ opencraft_root_dir }}"
-
-- name: Install virtualenv
-  pip: name=virtualenv executable=pip3
-
-- name: Install python requirements
-  pip:
-    requirements="{{ opencraft_root_dir }}/requirements.txt"
-    virtualenv="{{ opencraft_virtualenv_dir }}"
-    virtualenv_python=python3.5
-  become_user: "{{ www_user }}"
-
-- name: Install the venv wrapper script
-  copy:
-    src: venv_exec
-    dest: "{{ opencraft_virtualenv_dir }}/bin/exec"
-    mode: 0755
+  git:
+    repo: https://github.com/open-craft/opencraft.git
+    dest: "{{ opencraft_root_dir }}"
+    update: no
   become_user: "{{ www_user }}"
 
 - name: Install the configuration/environment file
@@ -53,89 +34,106 @@
     backup: yes
   become_user: "{{ www_user }}"
 
+- import_tasks: common.yml
+
+- name: Install the venv wrapper script
+  copy:
+    src: venv_exec
+    dest: "{{ opencraft_virtualenv_dir }}/bin/exec"
+    mode: 0755
+  become_user: "{{ www_user }}"
+
 - name: "Create directory {{ www_data_home_dir }}/.ssh"
-  when: vagrant_mode is undefined or not vagrant_mode
-  file: path="{{ www_data_home_dir }}/.ssh" state=directory
+  file:
+    path: "{{ www_data_home_dir }}/.ssh"
+    state: directory
   become_user: "{{ www_user }}"
 
 - name: Install the SSH private key used for deploying instances.
-  when: vagrant_mode is undefined or not vagrant_mode
   copy:
     content: "{{ OPENCRAFT_OPENSTACK_SSH_KEY }}"
     dest: "{{ www_data_home_dir }}/.ssh/id_rsa"
     mode: 0600
   become_user: "{{ www_user }}"
 
-- name: Nginx setup
-  when: vagrant_mode is undefined or not vagrant_mode
-  block:
-  - name: Copy nginx site configuration
-    template: src=opencraft-nginx.j2 dest=/etc/nginx/sites-available/opencraft  
+- name: Copy nginx site configuration
+  template:
+    src: opencraft-nginx.j2
+    dest: /etc/nginx/sites-available/opencraft
+  notify:
+    - restart nginx
 
-  - name: Enable nginx site configuration
-    file: src=/etc/nginx/sites-available/opencraft dest=/etc/nginx/sites-enabled/opencraft state=link
+- name: Enable nginx site configuration
+  file:
+    src: /etc/nginx/sites-available/opencraft
+    dest: /etc/nginx/sites-enabled/opencraft
+    state: link
+  notify:
+    - restart nginx
 
-- name: SSL Setup
-  when: vagrant_mode is undefined or not vagrant_mode
-  block:
-    - name: Copy SSL certificate
-      copy:
-        content: "{{ OPENCRAFT_SSL_CERT }}"
-        dest: /etc/ssl/certs/ssl-cert.pem
-        group: ssl-cert
-        mode: 0640    
+- name: Copy SSL certificate
+  copy:
+    content: "{{ OPENCRAFT_SSL_CERT }}"
+    dest: /etc/ssl/certs/ssl-cert.pem
+    group: ssl-cert
+    mode: 0640
+  notify:
+    - restart nginx
 
-    - name: Copy SSL key
-      copy:
-        content: "{{ OPENCRAFT_SSL_KEY }}"
-        dest: /etc/ssl/private/ssl-cert.key
-        group: ssl-cert
-        mode: 0640
+- name: Copy SSL key
+  copy:
+    content: "{{ OPENCRAFT_SSL_KEY }}"
+    dest: /etc/ssl/private/ssl-cert.key
+    group: ssl-cert
+    mode: 0640
+  notify:
+    - restart nginx
 
-    - name: Copy websocket SSL certificate
-      copy:
-        content: "{{ OPENCRAFT_WEBSOCKET_SSL_CERT }}"
-        dest: /etc/ssl/certs/ssl-websocket-cert.pem
-        group: ssl-cert
-        mode: 0640
+- name: Copy websocket SSL certificate
+  copy:
+    content: "{{ OPENCRAFT_WEBSOCKET_SSL_CERT }}"
+    dest: /etc/ssl/certs/ssl-websocket-cert.pem
+    group: ssl-cert
+    mode: 0640
+  notify:
+    - restart nginx
 
-    - name: Copy websocket SSL key
-      copy:
-        content: "{{ OPENCRAFT_WEBSOCKET_SSL_KEY }}"
-        dest: /etc/ssl/private/ssl-websocket-cert.key
-        group: ssl-cert
-        mode: 0640
+- name: Copy websocket SSL key
+  copy:
+    content: "{{ OPENCRAFT_WEBSOCKET_SSL_KEY }}"
+    dest: /etc/ssl/private/ssl-websocket-cert.key
+    group: ssl-cert
+    mode: 0640
+  notify:
+    - restart nginx
 
-- name: Restart nginx
-  when: vagrant_mode is undefined or not vagrant_mode
-  service: name=nginx state=restarted
+- name: Copy screen session configuration
+  template:
+    src: "ocim-screenrc"
+    dest: "{{ opencraft_screenrc_path }}"
+    owner: "{{ session_user }}"
+    group: "{{ session_user_group }}"
 
-- name: Screen configuration
-  when: vagrant_mode is undefined or not vagrant_mode
-  block:
-    - name: Copy screen session configuration
-      template:
-        src: "ocim-screenrc"
-        dest: "{{ opencraft_screenrc_path }}"
-        owner: "{{ session_user }}"
-        group: "{{ session_user_group }}"
+- name: Copy systemd service file
+  template:
+    src: "ocim-screen.service"
+    dest: "/etc/systemd/system/ocim-screen.service"
 
-    - name: Copy systemd service file
-      template:
-        src: "ocim-screen.service"
-        dest: "/etc/systemd/system/ocim-screen.service"
-
-    - name: Enable and start systemd service to start on boot automatically
-      systemd:
-        name: ocim-screen.service
-        enabled: yes
-        state: started
+- name: Enable and start systemd service to start on boot automatically
+  systemd:
+    daemon-reload: yes
+    name: ocim-screen.service
+    enabled: yes
+    state: started
 
 - name: Open HTTP port on the firewall
-  ufw: rule=allow port={{ item }} proto=tcp
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
   with_items:
     - 80
     - 443
 
-- include: vagrant_specific.yml
-  when: vagrant_mode is not undefined and vagrant_mode
+- import_tasks: configure-swift-backups.yml
+  when: OPENCRAFT_BACKUP_SWIFT_ENABLED

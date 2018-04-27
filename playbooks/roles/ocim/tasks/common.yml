@@ -1,0 +1,17 @@
+---
+- name: Install system dependencies
+  command: make install_system_dependencies
+  args:
+    chdir: "{{ opencraft_root_dir }}"
+
+- name: Install virtualenv
+  pip:
+    name: virtualenv
+    executable: pip3
+
+- name: Install python requirements
+  pip:
+    requirements: "{{ opencraft_root_dir }}/requirements.txt"
+    virtualenv: "{{ opencraft_virtualenv_dir }}"
+    virtualenv_python: python3.5
+  become_user: "{{ www_user }}"

@@ -1,13 +1,10 @@
 ---
-- name: Install database dependencies
-  shell: DEBIAN_FRONTEND=noninteractive make install_system_db_dependencies chdir="{{ opencraft_root_dir }}"
+- import_tasks: common.yml
 
-- name: Open HTTP ports needed for dev setup
-  ufw: rule=allow port={{ item }} proto=tcp
-  with_items:
-    - 2001
-    - 5000
-    - 8888
+- name: Install database dependencies
+  shell: DEBIAN_FRONTEND=noninteractive make install_system_db_dependencies
+  args:
+    chdir: "{{ opencraft_root_dir }}"
 
 - name: Change directory to ~/opencraft on login
   blockinfile:
