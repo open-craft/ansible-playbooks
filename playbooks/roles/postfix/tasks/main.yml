@@ -1,13 +1,12 @@
 ---
 - name: install apt packages
   apt:
-    name: "{{ item }}"
-  with_items:
-    - ca-certificates
-    - dovecot-core
-    - libsasl2-modules
-    - postfix
-    - sasl2-bin
+    name:
+      - ca-certificates
+      - dovecot-core
+      - libsasl2-modules
+      - postfix
+      - sasl2-bin
 
 ### Postfix configuration
 

@@ -50,6 +50,24 @@ COMMON_SERVER_ETCKEEPER_COMMIT_EMAIL: "{{ COMMON_SERVER_OPS_EMAIL }}"
 COMMON_SERVER_NO_BACKUPS: false
 
 COMMON_SERVER_DEPENDENCIES:
+  - htop
+  - ntp
+  - sudo
+  - vim
+  - iftop
+  - iotop
+  - mosh
+  - git
+  - screen
+  - build-essential
+  - apt-file
+  - links
+  - tree
+  - pwgen
+  - libxml2-dev
+  - libxslt1-dev
+  - python-dev
+  - unzip
   - chkrootkit
   - etckeeper
   - tmpreaper
@@ -82,3 +100,6 @@ COMMON_SERVER_INSTALL_CONSUL: true
 
 # Prometheus node exporter
 COMMON_SERVER_INSTALL_NODE_EXPORTER: true
+
+# Install Postfix to forward local mail
+COMMON_SERVER_INSTALL_POSTFIX: true

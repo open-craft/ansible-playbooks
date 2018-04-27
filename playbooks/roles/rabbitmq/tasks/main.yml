@@ -1,8 +1,6 @@
 - name: install apt packages
   apt:
-    name: "{{ item }}"
-    state: present
-  with_items: "{{ RABBITMQ_APT_PACKAGES }}"
+    name: "{{ RABBITMQ_APT_PACKAGES }}"
 
 - name: Open RabbitMQ firewall ports
   ufw:
@@ -46,13 +44,11 @@
 
 - name: install rabbitmq
   apt:
-    name: "{{ item }}"
+    name:
+      - "erlang-nox={{ ERLANG_VERSION }}"
+      - "rabbitmq-server={{ RABBITMQ_VERSION }}"
     update_cache: yes
     force: yes
-    state: installed
-  with_items:
-    - "erlang-nox={{ ERLANG_VERSION }}"
-    - "rabbitmq-server={{ RABBITMQ_VERSION }}"
   tags:
     - install_rabbitmq
 

@@ -11,15 +11,13 @@
  
 - name: Install required PostgreSQL packages
   apt:
-    name: "{{ item }}"
-    state: present
+    name:
+      - postgresql-{{postgresql_version}}
+      - postgresql-contrib-{{postgresql_version}}
+      - postgresql-server-dev-{{postgresql_version}}
+      - postgresql-client-{{postgresql_version}}
+      - python3-psycopg2
     update_cache: yes
-  with_items:
-    - postgresql-{{postgresql_version}}
-    - postgresql-contrib-{{postgresql_version}}
-    - postgresql-server-dev-{{postgresql_version}}
-    - postgresql-client-{{postgresql_version}}
-    - python3-psycopg2
 
 - name: Create postgres group
   group:

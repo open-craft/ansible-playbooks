@@ -6,5 +6,4 @@
   become: true
   roles:
     - common-server
-    - forward-server-mail
     - elasticsearch

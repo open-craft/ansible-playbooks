@@ -1,0 +1,69 @@
+---
+- name: install gnu parallel
+  apt:
+    name: parallel
+
+- name: create dirs
+  file:
+    name: "{{ item }}"
+    mode: 0700
+    state: directory
+  with_items:
+    - /etc/tarsnap
+    - /var/cache
+
+# Note: tarsnapper requires keys to end with a newline
+# which are stripped from ansible variables.
+# tarsnap.key template exists only to add that newline.
+- name: upload keys
+  template:
+    src: tarsnap.key
+    dest: "/etc/tarsnap/{{ item.name }}.key"
+    mode: 0400
+  no_log: true
+  with_items: "{{ BACKUP_PRUNER_TARSNAPPER_JOBS }}"
+
+- name: create cache dirs
+  file:
+    name: "/var/cache/tarsnap/{{ item.name }}"
+    mode: 0700
+    state: directory
+  no_log: true
+  with_items: "{{ BACKUP_PRUNER_TARSNAPPER_JOBS }}"
+
+# NOTE: Pip doesn't work with tarsnapper
+- name: install tarsnapper
+  command: easy_install "{{ BACKUP_PRUNER_TARSNAPPER_VERSION }}"
+
+- name: install pruner scripts
+  template:
+    src: run-tarsnapper.sh
+    dest: "/usr/local/sbin/tarsnap-{{ item.name }}.sh"
+    mode: 0700
+  no_log: true
+  with_items: "{{ BACKUP_PRUNER_TARSNAPPER_JOBS }}"
+
+- name: create log dir
+  file:
+    name: "{{ BACKUP_PRUNER_LOG_DIR }}"
+    mode: 0700
+    state: directory
+
+- name: add logrotate for individual pruner logs
+  template:
+    src: logrotate.conf
+    dest: /etc/logrotate.d/backup-pruner
+    mode: 0644
+
+- name: add parallel pruner script
+  template:
+    src: backup-pruner.sh
+    dest: "{{ BACKUP_PRUNER_SCRIPT }}"
+    mode: 0700
+
+- name: add backup pruner cron
+  cron:
+    name: backup pruner
+    minute: 40
+    hour: 6,18
+    job: "{{ BACKUP_PRUNER_SCRIPT }}"
