@@ -4,7 +4,6 @@ dependencies:
     prometheus_node_exporter_install: true
     prometheus_install: false
     prometheus_alert_manager_install: false
-    prometheus_install_dir: /opt
   - name: nginx-proxy
     NGINX_PROXY_HTPASSWD_PATH: "{{ NODE_EXPORTER_HTPASSWD_PATH }}"
     # The username is a bit misleading – should actually be "prometheus", since it's the server
