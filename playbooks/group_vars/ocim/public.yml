@@ -1,0 +1,6 @@
+COMMON_SERVER_NO_BACKUPS: true
+COMMON_SERVER_INSTALL_CERTBOT: false
+COMMON_SERVER_INSTALL_NODE_EXPORTER: false
+
+NODE_EXPORTER_SSL_CERT: /etc/ssl/certs/ssl-cert.pem
+NODE_EXPORTER_SSL_KEY: /etc/ssl/private/ssl-cert.key
