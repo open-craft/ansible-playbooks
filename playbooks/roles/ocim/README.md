@@ -1,5 +1,5 @@
-Ansible playbook for the deployment of the OpenCraft Instance Manager
-=====================================================================
+Ansible role for the deployment of the OpenCraft Instance Manager
+=================================================================
 
 The role in this directory can be used to deploy the OpenCraft Instance Manager to a server
 running on Ubuntu 16.04 xenial.  It has been tested with this image:
@@ -28,8 +28,11 @@ Set `OPENCRAFT_OPENSTACK_SSH_KEY_FILE` to the name of the private SSH key to be 
 OpenStack servers.  You must upload the corresponding public key to the OpenStack project
 configured in OPENCRAFT_ENV_TOKENS and set OPENSTACK_SANDBOX_SSH_KEYNAME to the name of the key.
 
-See the `README.md` file in the top-level directory and `opencraft/settings.py` for further details
-on settings you want to include there.
+See the [`README.md`][1] file and [`opencraft/settings.py`][2] for further details on settings you
+want to include there.
+
+[1]: https://github.com/open-craft/opencraft/blob/master/README.md
+[2]: https://github.com/open-craft/opencraft/blob/master/opencraft/settings.py
 
 ### Deployment of swift backup
 
@@ -51,17 +54,13 @@ To do this you'll need to:
 Run the playbook
 ----------------
 
-1. Install Ansible, e.g. by creating a new Python 2 virtualenv and running
+1. Install Ansible, e.g. by creating a new virtualenv and running
 
         pip install -r requirements.txt
 
-2. Install all required roles:
+2. Prepare your server with a stock Ubuntu 16.04 image, and make sure you can SSH to it.
 
-        ansible-galaxy install -r requirements.yml
-
-3. Prepare your server with a stock Ubuntu 16.04 image, and make sure you can SSH to it.
-
-4. Run the playbook:
+3. Run the playbook:
 
         ansible-playbook playbooks/ocim.yml --extra-vars @private.yml -i your.host.name.here,
 
@@ -69,18 +68,9 @@ Run the playbook
    story short this will make `forward-server-mail` explode when configuring postfix. Please temporarily
    add hostname mapping to your hosts if you need to, or just create an ansible ``hosts`` file.
 
-After deployment, the server doesn't run the instance manager automatically.  You need to log in
-and run it manually inside a `screen` or `tmux` session:
-
-1. SSH into your server.
-
-2. Start `screen`.
-
-3. Become the `www-data` user with `sudo -s -H -u www-data` and cd to `/var/www/opencraft`.
-
-4. Run the server and workers: `/var/www/.virtualenvs/opencraft/bin/exec make run WORKERS=5`
-
-5. Detach the `screen` session to log out again, leaving the server running.
+After deployment, the server runs inside a screen session.  To restart it or to see the console
+output, you need to log in and attach to the screen session using `screen -r`.  To detach again use
+the keyboard shortcut `C-a d`.
 
 Show changes that would be applied to `.env` file
 -------------------------------------------------
