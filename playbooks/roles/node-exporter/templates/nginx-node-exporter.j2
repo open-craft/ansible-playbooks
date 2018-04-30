@@ -1,5 +1,5 @@
 server {
-    listen 0.0.0.0:19100 {% if NODE_EXPORTER_USE_SSL %}ssl {% endif %}http2 default;
+    listen 0.0.0.0:19100 {% if NODE_EXPORTER_USE_SSL %}ssl http2 {% endif %}default;
     server_name _;
 
     {% if NODE_EXPORTER_USE_SSL -%}
