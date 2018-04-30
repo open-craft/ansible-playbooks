@@ -1,6 +1,14 @@
 ---
 - import_tasks: common.yml
 
+- name: Create settings file if it does not exist yet
+  copy:
+    src: "{{ opencraft_root_dir }}/.env.test"
+    remote_src: yes
+    dest: "{{ opencraft_root_dir }}/.env"
+    force: no
+  become_user: "{{ www_user }}"
+
 - name: Install database dependencies
   shell: DEBIAN_FRONTEND=noninteractive make install_system_db_dependencies
   args:
