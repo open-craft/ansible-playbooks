@@ -53,3 +53,11 @@ consul_service_config:
         - name: "Connect to HAProxy HTTPS"
           tcp: "{{ LOAD_BALANCER_SERVER_IP }}:443"
           interval: "10m"
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "haproxy"
+    paths:
+      - /var/log/haproxy.log

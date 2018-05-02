@@ -56,3 +56,11 @@ consul_service_config:
       - name: "Connect to PostgreSQL"
         tcp: "{{ POSTGRES_SERVER_DOMAIN }}:5432"
         interval: "10m"
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "postgres"
+    paths:
+      - /var/log/postgresql/*.log

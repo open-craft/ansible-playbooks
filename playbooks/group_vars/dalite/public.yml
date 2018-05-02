@@ -49,3 +49,11 @@ BACKUP_SWIFT_DEST: '/usr/local/sbin/backup-container.sh'
 BACKUP_SWIFT_CACHE: "/var/cache/tarsnap-swift"
 BACKUP_SWIFT_TARSNAP_KEY: "{{ DALITE_TARSNAP_SWIFT }}"
 BACKUP_SWIFT_RC: "{{ DALITE_SWIFT_BACKUP_RC }}"
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "dalite"
+    paths:
+      - "{{ DALITE_LOG_DIR }}/*.log"

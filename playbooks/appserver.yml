@@ -9,3 +9,7 @@
       when: consul_servers | length > 0
     - role: node-exporter
       when: NODE_EXPORTER_PASSWORD != 'set-me-please'
+    - role: filebeat
+      # Appservers may have some Elastic stuff already installed on them.
+      filebeat_elastic_apt_pin: 200
+      when: filebeat_logstash_hosts | length > 0

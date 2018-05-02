@@ -41,3 +41,15 @@ consul_service_config:
         - name: "Connect to RabbitMQ Management Interface"
           tcp: "{{ inventory_hostname }}:15671"
           interval: "10m"
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "rabbitmq"
+    paths:
+      - /var/log/rabbitmq/*.log
+    multiline:
+      pattern: '^='
+      match: after
+      negate: true

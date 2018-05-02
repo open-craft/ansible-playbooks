@@ -13,7 +13,7 @@ mongodb_storage_dbpath: "/var/lib/mongodb"
 # is using 14 GB for the module store.)
 mongodb_storage_engine: 'mmapv1'
 mongodb_storage_quota_maxfiles: 36
-mongodb_systemlog_path: "/var/lib/mongodb/log/{{ mongodb_daemon_name }}.log"
+mongodb_systemlog_path: "{{ mongodb_storage_dbpath }}/log/{{ mongodb_daemon_name }}.log"
 mongodb_pymongo_from_pip: true
 
 MONGODB_SERVER_DOMAIN: "{{ inventory_hostname }}"
@@ -53,3 +53,11 @@ consul_service_config:
       - name: "Connect to MongoDB"
         tcp: "{{ MONGODB_SERVER_DOMAIN }}:27017"
         interval: "10m"
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "mongodb"
+    paths:
+      - "{{ mongodb_systemlog_path | dirname }}/*.log*"

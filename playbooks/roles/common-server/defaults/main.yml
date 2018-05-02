@@ -103,3 +103,6 @@ COMMON_SERVER_INSTALL_NODE_EXPORTER: true
 
 # Install Postfix to forward local mail
 COMMON_SERVER_INSTALL_POSTFIX: true
+
+# Filebeat
+COMMON_SERVER_INSTALL_FILEBEAT: true

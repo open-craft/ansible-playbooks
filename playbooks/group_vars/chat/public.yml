@@ -8,3 +8,11 @@ SANITY_CHECK_LIVE_PORTS:
     message: "Cannot connect to HTTPS port."
 
 MATTERMOST_OPS_EMAIL: "{{ OPS_EMAIL }}"
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "mattermost"
+    paths:
+      - "{{ MATTERMOST_LOG_DIR }}/*.log"
