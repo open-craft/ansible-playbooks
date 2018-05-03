@@ -1,0 +1,17 @@
+server {
+    listen 0.0.0.0:{{ NGINX_PROXY_PUBLIC_PORT }} {% if NGINX_PROXY_USE_SSL %}ssl http2 {% endif %}default;
+    server_name _;
+
+    {% if NGINX_PROXY_USE_SSL -%}
+    ssl_certificate {{ NGINX_PROXY_SSL_CERT }};
+    ssl_certificate_key {{ NGINX_PROXY_SSL_KEY }};
+    {%- endif %}
+
+    location / {
+        proxy_pass http://localhost:{{ NGINX_PROXY_INTERNAL_PORT }}/;
+        {% if NGINX_PROXY_PASSWORD is not none -%}
+        auth_basic "{{ NGINX_PROXY_AUTH_DOMAIN }}";
+        auth_basic_user_file {{ NGINX_PROXY_HTPASSWD_PATH }};
+        {%- endif %}
+    }
+}
