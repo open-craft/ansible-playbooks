@@ -5,6 +5,11 @@
   hosts: postgres
   become: true
   roles:
-    - common-server
-    - postgres
-    - geerlingguy.postgresql
+    - role: common-server
+      tags: 'common-server'
+
+    - role: postgres
+      tags: 'postgres'
+
+    - role: geerlingguy.postgresql
+      tags: 'geerlingguy.postgresql'

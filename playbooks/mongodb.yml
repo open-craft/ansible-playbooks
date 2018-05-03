@@ -5,6 +5,11 @@
   hosts: mongodb
   become: true
   roles:
-    - common-server
-    - mongodb
-    - greendayonfire.mongodb
+    - role: common-server
+      tags: 'common-server'
+
+    - role: mongodb
+      tags: 'mongodb'
+
+    - role: greendayonfire.mongodb
+      tags: 'greendayonfire.mongodb'

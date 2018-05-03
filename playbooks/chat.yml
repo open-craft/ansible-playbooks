@@ -5,7 +5,14 @@
   hosts: chat
   become: true
   roles:
-    - common-server
-    - mattermost
-    - crafty
-    - link-shortener
+    - role: common-server
+      tags: 'common-server'
+
+    - role: mattermost
+      tags: 'mattermost'
+
+    - role: crafty
+      tags: 'crafty'
+
+    - role: link-shortener
+      tags: 'link-shortener'

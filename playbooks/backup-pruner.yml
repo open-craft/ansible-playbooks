@@ -5,6 +5,11 @@
   hosts: backup-pruner
   become: true
   roles:
-    - common-server
-    - pmbauer.tarsnap
-    - backup-pruner
+    - role: common-server
+      tags: 'common-server'
+
+    - role: pmbauer.tarsnap
+      tags: 'pmbauer.tarsnap'
+
+    - role: backup-pruner
+      tags: 'backup-pruner'
