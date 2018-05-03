@@ -5,5 +5,8 @@
   hosts: elasticsearch
   become: true
   roles:
-    - common-server
-    - elasticsearch
+    - role: common-server
+      tags: 'common-server'
+
+    - role: elasticsearch
+      tags: 'elasticsearch'

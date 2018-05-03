@@ -6,5 +6,8 @@
   hosts: accounting
   become: true
   roles:
-    - common-server
-    - accounting
+    - role: common-server
+      tags: 'common-server'
+
+    - role: accounting
+      tags: 'accounting'

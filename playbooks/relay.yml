@@ -5,5 +5,8 @@
   hosts: relay
   become: true
   roles:
-    - common-server
-    - postfix
+    - role: common-server
+      tags: 'common-server'
+
+    - role: postfix
+      tags: 'postfix'

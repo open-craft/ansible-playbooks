@@ -5,5 +5,8 @@
   hosts: rabbitmq
   become: true
   roles:
-    - common-server
-    - rabbitmq
+    - role: common-server
+      tags: 'common-server'
+
+    - role: rabbitmq
+      tags: 'rabbitmq'

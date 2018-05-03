@@ -5,6 +5,11 @@
   hosts: mysql
   become: true
   roles:
-    - common-server
-    - mysql
-    - geerlingguy.mysql
+    - role: common-server
+      tags: 'common-server'
+
+    - role: mysql
+      tags: 'mysql'
+
+    - role: geerlingguy.mysql
+      tags: 'geerlingguy.mysql'

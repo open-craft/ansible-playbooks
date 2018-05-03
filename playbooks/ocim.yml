@@ -3,6 +3,11 @@
   hosts: ocim
   become: true
   roles:
-    - common-server
-    - ocim
-    - node-exporter
+    - role: common-server
+      tags: 'common-server'
+
+    - role: ocim
+      tags: 'ocim'
+
+    - role: node-exporter
+      tags: 'node-exporter'

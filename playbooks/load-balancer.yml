@@ -5,6 +5,11 @@
   hosts: load-balancer
   become: true
   roles:
-    - common-server
-    - load-balancer
-    - node-exporter
+    - role: common-server
+      tags: 'common-server'
+
+    - role: load-balancer
+      tags: 'load-balancer'
+
+    - role: node-exporter
+      tags: 'node-exporter'

@@ -24,6 +24,8 @@ consul_service_config:
 
 # FILEBEAT ####################################################################
 
+# We don't want to accidentally upgrade Elasticsearch.
+filebeat_elastic_apt_pin: 200
 filebeat_prospectors:
   - fields:
       type: "elasticsearch"
