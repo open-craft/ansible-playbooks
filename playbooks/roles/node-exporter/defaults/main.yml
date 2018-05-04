@@ -14,6 +14,6 @@ NODE_EXPORTER_CONSUL_SERVICE:
     name: node-exporter
     tags:
       - node-exporter
-      - "{{ 'montitor-https' if NODE_EXPORTER_USE_SSL else 'monitor' }}"
+      - "{{ 'monitor-https' if NODE_EXPORTER_USE_SSL else 'monitor' }}"
     port: 19100
     enable_tag_override: true
