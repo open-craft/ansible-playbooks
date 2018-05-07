@@ -42,3 +42,6 @@ consul_performance_raft_multiplier: 5
 consul_service_config: ""
 
 consul_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
+
+consul_http_public_port: 18500
+consul_http_password: null

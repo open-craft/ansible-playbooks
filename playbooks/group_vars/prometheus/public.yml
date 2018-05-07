@@ -1,0 +1,43 @@
+---
+
+# GENERAL #####################################################################
+
+COMMON_SERVER_NO_BACKUPS: true
+
+SANITY_CHECK_LIVE_PORTS:
+  - host: localhost
+    port: 9090
+    message: "Cannot connect to Prometheus web port."
+
+# PROMETHEUS ##################################################################
+
+prometheus_web__listen_address: 127.0.0.1:9090
+
+prometheus_config_global_scrape_interval: 30s
+prometheus_config_global_evaluation_interval: 1m
+prometheus_config_global_scrape_timeout: 10s
+
+prometheus_storage__tsdb__retention: 30d
+
+# The defaults weren't working, though they actually should.  We are not using the Prometheus
+# consoles for now, but leaving these settings here ensures that we don't have to debug the
+# problem again once we start using them.
+prometheus_web__console__templates: "{{ prometheus_install_dir }}/prometheus-{{ prometheus_version }}.{{ prometheus_platform_architecture }}/consoles"
+prometheus_web__console__libraries: "{{ prometheus_install_dir }}/prometheus-{{ prometheus_version }}.{{ prometheus_platform_architecture }}/console_libraries"
+
+# CONSUL ######################################################################
+
+consul_service_config:
+  service:
+    name: prometheus
+    tags: ["prometheus"]
+    port: 9090
+    enable_tag_override: true
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: prometheus
+    paths:
+      - /var/log/prometheus.log*

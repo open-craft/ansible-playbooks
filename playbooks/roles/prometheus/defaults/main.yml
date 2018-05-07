@@ -1,0 +1,5 @@
+---
+PROMETHEUS_BASIC_AUTH_USERNAME: prometheus
+PROMETHEUS_BASIC_AUTH_PASSWORD: null
+
+PROMETHEUS_LETSENCRYPT_STAGE_CA: "{{ prometheus_config_dir }}/letsencrypt-stage-ca.crt"

@@ -28,3 +28,7 @@ swapfile_size: '512MB'
 # CONSUL ######################################################################
 
 consul_ip: "{{ COMMON_FLOATING_IP if (COMMON_FLOATING_IP is defined and COMMON_FLOATING_IP) else ansible_default_ipv4.address }}"
+
+# PROMETHEUS ##################################################################
+
+prometheus_install_dir: /opt

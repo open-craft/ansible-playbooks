@@ -8,7 +8,7 @@
     - role: consul
       when: consul_servers | length > 0
     - role: node-exporter
-      when: NODE_EXPORTER_PASSWORD != 'set-me-please'
+      when: NODE_EXPORTER_PASSWORD is not none
     - role: filebeat
       # Appservers may have some Elastic stuff already installed on them.
       filebeat_elastic_apt_pin: 200
