@@ -1,15 +1,17 @@
 ---
-- name: install passlib for htpasswd generation
-  apt:
-    name: python3-passlib
+- name: set up basic auth password
   when: NGINX_PROXY_PASSWORD is not none
+  block:
 
-- name: generate htpasswd file
-  htpasswd:
-    path: "{{ NGINX_PROXY_HTPASSWD_PATH }}"
-    username: "{{ NGINX_PROXY_USERNAME }}"
-    password: "{{ NGINX_PROXY_PASSWORD }}"
-  when: NGINX_PROXY_PASSWORD is not none
+    - name: install passlib for htpasswd generation
+      apt:
+        name: python3-passlib
+
+    - name: generate htpasswd file
+      htpasswd:
+        path: "{{ NGINX_PROXY_HTPASSWD_PATH }}"
+        username: "{{ NGINX_PROXY_USERNAME }}"
+        password: "{{ NGINX_PROXY_PASSWORD }}"
 
 - name: set up nginx to reverse-proxy
   template:
