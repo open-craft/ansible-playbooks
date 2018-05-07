@@ -3,8 +3,11 @@
 # COMMON ######################################################################
 
 COMMON_SERVER_NO_BACKUPS: true
-COMMON_SERVER_INSTALL_CERTBOT: false
-COMMON_SERVER_INSTALL_NODE_EXPORTER: false
+
+# CERTBOT #####################################################################
+
+CERTBOT_DOMAIN_NAME: "{{ OPENCRAFT_DOMAIN_NAME }}"
+CERTBOT_ADDITIONAL_DOMAINS: ["{{ OPENCRAFT_WEBSOCKET_DOMAIN_NAME }}"]
 
 # PROMETHEUS ##################################################################
 

@@ -1,3 +1,20 @@
 dependencies:
+
   - name: pmbauer.tarsnap
     when: "{{ OPENCRAFT_BACKUP_SWIFT_ENABLED }}"
+
+  - name: nginx-proxy
+    NGINX_PROXY_CONFIG_PATH: /etc/nginx/sites-available/ocim
+    NGINX_PROXY_INTERNAL_PORT: 5000
+    NGINX_PROXY_PUBLIC_PORT: 443
+    NGINX_PROXY_SERVER_NAME: "{{ OPENCRAFT_DOMAIN_NAME }}"
+    NGINX_PROXY_SEND_TIMEOUT: 600s
+    NGINX_PROXY_READ_TIMEOUT: 600s
+    NGINX_PROXY_EXTRA_CONFIG: "{{ opencraft_nginx_static_config }}"
+
+  - name: nginx-proxy
+    NGINX_PROXY_CONFIG_PATH: /etc/nginx/sites-available/ocim-websocket
+    NGINX_PROXY_INTERNAL_PORT: 2001
+    NGINX_PROXY_PUBLIC_PORT: 443
+    NGINX_PROXY_SERVER_NAME: "{{ OPENCRAFT_WEBSOCKET_DOMAIN_NAME }}"
+    NGINX_PROXY_UPGRADE_CONNECTION: true

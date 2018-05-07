@@ -80,9 +80,8 @@ version that will be created by the ansible playbook, you can use this command
 line:
 
     ansible-playbook  playbooks/ocim.yml \
-        --check --diff --start-at-task="Install the configuration/environment file"
+        --check --diff -t ocim-env-file
         -u ubuntu --extra-vars @private.yml -i your.host.name.here,
 
-It will start a dry-run of Ansible in diff mode, starting at the task that
-creates the configuration file.  You can break using Ctrl-C after the diff has
-been shown.
+It will start a dry-run of Ansible in diff mode, and only run the task to update
+the env file.
