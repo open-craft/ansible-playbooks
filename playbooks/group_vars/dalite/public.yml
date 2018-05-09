@@ -1,5 +1,10 @@
+---
+# The Python 3 version on trusty is too old for Ansible.  We can remove this once we move to xenial.
+ansible_python_interpreter: /usr/bin/python
+
 COMMON_SERVER_INSTALL_CERTBOT: false
 COMMON_SERVER_INSTALL_CONSUL: false
+COMMON_SERVER_INSTALL_FILEBEAT: false
 COMMON_SERVER_INSTALL_NODE_EXPORTER: false
 
 NODE_EXPORTER_SSL_CERT: /etc/ssl/certs/ssl-cert.pem

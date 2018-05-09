@@ -1,4 +1,4 @@
-
+---
 # Tarsnap key contents
 # Should look like
 # TARSNAP_KEY: |
@@ -24,6 +24,7 @@ TARSNAP_BACKUP_POST_SCRIPT: null
 TARSNAP_BACKUP_FOLDERS: null
 
 TARSNAP_BACKUP_SCRIPT_LOCATION: /usr/local/sbin/backup.sh
+TARSNAP_BACKUP_GLOBAL_LOCK: true
 
 # We will add timestamp to archive name
 TARSNAP_ARCHIVE_NAME: 'backup'
