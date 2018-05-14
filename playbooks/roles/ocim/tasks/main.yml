@@ -33,6 +33,7 @@
     mode: 0600
     backup: yes
   become_user: "{{ www_user }}"
+  tags: ocim-env-file
 
 - import_tasks: common.yml
 
@@ -56,57 +57,6 @@
     mode: 0600
   become_user: "{{ www_user }}"
 
-- name: Copy nginx site configuration
-  template:
-    src: opencraft-nginx.j2
-    dest: /etc/nginx/sites-available/opencraft
-  notify:
-    - restart nginx
-
-- name: Enable nginx site configuration
-  file:
-    src: /etc/nginx/sites-available/opencraft
-    dest: /etc/nginx/sites-enabled/opencraft
-    state: link
-  notify:
-    - restart nginx
-
-- name: Copy SSL certificate
-  copy:
-    content: "{{ OPENCRAFT_SSL_CERT }}"
-    dest: /etc/ssl/certs/ssl-cert.pem
-    group: ssl-cert
-    mode: 0640
-  notify:
-    - restart nginx
-
-- name: Copy SSL key
-  copy:
-    content: "{{ OPENCRAFT_SSL_KEY }}"
-    dest: /etc/ssl/private/ssl-cert.key
-    group: ssl-cert
-    mode: 0640
-  notify:
-    - restart nginx
-
-- name: Copy websocket SSL certificate
-  copy:
-    content: "{{ OPENCRAFT_WEBSOCKET_SSL_CERT }}"
-    dest: /etc/ssl/certs/ssl-websocket-cert.pem
-    group: ssl-cert
-    mode: 0640
-  notify:
-    - restart nginx
-
-- name: Copy websocket SSL key
-  copy:
-    content: "{{ OPENCRAFT_WEBSOCKET_SSL_KEY }}"
-    dest: /etc/ssl/private/ssl-websocket-cert.key
-    group: ssl-cert
-    mode: 0640
-  notify:
-    - restart nginx
-
 - name: Copy screen session configuration
   template:
     src: "ocim-screenrc"
@@ -125,15 +75,6 @@
     name: ocim-screen.service
     enabled: yes
     state: started
-
-- name: Open HTTP port on the firewall
-  ufw:
-    rule: allow
-    port: "{{ item }}"
-    proto: tcp
-  with_items:
-    - 80
-    - 443
 
 - import_tasks: configure-swift-backups.yml
   when: OPENCRAFT_BACKUP_SWIFT_ENABLED

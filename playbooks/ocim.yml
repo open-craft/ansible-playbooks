@@ -8,6 +8,3 @@
 
     - role: ocim
       tags: 'ocim'
-
-    - role: node-exporter
-      tags: 'node-exporter'

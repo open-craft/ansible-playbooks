@@ -74,6 +74,23 @@ opencraft_virtualenv_dir: '/var/www/.virtualenvs/opencraft'
 opencraft_static_files_dir: '{{ opencraft_root_dir }}/build/static'
 opencraft_screenrc_path: '/home/ubuntu/ocim-screenrc'
 
+opencraft_nginx_static_config: |
+  # serve static files
+  #
+  location /static {
+      alias {{ opencraft_static_files_dir }};
+      try_files $uri =404;
+      autoindex off;
+      gzip on;
+      gzip_min_length 1000;
+      gzip_types
+          text/css
+          text/html
+          text/javascript
+          image/svg+xml
+          application/javascript;
+  }
+
 # The user you will log in as in an SSH session and their primary group
 session_user: ubuntu
 session_user_group: ubuntu

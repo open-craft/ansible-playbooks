@@ -47,6 +47,9 @@
     --webroot
     --webroot-path /var/www/certbot
     --domain {{ CERTBOT_DOMAIN_NAME }}
+    {% for domain in CERTBOT_ADDITIONAL_DOMAINS %}
+    --domain {{ domain }}
+    {% endfor %}
     --email {{ CERTBOT_OPS_EMAIL }}
     --non-interactive
     --agree-tos

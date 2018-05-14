@@ -1,6 +1,9 @@
 server {
-    listen 0.0.0.0:{{ NGINX_PROXY_PUBLIC_PORT }} {% if NGINX_PROXY_USE_SSL %}ssl http2 {% endif %}default;
+    listen 0.0.0.0:{{ NGINX_PROXY_PUBLIC_PORT }}{% if NGINX_PROXY_USE_SSL %} ssl http2{% endif %};
     server_name {{ NGINX_PROXY_SERVER_NAME }};
+
+    access_log {{ NGINX_PROXY_ACCESS_LOG }};
+    error_log {{ NGINX_PROXY_ERROR_LOG }} error;
 
     {% if NGINX_PROXY_USE_SSL -%}
     ssl_certificate {{ NGINX_PROXY_SSL_CERT }};
