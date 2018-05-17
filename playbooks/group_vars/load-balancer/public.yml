@@ -71,3 +71,8 @@ filebeat_prospectors:
     paths:
       - /var/log/syslog
     include_lines: ['nomad']
+
+# PROMETHEUS ##################################################################
+
+HAPROXY_EXPORTER_ENABLED: true
+HAPROXY_EXPORTER_PASSWORD: "{{ NODE_EXPORTER_PASSWORD }}"
