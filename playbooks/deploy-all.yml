@@ -3,6 +3,7 @@
 - import_playbook: chat.yml
 - import_playbook: dalite.yml
 - import_playbook: elasticsearch.yml
+- import_playbook: learner-profile-dashboard.yml
 - import_playbook: load-balancer.yml
 - import_playbook: mongodb.yml
 - import_playbook: mysql.yml
