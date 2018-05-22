@@ -38,10 +38,6 @@ SANITY_CHECK_LIVE_PORTS:
 
 SANITY_CHECK_SUBJECT: '[LPD] Sanity check problems'
 
-SANITY_CHECK_COMMANDS:
-  - command: "{{ LPD_MANAGE_PY }} sanity_check"
-    message: "Sanity check failed for LPD. Is database accessible?"
-
 # FILEBEAT ####################################################################
 
 filebeat_prospectors:

@@ -28,43 +28,43 @@ DATABASES = {
 if getpass.getuser() == '{{ LPD_USER_NAME }}':
     # Change log paths only for production requests
     LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file_debug_log': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '{{ LPD_LOG_DIR }}/debug.log',
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file_debug_log': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': '{{ LPD_LOG_DIR }}/debug.log',
+            },
+            'file_test_log': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': '{{ LPD_LOG_DIR }}/test.log',
+            },
         },
-        'file_test_log': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '{{ LPD_LOG_DIR }}/test.log',
+        'loggers': {
+            'django.request': {
+                'handlers': ['file_debug_log'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            'django_lti_tool_provider.views': {
+                'handlers': ['file_debug_log'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            'lpd.views': {
+                'handlers': ['file_debug_log'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            'lpd.tests': {
+                'handlers': ['file_test_log'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
         },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['file_debug_log'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'django_lti_tool_provider.views': {
-            'handlers': ['file_debug_log'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'lpd.views': {
-            'handlers': ['file_debug_log'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'lpd.tests': {
-            'handlers': ['file_test_log'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+    }
 
 STATIC_ROOT="{{ LPD_STATICFILES_ROOT }}"
 STATIC_URL="/static/"
