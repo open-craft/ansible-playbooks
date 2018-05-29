@@ -7,31 +7,35 @@
     name: mattermail
     group: mattermail
     home: "{{ MATTERMAIL_HOME }}"
+    system: yes
 
-- name: Install git package
+- name: Install git and golang packages
   apt:
-    name: git
+    name:
+      - git
+      - golang
     update_cache: yes
-
-- name: Install golang package
-  apt:
-    name: golang
 
 - name: build Mattermail binary
   command: go get {{ MATTERMAIL_REPO }}
+  args:
+    creates: "{{ MATTERMAIL_HOME }}/bin/mattermail"
   become_user: mattermail
   environment:
-    GOPATH: /opt/mattermail
+    GOPATH: "{{ MATTERMAIL_HOME }}"
 
 - name: create config
   template:
     src: config.json
-    dest: /opt/mattermail/config.json
+    dest: "{{ MATTERMAIL_HOME }}/config.json"
   become_user: mattermail
 
 - name: create data dir
-  command: mkdir {{ MATTERMAIL_HOME }}/data
-  become_user: mattermail
+  file:
+    path: "{{ MATTERMAIL_HOME }}/data"
+    state: directory
+    owner: mattermail
+    group: mattermail
 
 - name: create systemd service
   template:
