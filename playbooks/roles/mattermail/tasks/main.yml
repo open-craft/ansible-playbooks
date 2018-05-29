@@ -1,0 +1,45 @@
+- name: create mattermail group
+  group:
+    name: mattermail
+
+- name: create mattermail user
+  user:
+    name: mattermail
+    group: mattermail
+    home: "{{ MATTERMAIL_HOME }}"
+
+- name: Install git package
+  apt:
+    name: git
+    update_cache: yes
+
+- name: Install golang package
+  apt:
+    name: golang
+
+- name: build Mattermail binary
+  command: go get {{ MATTERMAIL_REPO }}
+  become_user: mattermail
+  environment:
+    GOPATH: /opt/mattermail
+
+- name: create config
+  template:
+    src: config.json
+    dest: /opt/mattermail/config.json
+  become_user: mattermail
+
+- name: create data dir
+  command: mkdir {{ MATTERMAIL_HOME }}/data
+  become_user: mattermail
+
+- name: create systemd service
+  template:
+    src: mattermail.service
+    dest: /etc/systemd/system/mattermail.service
+
+- name: start and enable the mattermail service
+  service:
+    name: mattermail
+    state: started
+    enabled: yes

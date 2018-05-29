@@ -1,0 +1,22 @@
+{
+    "Directory": "./data/",
+    "Profiles":[
+        {
+            "Name":              "{{ MATTERMOST_LOGIN }}",
+            "Channels":          ["{{ MATTERMOST_CHANNEL }}"],
+
+            "Email":{
+                "ImapServer":        "{{ MATTERMAIL_SERVER }}",
+                "Username":          "{{ MATTERMAIL_USERNAME }}",
+                "Password":          "{{ MATTERMAIL_PASSWORD }}"
+            },
+
+            "Mattermost":{
+                "Server":   "{{ MATTERMOST_URL }}",
+                "Team":     "{{ MATTERMOST_TEAM }}",
+                "User":     "{{ MATTERMOST_USER }}",
+                "Password": "{{ MATTERMOST_PASS}}"
+            }
+        }
+    ]
+}
