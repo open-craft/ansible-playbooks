@@ -26,7 +26,7 @@
 
 - name: create config
   template:
-    src: config.json
+    src: config.json.j2
     dest: "{{ MATTERMAIL_HOME }}/config.json"
   become_user: mattermail
 
@@ -39,11 +39,11 @@
 
 - name: create systemd service
   template:
-    src: mattermail.service
+    src: mattermail.service.j2
     dest: /etc/systemd/system/mattermail.service
 
 - name: start and enable the mattermail service
   service:
     name: mattermail
-    state: started
+    state: restarted
     enabled: yes

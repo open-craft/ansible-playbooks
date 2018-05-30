@@ -1,9 +1,9 @@
 # Connections settings for Mattermost
-MATTERMOST_URL: https://mattermost.example.com
-MATTERMOST_TEAM: opencraft
-MATTERMOST_LOGIN: mattermail
-MATTERMOST_PASSWORD: set-me-please
-MATTERMOST_CHANNEL: hosting-subteam
+MATTERMAIL_MATTERMOST_URL: https://mattermost.example.com
+MATTERMAIL_MATTERMOST_TEAM: opencraft
+MATTERMAIL_MATTERMOST_LOGIN: mattermail
+MATTERMAIL_MATTERMOST_PASSWORD: set-me-please
+MATTERMAIL_MATTERMOST_CHANNEL: hosting-subteam
 
 # Mattermail settings to fetch emails
 EMAIL_SERVER: imap.example.com:143

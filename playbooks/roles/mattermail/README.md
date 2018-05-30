@@ -1,5 +1,5 @@
-Ansible role for deploying the MatterMail
-====================================================
+Ansible role for deploying MatterMail
+=====================================
 
 This role deploys MatterMail. [1]
 
