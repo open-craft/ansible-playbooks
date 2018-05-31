@@ -53,7 +53,7 @@
   block:
 
     - name: build Mattermail binary
-      command: go get {{ MATTERMAIL_REPO }}
+      command: go get -u {{ MATTERMAIL_REPO }}
       become_user: mattermail
       environment:
         GOPATH: "{{ MATTERMAIL_HOME }}"
