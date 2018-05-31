@@ -9,20 +9,11 @@
     home: "{{ MATTERMAIL_HOME }}"
     system: yes
 
-- name: Install git and golang packages
+- name: Install golang package
   apt:
     name:
-      - git
       - golang
     update_cache: yes
-
-- name: build Mattermail binary
-  command: go get {{ MATTERMAIL_REPO }}
-  args:
-    creates: "{{ MATTERMAIL_HOME }}/bin/mattermail"
-  become_user: mattermail
-  environment:
-    GOPATH: "{{ MATTERMAIL_HOME }}"
 
 - name: create config
   template:
@@ -42,8 +33,33 @@
     src: mattermail.service.j2
     dest: /etc/systemd/system/mattermail.service
 
-- name: start and enable the mattermail service
-  service:
-    name: mattermail
-    state: restarted
-    enabled: yes
+- name: fetch latest hash
+  git:
+    repo: "https://{{ MATTERMAIL_REPO }}"
+    clone: false
+    update: false
+  register: githash
+
+- name: store git hash
+  copy:
+    dest: "{{ MATTERMAIL_HOME }}/.hash"
+    content: "{{ githash }}"
+    owner: mattermail
+    group: mattermail
+  register: mattermail_version
+
+- name: install new version of Mattermail
+  when: mattermail_version.changed
+  block:
+
+    - name: build Mattermail binary
+      command: go get {{ MATTERMAIL_REPO }}
+      become_user: mattermail
+      environment:
+        GOPATH: "{{ MATTERMAIL_HOME }}"
+
+    - name: start and enable the mattermail service
+      service:
+        name: mattermail
+        state: restarted
+        enabled: yes

@@ -11,6 +11,6 @@ EMAIL_USERNAME: urgent
 EMAIL_PASSWORD: set-me-please
 
 # Settings that can be left at their default values
-MATTERMAIL_REPO: github.com/rodcorsi/mattermail
+MATTERMAIL_REPO: github.com/open-craft/mattermail
 MATTERMAIL_BRANCH: master
 MATTERMAIL_HOME: /opt/mattermail
