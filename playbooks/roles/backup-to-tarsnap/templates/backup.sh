@@ -14,6 +14,7 @@ flock -n 200 || { echo "Another backup task is already running."; exit 1; }
 # 3. Irrespective whether backup succeeds execute post-script.
 
 timestamp=$(date -Isecond)
+echo "Starting at $timestamp"
 
 {% if TARSNAP_BACKUP_PRE_SCRIPT %}
 {{ TARSNAP_BACKUP_PRE_SCRIPT }} || exit 1
@@ -29,3 +30,6 @@ timestamp=$(date -Isecond)
 {{ TARSNAP_BACKUP_FOLDERS }} {% if TARSNAP_BACKUP_SNITCH %} && curl -sS {{ TARSNAP_BACKUP_SNITCH }} {% endif %}
 
 {% if TARSNAP_BACKUP_POST_SCRIPT %}{{ TARSNAP_BACKUP_POST_SCRIPT }}{% endif %}
+
+timestamp=$(date -Isecond)
+echo "Finishing at $timestamp"
