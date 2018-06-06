@@ -30,6 +30,12 @@
   with_items:
     - 27017
 
+- name: configure log rotation for the MongoDB log
+  template:
+    src: logrotate.conf.j2
+    dest: /etc/logrotate.d/mongodb.conf
+    mode: 0644
+
 - name: Copy pre-backup script
   template:
     src: backup-pre-mongodb.sh
