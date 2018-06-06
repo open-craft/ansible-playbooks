@@ -19,6 +19,7 @@
       # Backup of logs is initiated by logrotate, which incidentally
       # also creates data to be backed up.
       TARSNAP_CRONTAB_STATE: "absent"
+      TARSNAP_BACKUP_GLOBAL_LOCK: false
 
     - role: learner-profile-dashboard
       tags: 'learner-profile-dashboard'

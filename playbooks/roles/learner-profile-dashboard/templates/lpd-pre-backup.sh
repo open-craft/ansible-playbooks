@@ -6,7 +6,9 @@ service gunicorn restart
 
 timestamp=$(date +%Y%m%dT%H:%M:%S)
 
-mv /var/log/lpd/debug.log-* "{{ LPD_LOG_DOWNLOAD_LOG_DIR }}"
+if [ -f /var/log/lpd/debug.log-* ]; then
+   mv /var/log/lpd/debug.log-* "{{ LPD_LOG_DOWNLOAD_LOG_DIR }}"
+fi
 chown "{{ LPD_LOG_DOWNLOAD_USER }}:{{ LPD_USER_NAME }}" "{{ LPD_LOG_DOWNLOAD_LOG_DIR }}" "{{ LPD_LOG_DOWNLOAD_DB_DIR }}"
 chmod g+rwx "{{ LPD_LOG_DOWNLOAD_LOG_DIR }}" "{{ LPD_LOG_DOWNLOAD_DB_DIR }}"
 sudo -u "{{ LPD_USER_NAME }}" -H {{LPD_MANAGE_PY}} dumpdata -o "{{ LPD_LOG_DOWNLOAD_DB_DIR }}/database-${timestamp}.json"
