@@ -1,0 +1,16 @@
+---
+
+# COMMON ######################################################################
+
+COMMON_SERVER_NO_BACKUPS: true
+COMMON_SERVER_INSTALL_NODE_EXPORTER: false
+COMMON_SERVER_INSTALL_SANITY_CHECKER: false
+
+# FILEBEAT ####################################################################
+
+filebeat_prospectors:
+  - fields:
+      type: "nomad-client"
+    paths:
+      - /var/log/syslog
+    include_lines: ['nomad']

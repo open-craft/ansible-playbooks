@@ -1,0 +1,51 @@
+name = "{{ inventory_hostname }}"
+data_dir  = "{{ nomad_data_dir }}"
+enable_syslog = true
+
+advertise {
+  http = "{{ nomad_advertise_addr }}"
+  rpc  = "{{ nomad_advertise_addr }}"
+  serf = "{{ nomad_advertise_addr }}"
+}
+
+{% if nomad_server %}
+server {
+  enabled            = true
+  bootstrap_expect   = {{ nomad_servers | length }}
+  retry_join         = ["{{ nomad_servers | join('", "') }}"]
+  rejoin_after_leave = true
+  encrypt            = "{{ nomad_encryption_key }}"
+}
+{% endif %}
+
+{% if nomad_client %}
+client {
+  enabled = true
+  servers = ["{{ nomad_servers | join('", "') }}"]
+
+  reserved {
+    memory = {{ nomad_client_reserved_mem }}
+  }
+}
+{% endif %}
+
+{% if nomad_enable_tls %}
+tls {
+  http                = true
+  rpc                 = true
+  verify_https_client = true
+
+  ca_file   = "{{ nomad_tls_dir }}/ca.cert"
+  cert_file = "{{ nomad_tls_dir }}/nomad.cert"
+  key_file  = "{{ nomad_tls_dir }}/nomad.key"
+}
+{% endif %}
+
+{% if nomad_enable_telemetry %}
+telemetry {
+  publish_allocation_metrics = true
+  publish_node_metrics       = true  # TODO: Will the node exporter cover this already?
+  use_node_name              = true
+  prometheus_metrics         = true
+}
+{% endif %}

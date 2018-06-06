@@ -10,6 +10,7 @@ dependencies:
 
   - name: sanity-checker
     tags: 'sanity-checker'
+    when: COMMON_SERVER_INSTALL_SANITY_CHECKER
 
   - name: backup-to-tarsnap
     tags: 'backup-to-tarsnap'
