@@ -6,7 +6,9 @@ service gunicorn restart
 
 timestamp=$(date +%Y%m%dT%H:%M:%S)
 
-mv /var/log/dalite/student.log-* "{{ DALITE_LOG_DOWNLOAD_LOG_DIR }}"
+if [ -f /var/log/dalite/student.log-* ]; then
+   mv /var/log/dalite/student.log-* "{{ DALITE_LOG_DOWNLOAD_LOG_DIR }}"
+fi
 chown "{{ DALITE_LOG_DOWNLOAD_USER }}:{{ MYSQL_DALITE_USER }}" "{{ DALITE_LOG_DOWNLOAD_LOG_DIR }}" "{{ DALITE_LOG_DOWNLOAD_DB_DIR }}"
 chmod g+rwx "{{ DALITE_LOG_DOWNLOAD_LOG_DIR }}" "{{ DALITE_LOG_DOWNLOAD_DB_DIR }}"
 sudo -u "{{ MYSQL_DALITE_USER }}" -H {{DALITE_MANAGE_PY}} dumpdata -o "{{ DALITE_LOG_DOWNLOAD_DB_DIR }}/database-${timestamp}.json"
