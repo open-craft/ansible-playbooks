@@ -18,7 +18,7 @@ SANITY_CHECK_LIVE_PORTS:
 
 # TARSNAP #####################################################################
 
-TARSNAP_BACKUP_FOLDERS: "/etc/letsencrypt /etc/haproxy {{ consul_data_dir }}"
+TARSNAP_BACKUP_FOLDERS: "/etc/letsencrypt /etc/haproxy {{ consul_data_dir }} {{ '/var/lib/nomad' if 'nomad' in group_names else '' }}"
 
 # Consul produces consistent snapshots with these.
 TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/backup-pre-consul.sh"
@@ -61,3 +61,13 @@ filebeat_prospectors:
       type: "haproxy"
     paths:
       - /var/log/haproxy.log
+  - fields:
+      type: "consul-server"
+    paths:
+      - /var/log/syslog
+    include_lines: ['consul']
+  - fields:
+      type: "nomad-server"
+    paths:
+      - /var/log/syslog
+    include_lines: ['nomad']

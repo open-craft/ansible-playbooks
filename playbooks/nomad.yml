@@ -1,0 +1,25 @@
+---
+
+- name: Set up Nomad server
+  hosts: nomad-server
+  become: true
+  roles:
+    # Note: we don't run the common-server role because our Nomad servers
+    # are on the load balancing servers, so running it would cause issues
+    # like the hostname changing every now and then.
+    # We can technically skip such tasks with variables, but we don't need
+    # anything specific out of common-server that is tailored for Nomad.
+    - role: nomad
+      nomad_server: true
+      tags: ['nomad', 'nomad-server']
+
+- name: Set up Nomad client
+  hosts: nomad-client
+  become: true
+  roles:
+    - role: common-server
+      tags: 'common-server'
+
+    - role: nomad
+      nomad_client: true
+      tags: ['nomad', 'nomad-client']

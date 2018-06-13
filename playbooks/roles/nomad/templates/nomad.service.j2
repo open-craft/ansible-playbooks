@@ -1,0 +1,17 @@
+[Unit]
+Description=Nomad Agent
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+User=nomad
+Group=nomad
+PermissionsStartOnly=true
+ExecStart={{ nomad_bin_dir }}/nomad agent -config={{ nomad_config_dir }}
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

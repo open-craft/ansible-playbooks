@@ -1,0 +1,100 @@
+---
+
+- name: Create nomad group
+  group:
+    name: nomad
+    system: yes
+
+- name: Create nomad user
+  user:
+    name: nomad
+    group: nomad
+    create_home: no
+    system: yes
+
+- name: Create Nomad directories
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: nomad
+    mode: 0750
+  with_items:
+    - { path: "{{ nomad_config_dir }}", owner: root }
+    - { path: "{{ nomad_data_dir }}", owner: nomad }
+    - { path: "{{ nomad_tls_dir }}", owner: root}
+
+- name: Copy over Nomad private TLS content
+  copy:
+    content: "{{ item.content }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { content: "{{ nomad_admin_cert }}", dest: "{{ nomad_tls_dir }}/admin.cert" }
+    - { content: "{{ nomad_admin_key }}", dest: "{{ nomad_tls_dir }}/admin.key" }
+    - { content: "{{ nomad_ca_cert }}", dest: "{{ nomad_tls_dir }}/ca.cert" }
+    - { content: "{{ nomad_server_cert if nomad_server else nomad_client_cert }}", dest: "{{ nomad_tls_dir }}/nomad.cert" }
+    - { content: "{{ nomad_server_key  if nomad_server else nomad_client_key }}", dest: "{{ nomad_tls_dir }}/nomad.key" }
+  no_log: true
+  notify: restart nomad
+
+- name: Download and unarchive the Nomad binary
+  unarchive:
+    src: "{{ nomad_url }}"
+    dest: "{{ nomad_bin_dir }}"
+    owner: nomad
+    group: nomad
+    mode: +x
+    remote_src: yes
+    creates: "{{ nomad_bin_dir }}/nomad"
+  register: nomad_binary
+  notify: restart nomad
+
+- name: Configure nomad autocomplete
+  shell: "nomad -autocomplete-install"
+  become: no
+  when: nomad_binary.changed
+
+- name: Install Nomad environment variables
+  lineinfile:
+    path: "/home/{{ ansible_ssh_user }}/.bashrc"
+    line: "export {{ item }}"
+  with_items: "{{ nomad_env }}"
+
+- name: Create Nomad configuration file
+  template:
+    src: nomad.hcl.j2
+    dest: "{{ nomad_config_dir }}/nomad.hcl"
+    group: nomad
+  notify: restart nomad
+
+- name: Create Nomad systemd service file
+  template:
+    src: nomad.service.j2
+    dest: /etc/systemd/system/nomad.service
+  notify: restart nomad
+
+- name: Enable and start systemd service to start on boot automatically
+  systemd:
+    name: nomad.service
+    enabled: yes
+    state: started
+    daemon_reload: yes
+
+- name: Open TCP/UDP ports on firewall needed for Nomad API/RPC/gossip
+  ufw:
+    rule: allow
+    port: "{{ '4646:4648' if nomad_server else '4646:4647' }}" 
+    proto: "{{ item }}"
+  with_items:
+    - tcp
+    - udp
+
+- name: Open port range on the firewall for Nomad task allocation
+  ufw:
+    rule: allow
+    port: '20000:32000'
+    proto: "{{ item }}"
+  with_items:
+    - tcp
+    - udp
+  when: nomad_client

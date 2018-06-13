@@ -1,0 +1,36 @@
+---
+
+# Note that when you update the version, the binary creation step will not actually work, since
+# the binary will already be created. You'll have to find a workaround.
+nomad_version: "0.8.3"
+nomad_url: "https://releases.hashicorp.com/nomad/{{ nomad_version }}/nomad_{{ nomad_version }}_linux_amd64.zip"
+
+nomad_advertise_addr: ""
+nomad_server: false
+nomad_client: false
+nomad_enable_tls: true
+nomad_enable_telemetry: true
+
+nomad_bin_dir: /usr/local/bin
+nomad_data_dir: /var/lib/nomad
+nomad_config_dir: /etc/nomad
+nomad_tls_dir: "{{ nomad_config_dir }}/tls"
+
+nomad_client_reserved_mem: 512 # MB
+
+nomad_ca_cert: ""
+nomad_server_cert: ""
+nomad_server_key: ""
+nomad_client_cert: ""
+nomad_client_key: ""
+nomad_admin_cert: ""
+nomad_admin_key: ""
+
+nomad_encryption_key: ""
+nomad_servers: []
+
+nomad_env:
+  - "NOMAD_ADDR=https://127.0.0.1:4646"
+  - "NOMAD_CACERT={{ nomad_tls_dir }}/ca.cert"
+  - "NOMAD_CLIENT_CERT={{ nomad_tls_dir }}/admin.cert"
+  - "NOMAD_CLIENT_KEY={{ nomad_tls_dir }}/admin.key"
