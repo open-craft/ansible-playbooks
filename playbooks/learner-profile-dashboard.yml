@@ -20,5 +20,10 @@
       # also creates data to be backed up.
       TARSNAP_CRONTAB_STATE: "absent"
 
+      # The backup lock is causing problems for LPD, since the lock is inherited by
+      # gunicorn workers, which don't release it unless they are stopped.  Since the lock
+      # is not needed for a daily backup anyway, we simply disable it.
+      TARSNAP_BACKUP_GLOBAL_LOCK: false
+
     - role: learner-profile-dashboard
       tags: 'learner-profile-dashboard'
