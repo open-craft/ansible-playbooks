@@ -66,4 +66,4 @@ filebeat_prospectors:
   - fields:
       type: "mongodb"
     paths:
-      - "{{ mongodb_systemlog_path | dirname }}/*.log*"
+      - "{{ mongodb_systemlog_path | dirname }}/*.log"
