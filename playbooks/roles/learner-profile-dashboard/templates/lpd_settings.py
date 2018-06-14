@@ -30,11 +30,17 @@ if getpass.getuser() == '{{ LPD_USER_NAME }}':
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
+        'formatters': {
+            'timestamped': {
+                'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+            },
+        },
         'handlers': {
             'file_debug_log': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
                 'filename': '{{ LPD_LOG_DIR }}/debug.log',
+                'formatter': 'timestamped',
             },
             'file_test_log': {
                 'level': 'DEBUG',
