@@ -24,6 +24,8 @@ MONGODB_SERVER_DOMAIN: "{{ inventory_hostname }}"
 
 MONGODB_SERVER_BACKUP_DIR: '/var/lib/mongodb/backup'
 
+MONGODB_EXPORTER_PASSWORD: "{{ NODE_EXPORTER_PASSWORD }}"
+
 # TARSNAP #####################################################################
 
 TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/backup-pre.sh"

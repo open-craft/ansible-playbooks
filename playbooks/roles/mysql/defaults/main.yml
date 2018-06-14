@@ -1,9 +1,41 @@
 ---
 
-# MYSQL_OPENSTACK_DB_DEVICE --- volume location e.g.: ``/dev/vdb1``
-MYSQL_OPENSTACK_DB_DEVICE: "/dev/vdb1"
+# GENERAL #####################################################################
 
-MYSQL_SERVER_BACKUP_DIR: '/var/lib/mysql/backup'
-
+MYSQL_OPENSTACK_DB_DEVICE: /dev/vdb1
+MYSQL_SERVER_BACKUP_DIR: /var/lib/mysql/backup
 MYSQL_OPEN_FILES_LIMIT: 65536
 MYSQL_PROCESSES_LIMIT: 1024
+
+# PROMETHEUS ##################################################################
+
+MYSQL_EXPORTER_ENABLED: true
+MYSQL_EXPORTER_VERSION: 0.10.0
+MYSQL_EXPORTER_BASENAME: "mysqld_exporter-{{ MYSQL_EXPORTER_VERSION }}.linux-amd64"
+MYSQL_EXPORTER_BINARY: "/opt/{{ MYSQL_EXPORTER_BASENAME }}/mysqld_exporter"
+MYSQL_EXPORTER_ARCHIVE: "{{ MYSQL_EXPORTER_BASENAME }}.tar.gz"
+MYSQL_EXPORTER_DOWNLOAD_URL: "https://github.com/prometheus/mysqld_exporter/releases/download/v{{ MYSQL_EXPORTER_VERSION }}/{{ MYSQL_EXPORTER_ARCHIVE }}"
+MYSQL_EXPORTER_PASSWORD: null
+MYSQL_EXPORTER_MYSQL_PASSWORD: null
+
+# We use this by default because when you have a little too many databases,
+# the exporter takes ~40-50min to enter a listening state, and always times
+# out through the reverse proxy to actually retrieve these metrics.
+# It is uncertain whether this can actually be fixed in the exporter -- it
+# may just be a limitation of having too many databases in MySQL.
+MYSQL_EXPORTER_EXTRA_OPTS: "-collect.info_schema.tables=false"
+
+MYSQL_EXPORTER_MYSQL_USERS:
+  - name: exporter
+    host: "%"
+    password: "{{ MYSQL_EXPORTER_MYSQL_PASSWORD }}"
+    priv: "*.*:PROCESS,REPLICATION CLIENT,SELECT"
+
+MYSQL_EXPORTER_CONSUL_SERVICE:
+  service:
+    name: mysqld-exporter
+    tags:
+      - mysqld-exporter
+      - monitor-https
+    port: 19104
+    enable_tag_override: true

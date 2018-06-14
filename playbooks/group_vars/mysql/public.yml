@@ -11,6 +11,8 @@ mysql_packages:
   - mysql-server-5.5
   - mysql-client-5.5
 
+MYSQL_EXPORTER_PASSWORD: "{{ NODE_EXPORTER_PASSWORD }}"
+
 # TARSNAP #####################################################################
 
 TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/backup-pre.sh"

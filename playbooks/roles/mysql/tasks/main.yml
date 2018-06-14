@@ -1,17 +1,35 @@
+---
+
 # edX is currently using MySQL 5.6, which is not available on Xenial by default.
 - name: Add PPA for MySQL 5.6
   apt_repository:
     repo: "ppa:ondrej/mysql-5.6"
     update_cache: yes
 
+# This task can be removed once we move to the latest version of the geerlingguy.mysql role.  The
+# version we are currently using only installs the Python2 version of python-mysqldb.
+- name: Install python3-mysqldb package
+  apt:
+    name: python3-mysqldb
+
 - name: Create mysql group
-  group: name=mysql system=yes
+  group:
+    name: mysql
+    system: yes
 
 - name: Create mysql user
-  user: name=mysql group=mysql system=yes
+  user:
+    name: mysql
+    group: mysql
+    system: yes
 
 - name: chown -R /var/lib/mysql
-  file: path=/var/lib/mysql owner=mysql group=mysql recurse=yes state=directory
+  file:
+    path: /var/lib/mysql
+    owner: mysql
+    group: mysql
+    recurse: yes
+    state: directory
 
 - name: chmod /var/lib/mysql
   file:
@@ -20,28 +38,23 @@
     state: directory
 
 - name: Allow required ports
-  ufw: rule=allow port={{ item }} proto=tcp
-  with_items:
-    - 3306
-#
+  ufw:
+    rule: allow
+    port: 3306
+    proto: tcp
+
 # Parameters to set the maximum number of open files
-#
 - name: Creating directory for Mysql files limit configuration
   file:
     path: /etc/systemd/system/mysql.service.d/
     state: directory
     mode: 0755
-    owner: root
-    group: root
 
-# 
 # The limits of processes started by systemd are governed by systemd configuration
 # files and not from security/limits.d
 - name: Set open files limit in mysql through systemd
   copy:
     dest: /etc/systemd/system/mysql.service.d/override.conf
-    owner: root
-    group: root
     content: |
       # cf https://duntuk.com/how-raise-ulimit-open-files-and-mysql-openfileslimit
       [Service]
@@ -52,14 +65,55 @@
   template:
     src: backup-pre-mysql.sh
     dest: /usr/local/sbin/backup-pre.sh
-    owner: root
-    group: root
     mode: 0500
 
 - name: Copy post-backup script
   template:
     src: backup-post-mysql.sh
     dest: /usr/local/sbin/backup-post.sh
-    owner: root
-    group: root
     mode: 0500
+
+- name: Install Prometheus MySQL exporter
+  when: MYSQL_EXPORTER_ENABLED
+  block:
+
+    - name: Download MySQL exporter
+      unarchive:
+        src: "{{ MYSQL_EXPORTER_DOWNLOAD_URL }}"
+        remote_src: yes
+        dest: /opt
+        creates: "{{ MYSQL_EXPORTER_BINARY }}"
+
+    - name: Append MySQL exporter user to list of MySQL users
+      # Note that the database will only be installed later, so we need to rely on the
+      # external role to create the users.
+      set_fact:
+        mysql_users: "{{ mysql_users + MYSQL_EXPORTER_MYSQL_USERS }}"
+
+    - name: Create MySQL exporter environment file
+      copy:
+        content: |
+          DATA_SOURCE_NAME='exporter:{{ MYSQL_EXPORTER_MYSQL_PASSWORD }}@(localhost:3306)/'
+        dest: /etc/mysqld_exporter.conf
+        mode: 0640
+        owner: root
+        group: mysql
+
+    - name: Copy MySQL exporter service definition
+      template:
+        src: mysqld_exporter.service.j2
+        dest: /etc/systemd/system/mysqld_exporter.service
+
+    - name: Start MySQL exporter
+      systemd:
+        daemon-reload: yes
+        name: mysqld_exporter.service
+        state: started
+        enabled: yes
+
+    - name: Create Consul service definition file
+      copy:
+        content: "{{ MYSQL_EXPORTER_CONSUL_SERVICE | to_nice_json }}"
+        dest: /etc/consul/mysqld-exporter.json
+      notify:
+        - reload consul
