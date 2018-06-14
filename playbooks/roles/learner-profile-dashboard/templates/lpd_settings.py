@@ -66,8 +66,23 @@ if getpass.getuser() == '{{ LPD_USER_NAME }}':
         },
     }
 
-STATIC_ROOT="{{ LPD_STATICFILES_ROOT }}"
-STATIC_URL="/static/"
+STATIC_ROOT = "{{ LPD_STATICFILES_ROOT }}"
+STATIC_URL = "/static/"
 
-MEDIA_ROOT="{{ LPD_MEDIA_ROOT }}"
-MEDIA_URL="/media/"
+MEDIA_ROOT = "{{ LPD_MEDIA_ROOT }}"
+MEDIA_URL = "/media/"
+
+# List of knowledge component IDs for which LDA model calculates probabilities.
+# The order of the components must match exactly the order in which probabilities are returned by LDA model.
+# E.g. If LDA model returns [0.2, 0.8] and GROUP_KCS are equal to ['kc_id_1', 'kc_id_2'],
+# then 0.2 will be interpreted as the probability of a learner belonging to the knowledge component (group)
+# identified by 'kc_id_1', and 0.8 will be interpreted as the probability of the learner
+# belonging to the knowledge component (group) identified by 'kc_id_2'.
+GROUP_KCS = {{ LPD_GROUP_KCS }}
+
+# Domain of the Open edX instance that this LPD deployment is connected to
+OPENEDX_INSTANCE_DOMAIN = '{{ LPD_OPENEDX_INSTANCE_DOMAIN }}'
+# URL of the Adaptive Engine deployment that this LPD deployment is connected to
+ADAPTIVE_ENGINE_URL = '{{ LPD_ADAPTIVE_ENGINE_URL }}'
+# Auth token for requests to Adaptive Engine deployment that this LPD deployment is connected to
+ADAPTIVE_ENGINE_TOKEN = '{{ LPD_ADAPTIVE_ENGINE_TOKEN}}'
