@@ -16,7 +16,6 @@ MYSQL_EXPORTER_BINARY: "/opt/{{ MYSQL_EXPORTER_BASENAME }}/mysqld_exporter"
 MYSQL_EXPORTER_ARCHIVE: "{{ MYSQL_EXPORTER_BASENAME }}.tar.gz"
 MYSQL_EXPORTER_DOWNLOAD_URL: "https://github.com/prometheus/mysqld_exporter/releases/download/v{{ MYSQL_EXPORTER_VERSION }}/{{ MYSQL_EXPORTER_ARCHIVE }}"
 MYSQL_EXPORTER_PASSWORD: null
-MYSQL_EXPORTER_MYSQL_PASSWORD: null
 
 # We use this by default because when you have a little too many databases,
 # the exporter takes ~40-50min to enter a listening state, and always times
@@ -25,9 +24,10 @@ MYSQL_EXPORTER_MYSQL_PASSWORD: null
 # may just be a limitation of having too many databases in MySQL.
 MYSQL_EXPORTER_EXTRA_OPTS: "-collect.info_schema.tables=false"
 
+MYSQL_EXPORTER_MYSQL_PASSWORD: null
 MYSQL_EXPORTER_MYSQL_USERS:
   - name: exporter
-    host: "%"
+    host: "127.0.0.1"
     password: "{{ MYSQL_EXPORTER_MYSQL_PASSWORD }}"
     priv: "*.*:PROCESS,REPLICATION CLIENT,SELECT"
 
