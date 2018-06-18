@@ -2,6 +2,11 @@
 dependencies:
   - name: ernestas-poskus.prometheus
     prometheus_node_exporter_install: false
+    prometheus_alert_manager_config_global:
+     smtp_smarthost: '{{ PROMETHEUS_ALERT_MANAGER_SMTP_SMARTHOST }}'
+     smtp_from: '{{ PROMETHEUS_ALERT_MANAGER_SMTP_FROM }}'
+     smtp_auth_username: '{{ PROMETHEUS_ALERT_MANAGER_SMTP_USERNAME }}'
+     smtp_auth_password: '{{ PROMETHEUS_ALERT_MANAGER_SMTP_PASSWORD }}'
   - name: nginx-proxy
     NGINX_PROXY_CONFIG_PATH: /etc/nginx/sites-available/prometheus
     NGINX_PROXY_PUBLIC_PORT: 443
