@@ -1,0 +1,16 @@
+# mattermail
+[Unit]
+Description=mattermail server
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart={{ MATTERMAIL_HOME }}/bin/mattermail server -c {{ MATTERMAIL_HOME }}/config.json
+Nice=5
+Restart=always
+RestartSec=10
+User=mattermail
+Group=mattermail
+
+[Install]
+WantedBy=multi-user.target

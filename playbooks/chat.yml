@@ -14,5 +14,8 @@
     - role: crafty
       tags: 'crafty'
 
+    - role: mattermail
+      tags: 'mattermail'
+
     - role: link-shortener
       tags: 'link-shortener'
