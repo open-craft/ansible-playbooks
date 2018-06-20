@@ -40,7 +40,7 @@ prometheus_rules:
     - alert: "instance_down"
       # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0/
       expr: "avg_over_time(up[5m]) < 0.91"
-      for: "10s"
+      for: "0s"
       labels:
         severity: "critical"
         environment: "[[ $labels.environment ]]"
@@ -88,7 +88,7 @@ prometheus_rules:
     rules:
     - alert: "haproxy_down"
       expr: "avg_over_time(haproxy_up [5m]) < 0.91"
-      for: "10s"
+      for: "0s"
       labels:
         severity: "critical"
         environment: "[[ $labels.environment ]]"
@@ -117,7 +117,7 @@ prometheus_rules:
     rules:
     - alert: "mysql_down"
       expr: "avg_over_time(mysql_up[5m]) < 0.91"
-      for: "10s"
+      for: "0s"
       labels:
         severity: "critical"
         environment: "[[ $labels.environment ]]"
@@ -143,9 +143,13 @@ prometheus_alert_manager_config_receivers:
 
 prometheus_alert_manager_config_route:
   receiver: "default"
+  group_wait: "30s"
+  group_interval: "5m"
   repeat_interval: "4h"
   routes:
     - receiver: "pager"
+      group_wait: "0s"
+      group_interval: "1m"
       repeat_interval: "5m"
       match:
         environment: "prod"
