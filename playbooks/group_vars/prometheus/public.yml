@@ -44,6 +44,7 @@ prometheus_rules:
       for: "10s"
       labels:
         severity: "critical"
+        environment: "[[ $labels.environment ]]"
       annotations:
         summary: "Instance [[ $labels.instance ]] down."
         description: "[[ $labels.instance ]] of job [[ $labels.job ]] is down."
@@ -52,6 +53,7 @@ prometheus_rules:
       for: "5m"
       labels:
         severity: "warning"
+        environment: "[[ $labels.environment ]]"
       annotations:
         summary: "Instance [[ $labels.instance ]] CPU usage high."
         description: "CPU usage of [[ $labels.instance ]] of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_CPU_THRESHHOLD }} for 5 minutes."
@@ -60,6 +62,7 @@ prometheus_rules:
       for: "5m"
       labels:
         severity: "warning"
+        environment: "[[ $labels.environment ]]"
       annotations:
         summary: "Instance [[ $labels.instance ]] memory usage high."
         description: "[[ $labels.instance ]] of job [[ $labels.job ]] memory usage has been above {{ PROMETHEUS_ALERT_MEMORY_THRESHOLD }}% for 5 minutes."
@@ -68,6 +71,7 @@ prometheus_rules:
       for: "5m"
       labels:
         severity: "warning"
+        environment: "[[ $labels.environment ]]"
       annotations:
         summary: "Instance [[ $labels.instance ]] disk usage high."
         description: "Instance disk is more than {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}% full."
@@ -77,6 +81,7 @@ prometheus_rules:
       for: "5m"
       labels:
         severity: "warning"
+        environment: "[[ $labels.environment ]]"
       annotations:
         summary: "Instance [[ $labels.instance ]] disk is filling up."
         description: "Instance disk may fill up {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}% in 4 hours."
@@ -87,6 +92,7 @@ prometheus_rules:
       for: "10s"
       labels:
         severity: "critical"
+        environment: "[[ $labels.environment ]]"
       annotations:
         summary: "HAProxy [[ $labels.instance ]] down."
         description: "[[ $labels.instance ]] of job [[ $labels.job ]] is down."
@@ -95,6 +101,7 @@ prometheus_rules:
       for: "5m"
       labels:
         severity: "warning"
+        environment: "[[ $labels.environment ]]"
       annotations:
         summary: "Instance [[ $labels.instance ]] http response time high."
         description: "HTTP response time of [[ $labels.instance ]] of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD }} for 5 minutes."
@@ -103,6 +110,7 @@ prometheus_rules:
       for: "5m"
       labels:
         severity: "warning"
+        environment: "[[ $labels.environment ]]"
       annotations:
         summary: "Instance [[ $labels.instance ]] http response time high."
         description: "HTTP response time of [[ $labels.instance ]] of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD }} for 5 minutes."
@@ -113,6 +121,7 @@ prometheus_rules:
       for: "10s"
       labels:
         severity: "critical"
+        environment: "[[ $labels.environment ]]"
       annotations:
         summary: "MySQL instance [[ $labels.instance ]] down."
         description: "[[ $labels.instance ]] of job [[ $labels.job ]] is down."
