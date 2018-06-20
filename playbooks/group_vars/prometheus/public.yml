@@ -14,7 +14,7 @@ SANITY_CHECK_LIVE_PORTS:
 prometheus_web__listen_address: 127.0.0.1:9090
 
 prometheus_config_global_scrape_interval: 30s
-prometheus_config_global_evaluation_interval: 1m
+prometheus_config_global_evaluation_interval: 30s
 prometheus_config_global_scrape_timeout: 10s
 
 prometheus_storage__tsdb__retention: 30d
