@@ -25,6 +25,8 @@ DATABASES = {
    }
 }
 
+TIME_ZONE = 'America/New_York'
+
 if getpass.getuser() == '{{ LPD_USER_NAME }}':
     # Change log paths only for production requests
     LOGGING = {
