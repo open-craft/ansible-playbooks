@@ -25,7 +25,7 @@ prometheus_storage__tsdb__retention: 30d
 prometheus_web__console__templates: "{{ prometheus_install_dir }}/prometheus-{{ prometheus_version }}.{{ prometheus_platform_architecture }}/consoles"
 prometheus_web__console__libraries: "{{ prometheus_install_dir }}/prometheus-{{ prometheus_version }}.{{ prometheus_platform_architecture }}/console_libraries"
 
-PROMETHEUS_ALERT_CPU_THRESHHOLD: 50
+PROMETHEUS_ALERT_CPU_THRESHOLD: 90
 PROMETHEUS_ALERT_MEMORY_THRESHOLD: 90
 PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD: 80
 
@@ -46,14 +46,14 @@ prometheus_rules:
         summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) down."
         description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] is down."
     - alert: "cpu_usage_high"
-      expr: "(100 * (1 - (rate(node_cpu{mode='idle'}[5m])))) > {{ PROMETHEUS_ALERT_CPU_THRESHHOLD }}"
+      expr: "(100 * (1 - (rate(node_cpu{mode='idle'}[5m])))) > {{ PROMETHEUS_ALERT_CPU_THRESHOLD }}"
       for: "5m"
       labels:
         severity: "warning"
         environment: "[[ $labels.environment ]]"
       annotations:
         summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) CPU usage high."
-        description: "CPU usage of [[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_CPU_THRESHHOLD }} for 5 minutes."
+        description: "CPU usage of [[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_CPU_THRESHOLD }} for 5 minutes."
     - alert: "low_memory"
       expr: "(100 * (1 - (node_memory_MemAvailable / node_memory_MemTotal))) > {{ PROMETHEUS_ALERT_MEMORY_THRESHOLD }}"
       for: "5m"
