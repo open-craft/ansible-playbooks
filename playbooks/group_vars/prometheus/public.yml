@@ -122,6 +122,17 @@ prometheus_rules:
       annotations:
         summary: "MySQL instance [[ $labels.node ]] ([[ $labels.instance ]]) down."
         description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] is down."
+  - name: "MongoDBRules"
+    rules:
+    - alert: "mongodb_down"
+      expr: "avg_over_time(mongodb_replset_member_health[5m]) < 0.91"
+      for: "0s"
+      labels:
+        severity: "critical"
+        environment: "[[ $labels.environment ]]"
+      annotations:
+        summary: "MongoDB instance [[ $labels.node ]] ([[ $labels.instance ]]) down."
+        description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] is down."
 
 # ALERT MANAGER ################################################################
 
