@@ -131,6 +131,11 @@ prometheus_alert_manager_web__listen_address: "127.0.0.1:9093"
 
 prometheus_alert_manager_data__retention: "300h0m0s"
 
+prometheus_alert_manager_config_global:
+  smtp_smarthost: "{{ PROMETHEUS_ALERT_MANAGER_SMTP_SMARTHOST }}"
+  smtp_from: "{{ PROMETHEUS_ALERT_MANAGER_SMTP_FROM }}"
+  smtp_require_tls: false
+
 prometheus_alert_manager_config_receivers:
   - name: "default"
     email_configs:

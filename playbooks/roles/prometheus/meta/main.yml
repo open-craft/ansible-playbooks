@@ -2,7 +2,6 @@
 dependencies:
   - name: ernestas-poskus.prometheus
     prometheus_node_exporter_install: false
-    prometheus_alert_manager_config_global: "{{ PROMETHEUS_ALERT_MANAGER_CONFIG_GLOBAL }}"
   - name: nginx-proxy
     NGINX_PROXY_CONFIG_PATH: /etc/nginx/sites-available/prometheus
     NGINX_PROXY_PUBLIC_PORT: 443
@@ -11,7 +10,7 @@ dependencies:
     NGINX_PROXY_PASSWORD: "{{ PROMETHEUS_BASIC_AUTH_PASSWORD }}"
   - name: nginx-proxy
     NGINX_PROXY_CONFIG_PATH: /etc/nginx/sites-available/alertmanager
-    NGINX_PROXY_PUBLIC_PORT: 19093
+    NGINX_PROXY_PUBLIC_PORT: 9043
     NGINX_PROXY_INTERNAL_PORT: 9093
     NGINX_PROXY_USERNAME: "{{ PROMETHEUS_BASIC_AUTH_USERNAME }}"
     NGINX_PROXY_PASSWORD: "{{ PROMETHEUS_BASIC_AUTH_PASSWORD }}"
