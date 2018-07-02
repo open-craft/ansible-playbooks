@@ -14,3 +14,6 @@ EMAIL_PASSWORD: set-me-please
 MATTERMAIL_REPO: github.com/open-craft/mattermail
 MATTERMAIL_BRANCH: master
 MATTERMAIL_HOME: /opt/mattermail
+
+# Misc
+MATTERMAIL_MAIL_TEMPLATE: "@here :incoming_envelope: _From: **{{'{{'}}.From{{'}}'}}**_{{'\n'}}>_{{'{{'}}.Subject{{'}}'}}_"
