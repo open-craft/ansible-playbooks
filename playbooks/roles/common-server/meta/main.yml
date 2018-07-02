@@ -1,3 +1,5 @@
+---
+
 dependencies:
   - name: common-server-init
     tags: 'common-server-init'

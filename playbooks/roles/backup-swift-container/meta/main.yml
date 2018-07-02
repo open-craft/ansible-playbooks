@@ -1,3 +1,5 @@
+---
+
 dependencies:
   - pmbauer.tarsnap
   - name: backup-to-tarsnap

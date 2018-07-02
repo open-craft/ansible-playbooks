@@ -1,4 +1,5 @@
 ---
+
 - name: format log download volume
   filesystem:
     dev: "{{ DALITE_LOG_DOWNLOAD_VOLUME_DEVICE_ID }}"

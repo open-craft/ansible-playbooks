@@ -1,4 +1,5 @@
 ---
+
 - name: Set the hostname
   hostname:
     name: "{{ COMMON_SERVER_HOSTNAME }}"
@@ -23,7 +24,7 @@
     cache_valid_time: 43200
     autoremove: yes
 
-- name: install depencencies
+- name: Install dependencies
   apt:
     name: "{{ COMMON_SERVER_DEPENDENCIES }}"
     state: present

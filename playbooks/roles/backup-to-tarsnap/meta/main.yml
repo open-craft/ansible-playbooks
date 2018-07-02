@@ -1,3 +1,5 @@
+---
+
 allow_duplicates: yes
 dependencies:
   # This depends on our fork of pmbauer.tarsnap (I hope changes will be accepted upstream)

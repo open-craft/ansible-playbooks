@@ -1,4 +1,5 @@
 ---
+
 DALITE_USER_NAME: "dalite"
 DALITE_USER_HOME: "/home/{{ DALITE_USER_NAME }}"
 DALITE_APP_LOCATION: "{{ DALITE_USER_HOME }}/repository"

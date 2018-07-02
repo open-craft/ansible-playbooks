@@ -1,4 +1,5 @@
 ---
+
 - name: Set login shell for user {{ www_user }}
   user:
     name: "{{ www_user }}"

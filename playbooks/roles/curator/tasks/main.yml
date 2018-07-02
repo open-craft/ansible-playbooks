@@ -1,0 +1,21 @@
+---
+
+- name: Add Elastic's apt key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Add Elastic's apt repository
+  apt_repository:
+    repo: 'deb [arch=amd64] https://packages.elastic.co/curator/5/debian stable main'
+
+- name: Install Curator
+  apt:
+    name: elasticsearch-curator
+
+# If this job needs to expand more than this, please move it to an action file.
+# https://www.elastic.co/guide/en/elasticsearch/client/curator/current/actionfile.html
+- name: Install Curator deletion cron job
+  cron:
+    name: "Delete indices older than {{ curator_delete_indices_days }} days"
+    job: "curator_cli delete_indices --filter_list '[{ \"filtertype\": \"age\", \"source\": \"creation_date\", \"direction\": \"older\", \"unit\": \"days\", \"unit_count\": {{ curator_delete_indices_days }} }]'"
+    special_time: daily

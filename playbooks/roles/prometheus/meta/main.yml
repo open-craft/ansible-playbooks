@@ -1,4 +1,5 @@
 ---
+
 dependencies:
   - name: ernestas-poskus.prometheus
     prometheus_node_exporter_install: false

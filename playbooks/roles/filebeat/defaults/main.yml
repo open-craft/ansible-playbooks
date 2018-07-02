@@ -2,20 +2,21 @@
 
 filebeat_elastic_apt_pin: 500
 filebeat_config_dir: /etc/filebeat
-filebeat_ca_cert_url: ""
-filebeat_ca_cert: ""
-filebeat_ca_path: "{{ filebeat_config_dir }}/ca.crt"
 filebeat_registry_file: /var/lib/filebeat/registry
+
+filebeat_ca_cert: ""
+filebeat_cert: ""
+filebeat_key: ""
 filebeat_logstash_hosts: []
 filebeat_logstash:
   hosts: "{{ filebeat_logstash_hosts }}"
   ssl:
-    certificate_authorities: ["{{ filebeat_ca_path }}"]
+    certificate_authorities: ["{{ filebeat_config_dir }}/ca.crt"]
+    certificate: "{{ filebeat_config_dir }}/filebeat.crt"
+    key: "{{ filebeat_config_dir }}/filebeat.key"
 
 filebeat_common_prospector_fields:
   type: service
-  host: "{{ inventory_hostname }}"
-
 filebeat_common_prospector:
   fields_under_root: true
   encoding: utf-8
@@ -23,5 +24,4 @@ filebeat_common_prospector:
   paths:
     - /var/log/*.log
   fields: "{{ filebeat_common_prospector_fields }}"
-
 filebeat_prospectors: []

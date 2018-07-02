@@ -1,4 +1,5 @@
 ---
+
 - name: copy ssl cert
   copy:
     content: "{{ DALITE_SSL_CERT }}"

@@ -1,3 +1,5 @@
+---
+
 - name: copy nginx default configuration
   copy:
     src: nginx-default-server.j2

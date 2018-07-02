@@ -1,28 +1,22 @@
 ---
-- include: setup-RedHat.yml
-  when: ansible_os_family == 'RedHat'
 
-- include: setup-Debian.yml
-  when: ansible_os_family == 'Debian'
+- name: Install apt package dependencies.
+  apt:
+    name: openjdk-8-jdk
 
-- name: open ElasticSearch http port on the firewall
-  ufw:
-    rule: allow
-    port: "{{ item }}"
-    proto: tcp
-  with_items:
-    - "{{ elasticsearch_http_port }}"
+- name: Add Elasticsearch apt key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
-- name: Configure Elasticsearch.
-  template:
-    src: elasticsearch.yml.j2
-    dest: /etc/elasticsearch/elasticsearch.yml
-    owner: root
-    group: elasticsearch
-    mode: 0750
-  notify: restart elasticsearch
+- name: Add Elasticsearch repository
+  apt_repository:
+    repo: "{{ elasticsearch_repo }}"
 
-- name: create directories
+- name: Install Elasticsearch
+  apt:
+    name: "{{ elasticsearch_package }}"
+
+- name: Create Elasticsearch directories
   file:
     path: "{{ item }}"
     state: directory
@@ -32,12 +26,25 @@
     - "{{ elasticsearch_data_dir }}"
     - "{{ elasticsearch_log_dir }}"
     - "{{ elasticsearch_cfg_dir }}"
-  tags:
-    - install
-    - install:base
 
-- name: Start Elasticsearch.
-  service: name=elasticsearch state=started enabled=yes
+- name: Configure Elasticsearch
+  template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    group: elasticsearch
+    mode: 0750
+  notify: restart elasticsearch
 
-- name: Make sure Elasticsearch is running before proceeding.
-  wait_for: host={{ elasticsearch_network_host }} port={{ elasticsearch_http_port }} delay=3 timeout=300
+- name: Start Elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+    enabled: yes
+
+- name: Open Elasticsearch ports on the firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - "{{ elasticsearch_http_port }}"

@@ -1,4 +1,5 @@
 ---
+
 - name: restart networking
   service:
     name: networking
