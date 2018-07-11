@@ -43,7 +43,6 @@
   template:
     src: config.json.j2
     dest: "{{ consul_config_dir }}/config.json"
-    owner: root
     group: consul
   notify: restart consul
 
@@ -51,7 +50,6 @@
   copy:
     content: "{{ consul_service_config | to_nice_json }}"
     dest: "{{ consul_config_dir }}/service.json"
-    owner: root
     group: consul
   when: consul_service_config != ""
   notify: restart consul
@@ -81,8 +79,6 @@
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: root
-    group: root
     mode: 0500
   with_items:
   - { src: backup-pre-consul.sh, dest: /usr/local/sbin/backup-pre-consul.sh }

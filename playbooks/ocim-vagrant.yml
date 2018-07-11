@@ -1,4 +1,5 @@
 ---
+
 - name: Deploy the OpenCraft Instance Manager Vagrant devstack
   hosts: all
   become: true

@@ -1,0 +1,9 @@
+---
+
+logstash_elasticsearch_hosts:
+  - http://localhost:9200
+
+logstash_ca_cert: ""
+logstash_cert: ""
+logstash_key: ""
+logstash_config_dir: /etc/logstash

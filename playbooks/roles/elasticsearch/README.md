@@ -1,14 +1,9 @@
 # Ansible Role: Elasticsearch
 
-[![Build Status](https://travis-ci.org/geerlingguy/ansible-role-elasticsearch.svg?branch=master)](https://travis-ci.org/geerlingguy/ansible-role-elasticsearch)
-
-An Ansible Role that installs Elasticsearch on RedHat/CentOS or Debian/Ubuntu.
-
-## Requirements
-
-Requires at least Java 7 (Java 8+ preferred). See [`geerlingguy.java`](https://github.com/geerlingguy/ansible-role-java#example-playbook-install-openjdk-8) role instructions for installing OpenJDK 8.
+An Ansible Role that installs Elasticsearch on Debian/Ubuntu.
 
 ## Role Variables
+
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
     elasticsearch_network_host: localhost
@@ -24,16 +19,11 @@ The port to listen for HTTP connections on.
 
 Whether to allow inline scripting against ElasticSearch. You should read the following link as there are possible security implications for enabling these options: [Enable Dynamic Scripting](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html#enable-dynamic-scripting). Available options include: `true`, `false`, and `sandbox`.
 
-## Dependencies
-
-  - geerlingguy.java
-
 ## Example Playbook
 
     - hosts: search
       roles:
-        - geerlingguy.java
-        - geerlingguy.elasticsearch
+        - elasticsearch
 
 ## License
 
@@ -42,3 +32,5 @@ MIT / BSD
 ## Author Information
 
 This role was created in 2014 by [Jeff Geerling](http://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).
+
+It has been modified and adapted by and for OpenCraft.

@@ -1,4 +1,5 @@
 ---
+
 - name: Grafana – add apt repository
   apt_repository:
     repo: deb https://packagecloud.io/grafana/stable/debian/ stretch main

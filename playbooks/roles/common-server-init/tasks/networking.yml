@@ -1,3 +1,4 @@
+---
 
 - name: Add network interface for floating IP
   when: COMMON_FLOATING_INTERFACE_NAME and COMMON_FLOATING_IP

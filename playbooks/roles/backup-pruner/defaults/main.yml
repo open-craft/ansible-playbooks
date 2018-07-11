@@ -1,4 +1,5 @@
 ---
+
 BACKUP_PRUNER_JOB_LOG: /var/log/backup-pruner-summary.log
 BACKUP_PRUNER_LOG_DIR: /var/log/backup-pruner
 BACKUP_PRUNER_SCRIPT: /usr/local/sbin/backup-pruner.sh

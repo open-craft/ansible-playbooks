@@ -1,4 +1,5 @@
 ---
+
 CERTBOT_DOMAIN_NAME: "{{ inventory_hostname }}"
 CERTBOT_ADDITIONAL_DOMAINS: []
 CERTBOT_OPS_EMAIL: ops@example.com

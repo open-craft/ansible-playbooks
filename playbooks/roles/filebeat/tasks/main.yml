@@ -3,12 +3,10 @@
 - name: Install apt package dependencies.
   apt:
     name: apt-transport-https
-    state: present
 
 - name: Add Elastic's apt key
   apt_key:
     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    state: present
 
 - name: Add Elastic apt repository pin
   template:
@@ -18,43 +16,28 @@
 - name: Add Elastic's apt repository
   apt_repository:
     repo: 'deb https://artifacts.elastic.co/packages/6.x/apt stable main'
-    state: present
-    update_cache: yes
 
 - name: Install Filebeat
   apt:
     name: filebeat
-    state: present
+
+- name: Install Filebeat TLS details
+  copy:
+    content: "{{ item.content }}"
+    dest: "{{ item.dest }}"
+    mode: 0400
+  with_items:
+    - { content: "{{ filebeat_ca_cert }}", dest: "{{ filebeat_config_dir }}/ca.crt" }
+    - { content: "{{ filebeat_cert }}", dest: "{{ filebeat_config_dir }}/filebeat.crt" }
+    - { content: "{{ filebeat_key }}", dest: "{{ filebeat_config_dir }}/filebeat.key" }
+  no_log: true
+  notify: restart filebeat
 
 - name: Install Filebeat configuration
   template:
     src: filebeat.yml.j2
     dest: "{{ filebeat_config_dir }}/filebeat.yml"
-  notify:
-    - restart filebeat
-
-- name: Ensure Filebeat CA certificate variables are exclusive
-  assert:
-    that: filebeat_ca_cert == "" or filebeat_ca_cert_url == ""
-    msg: "Please set either `filebeat_ca_cert` or `filebeat_ca_cert_url`, but not both."
-
-- name: Install Filebeat CA certificate
-  copy:
-    content: "{{ filebeat_ca_cert }}"
-    dest: "{{ filebeat_ca_path }}"
-    owner: root
-    group: root
-    mode: 0400
-  when: filebeat_ca_cert != "" and filebeat_ca_cert_url == ""
-
-- name: Install Filebeat CA certificate from URL
-  get_url:
-    url: "{{ filebeat_ca_cert_url }}"
-    dest: "{{ filebeat_ca_path }}"
-    owner: root
-    group: root
-    mode: 0400
-  when: filebeat_ca_cert == "" and filebeat_ca_cert_url != ""
+  notify: restart filebeat
 
 - name: Ensure Filebeat is started and enabled at boot
   service:

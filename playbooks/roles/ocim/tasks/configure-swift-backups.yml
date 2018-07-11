@@ -1,3 +1,5 @@
+---
+
 - name: upload tarsnap key
   template:
     src: "tarsnap.key.j2"

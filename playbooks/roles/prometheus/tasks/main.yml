@@ -1,4 +1,5 @@
 ---
+
 - name: "copy Let's Encrypt stage CA cert"
   copy:
     src: lets-encrypt-fake-cert.crt
