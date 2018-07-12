@@ -1,6 +1,6 @@
 dependencies:
 
-  - name: pmbauer.tarsnap
+  - name: tarsnap
     when: OPENCRAFT_BACKUP_SWIFT_ENABLED and www_user != 'vagrant'
 
   - name: nginx-proxy

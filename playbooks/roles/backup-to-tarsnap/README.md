@@ -1,9 +1,9 @@
 Tarsnap role
 ============
 
-This role does additional configurations over `pmbauer.tarsnap` role: 
+This role does additional configurations over `tarsnap` role:
 
 * Creates tarsnap cache directory
-* Uploads tarsnap key 
+* Uploads tarsnap key
 
-It also contains tarsnapper configurations we use. 
+It also contains tarsnapper configurations we use.

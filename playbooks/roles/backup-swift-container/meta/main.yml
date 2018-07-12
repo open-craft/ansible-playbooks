@@ -1,7 +1,7 @@
 ---
 
 dependencies:
-  - pmbauer.tarsnap
+  - tarsnap
   - name: backup-to-tarsnap
     TARSNAP_KEY: "{{ BACKUP_SWIFT_TARSNAP_KEY }}"
     TARSNAP_KEY_REMOTE_LOCATION: "{{ BACKUP_SWIFT_KEY_REMOTE_LOCATION }}"
