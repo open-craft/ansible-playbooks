@@ -8,8 +8,8 @@
     - role: common-server
       tags: 'common-server'
 
-    - role: pmbauer.tarsnap
-      tags: 'pmbauer.tarsnap'
+    - role: tarsnap
+      tags: 'tarsnap'
 
     - role: backup-pruner
       tags: 'backup-pruner'

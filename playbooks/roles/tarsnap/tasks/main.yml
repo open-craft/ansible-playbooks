@@ -1,0 +1,7 @@
+---
+
+- include: tarsnap.yml tags=tarsnap
+- include: tarsnapper.yml
+  tags:
+    - tarsnap
+  when: "{{ tarsnap_tarsnapper_conf != None}}"

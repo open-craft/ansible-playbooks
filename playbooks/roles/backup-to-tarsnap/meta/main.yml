@@ -2,8 +2,7 @@
 
 allow_duplicates: yes
 dependencies:
-  # This depends on our fork of pmbauer.tarsnap (I hope changes will be accepted upstream)
-  - name: pmbauer.tarsnap
+  - name: tarsnap
     tarsnap_tarsnapper_conf: null
     tarsnap_cache: "{{ TARSNAP_CACHE }}"
     tarsnap_keyfile: "{{ TARSNAP_KEY_REMOTE_LOCATION }}"

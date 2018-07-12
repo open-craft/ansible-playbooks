@@ -7,10 +7,6 @@
 [submodule "playbooks/roles/kamaln7.swapfile"]
 	path = playbooks/roles/kamaln7.swapfile
 	url = https://github.com/kamaln7/ansible-swapfile
-[submodule "playbooks/roles/pmbauer.tarsnap"]
-	path = playbooks/roles/pmbauer.tarsnap
-	url = https://github.com/open-craft/ansible-tarsnap
-	branch = master
 [submodule "playbooks/roles/geerlingguy.mysql"]
 	path = playbooks/roles/geerlingguy.mysql
 	url = https://github.com/open-craft/ansible-role-mysql
