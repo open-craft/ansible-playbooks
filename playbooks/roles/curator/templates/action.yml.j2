@@ -1,0 +1,13 @@
+---
+actions:
+  1:
+    action: delete_indices
+    description: "Delete indices older than {{ curator_delete_indices_days }} days."
+    filters:
+      - filtertype: kibana
+        exclude: true
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: {{ curator_delete_indices_days }}

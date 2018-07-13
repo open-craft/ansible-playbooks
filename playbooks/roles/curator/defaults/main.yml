@@ -1,3 +1,9 @@
 ---
 
+curator_config_dir: /etc/curator
+
+curator_elasticsearch_hosts:
+  - 127.0.0.1
+curator_elasticsearch_port: 9200
+
 curator_delete_indices_days: 5

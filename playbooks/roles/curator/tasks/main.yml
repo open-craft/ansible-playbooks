@@ -12,10 +12,22 @@
   apt:
     name: elasticsearch-curator
 
-# If this job needs to expand more than this, please move it to an action file.
-# https://www.elastic.co/guide/en/elasticsearch/client/curator/current/actionfile.html
-- name: Install Curator deletion cron job
+- name: Create curator config directory
+  file:
+    path: "{{ curator_config_dir }}"
+    state: directory
+    mode: 0750
+
+- name: Install Curator configuration files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ curator_config_dir }}/{{ item }}"
+  with_items:
+    - action.yml
+    - config.yml
+
+- name: Install Curator cron job
   cron:
     name: "Delete indices older than {{ curator_delete_indices_days }} days"
-    job: "curator_cli delete_indices --filter_list '[{ \"filtertype\": \"age\", \"source\": \"creation_date\", \"direction\": \"older\", \"unit\": \"days\", \"unit_count\": {{ curator_delete_indices_days }} }]'"
+    job: "curator --config {{ curator_config_dir }}/config.yml {{ curator_config_dir }}/action.yml"
     special_time: daily
