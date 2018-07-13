@@ -89,12 +89,32 @@
     - tcp
     - udp
 
-- name: Open port range on the firewall for Nomad task allocation
-  ufw:
-    rule: allow
-    port: '20000:32000'
-    proto: "{{ item }}"
-  with_items:
-    - tcp
-    - udp
+- name: Configure Nomad clients
   when: nomad_client
+  block:
+
+    - name: Open port range on the firewall for Nomad task allocation
+      ufw:
+        rule: allow
+        port: '20000:32000'
+        proto: "{{ item }}"
+      with_items:
+        - tcp
+        - udp
+
+    - name: Install Redis and Memcache on clients
+      apt:
+        name:
+          - memcached
+          - redis-sentinel
+          - redis-server
+
+    - name: Stop the Redis and Memcache processes started by the packages
+      systemd:
+        name: "{{ item }}"
+        enabled: false
+        state: stopped
+      with_items:
+        - memcached
+        - redis-sentinel
+        - redis-server
