@@ -6,6 +6,7 @@ MYSQL_SERVER_DOMAIN: "{{ inventory_hostname }}"
 MYSQL_SERVER_BACKUP_DIR: '/var/lib/mysql/backup'
 mysql_root_password_update: true
 mysql_table_open_cache: 200000
+mysql_wait_timeout: 300
 mysql_skip_name_resolve: true
 mysql_packages:
   - mysql-server-5.5
