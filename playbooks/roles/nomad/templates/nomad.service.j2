@@ -4,7 +4,7 @@ Requires=network-online.target
 After=network-online.target
 
 [Service]
-User=nomad
+User={{ "nomad" if nomad_server else "root" }}
 Group=nomad
 PermissionsStartOnly=true
 ExecStart={{ nomad_bin_dir }}/nomad agent -config={{ nomad_config_dir }}
