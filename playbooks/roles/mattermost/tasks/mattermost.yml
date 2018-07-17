@@ -92,6 +92,19 @@
         state: link
         force: yes
 
+    - name: download Mattermost autolink distribution tarball
+      get_url:
+        url: "{{ MATTERMOST_UNLINK_DOWNLOAD_URL }}"
+        dest: "{{ MATTERMOST_UNLINK_DOWNLOAD_DEST }}"
+
+    - name: unpack Mattermost autolink plugin
+      unarchive:
+        src: "{{ MATTERMOST_UNLINK_DOWNLOAD_DEST }}"
+        remote_src: yes
+        dest: "{{ MATTERMOST_INSTALL_DIR }}/mattermost/plugins"
+        owner: mattermost
+        group: mattermost
+
     - name: start Mattermost service
       service:
         name: mattermost
