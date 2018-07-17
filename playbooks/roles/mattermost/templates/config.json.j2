@@ -1,6 +1,7 @@
 {
     "ServiceSettings": {
         "SiteURL": "https://{{ MATTERMOST_HOSTNAME }}/",
+        "WebsocketURL": "",
         "LicenseFileLocation": "",
         "ListenAddress": ":8065",
         "ConnectionSecurity": "",
@@ -21,7 +22,6 @@
         "EnableOnlyAdminIntegrations": true,
         "EnablePostUsernameOverride": false,
         "EnablePostIconOverride": false,
-        "EnableAPIv3": true,
         "EnableLinkPreviews": false,
         "EnableTesting": false,
         "EnableDeveloper": false,
@@ -32,15 +32,20 @@
         "EnforceMultifactorAuthentication": false,
         "EnableUserAccessTokens": false,
         "AllowCorsFrom": "",
+        "AllowCookiesForSubdomains": false,
         "SessionLengthWebInDays": 30,
         "SessionLengthMobileInDays": 30,
         "SessionLengthSSOInDays": 30,
         "SessionCacheInMinutes": 10,
+        "SessionIdleTimeoutInMinutes": 0,
         "WebsocketSecurePort": 443,
         "WebsocketPort": 80,
         "WebserverMode": "gzip",
         "EnableCustomEmoji": false,
         "EnableEmojiPicker": true,
+        "EnableGifPicker": false,
+        "GfycatApiKey": "2_KtH_W5",
+        "GfycatApiSecret": "3wLVZPiswc3DnaiaFoLkDvB4X0IV6CpMkj4tf2inJRsBY6-FnkT08zGmppWFgeof",
         "RestrictCustomEmojiCreation": "all",
         "RestrictPostDelete": "all",
         "AllowEditPost": "always",
@@ -50,7 +55,20 @@
         "EnableUserTypingMessages": true,
         "EnableChannelViewedMessages": true,
         "EnableUserStatuses": true,
-        "ClusterLogTimeoutMilliseconds": 2000
+        "ExperimentalEnableAuthenticationTransfer": true,
+        "ClusterLogTimeoutMilliseconds": 2000,
+        "CloseUnusedDirectMessages": false,
+        "EnablePreviewFeatures": true,
+        "EnableTutorial": true,
+        "ExperimentalEnableDefaultChannelLeaveJoinMessages": true,
+        "ExperimentalGroupUnreadChannels": "disabled",
+        "ImageProxyType": "",
+        "ImageProxyURL": "",
+        "ImageProxyOptions": "",
+        "EnableAPITeamDeletion": false,
+        "ExperimentalEnableHardenedMode": false,
+        "ExperimentalLimitClientConfig": false,
+        "EnableEmailInvitations": true
     },
     "TeamSettings": {
         "SiteName": "Mattermost",
@@ -58,6 +76,7 @@
         "EnableTeamCreation": true,
         "EnableUserCreation": true,
         "EnableOpenServer": false,
+        "EnableUserDeactivation": false,
         "RestrictCreationToDomains": "{{ MATTERMOST_RESTRICT_TO_EMAIL_DOMAIN }}",
         "EnableCustomBrand": false,
         "CustomBrandText": "",
@@ -75,8 +94,12 @@
         "UserStatusAwayTimeout": 300,
         "MaxChannelsPerTeam": 2000,
         "MaxNotificationsPerChannel": 1000000,
+        "EnableConfirmNotificationsToChannel": true,
         "TeammateNameDisplay": "username",
-        "ExperimentalTownSquareIsReadOnly": false
+        "ExperimentalEnableAutomaticReplies": false,
+        "ExperimentalHideTownSquareinLHS": false,
+        "ExperimentalTownSquareIsReadOnly": false,
+        "ExperimentalPrimaryTeam": ""
     },
     "ClientRequirements": {
         "AndroidLatestVersion": "",
@@ -90,8 +113,9 @@
         "DriverName": "postgres",
         "DataSource": "{{ MATTERMOST_POSTGRES_URL }}",
         "DataSourceReplicas": [],
-        "DataSourceSearchReplicas": null,
+        "DataSourceSearchReplicas": [],
         "MaxIdleConns": 20,
+        "ConnMaxLifetimeMilliseconds": 3600000,
         "MaxOpenConns": 300,
         "Trace": false,
         "AtRestEncryptKey": "{{ MATTERMOST_POSTGRES_ENCRYPT_KEY }}",
@@ -100,9 +124,10 @@
     "LogSettings": {
         "EnableConsole": false,
         "ConsoleLevel": "INFO",
+        "ConsoleJson": true,
         "EnableFile": true,
         "FileLevel": "INFO",
-        "FileFormat": "",
+        "FileJson": true,
         "FileLocation": "{{ MATTERMOST_LOG_DIR }}",
         "EnableWebhookDebugging": false,
         "EnableDiagnostics": true
@@ -120,7 +145,7 @@
         "EnableMobileDownload": true,
         "MaxFileSize": 52428800,
         "DriverName": "amazons3",
-        "Directory": "",
+        "Directory": "./data/",
         "EnablePublicLink": false,
         "PublicLinkSalt": "{{ MATTERMOST_PUBLIC_LINK_SALT }}",
         "InitialFont": "luximbi.ttf",
@@ -139,6 +164,7 @@
         "EnableSignInWithEmail": true,
         "EnableSignInWithUsername": true,
         "SendEmailNotifications": true,
+        "UseChannelInEmailNotifications": false,
         "RequireEmailVerification": true,
         "FeedbackName": "Mattermost Notification",
         "FeedbackEmail": "{{ MATTERMOST_FEEDBACK_EMAIL }}",
@@ -156,8 +182,12 @@
         "EnableEmailBatching": true,
         "EmailBatchingBufferSize": 256,
         "EmailBatchingInterval": 30,
+        "EnablePreviewModeBanner": true,
         "SkipServerCertificateVerification": false,
-        "EmailNotificationContentsType": "full"
+        "EmailNotificationContentsType": "full",
+        "LoginButtonColor": "#0000",
+        "LoginButtonBorderColor": "#2389D7",
+        "LoginButtonTextColor": "#2389D7"
     },
     "RateLimitSettings": {
         "Enable": false,
@@ -165,6 +195,7 @@
         "MaxBurst": 100,
         "MemoryStoreSize": 10000,
         "VaryByRemoteAddr": true,
+        "VaryByUser": false,
         "VaryByHeader": ""
     },
     "PrivacySettings": {
@@ -221,6 +252,7 @@
     },
     "LdapSettings": {
         "Enable": false,
+        "EnableSync": false,
         "LdapServer": "",
         "LdapPort": 389,
         "ConnectionSecurity": "",
@@ -235,11 +267,15 @@
         "NicknameAttribute": "",
         "IdAttribute": "",
         "PositionAttribute": "",
+        "LoginIdAttribute": "",
         "SyncIntervalMinutes": 60,
         "SkipCertificateVerification": false,
         "QueryTimeout": 60,
         "MaxPageSize": 0,
-        "LoginFieldName": ""
+        "LoginFieldName": "",
+        "LoginButtonColor": "#0000",
+        "LoginButtonBorderColor": "#2389D7",
+        "LoginButtonTextColor": "#2389D7"
     },
     "ComplianceSettings": {
         "Enable": false,
@@ -253,11 +289,14 @@
     },
     "SamlSettings": {
         "Enable": false,
+        "EnableSyncWithLdap": false,
         "Verify": false,
         "Encrypt": false,
         "IdpUrl": "",
         "IdpDescriptorUrl": "",
         "AssertionConsumerServiceURL": "",
+        "ScopingIDPProviderId": "",
+        "ScopingIDPName": "",
         "IdpCertificateFile": "",
         "PublicCertificateFile": "",
         "PrivateKeyFile": "",
@@ -268,7 +307,10 @@
         "NicknameAttribute": "",
         "LocaleAttribute": "",
         "PositionAttribute": "",
-        "LoginButtonText": "With SAML"
+        "LoginButtonText": "With SAML",
+        "LoginButtonColor": "#34a28b",
+        "LoginButtonBorderColor": "#2389D7",
+        "LoginButtonTextColor": "#ffffff"
     },
     "NativeAppSettings": {
         "AppDownloadLink": "https://about.mattermost.com/downloads/",
@@ -283,12 +325,19 @@
         "UseExperimentalGossip": false,
         "ReadOnlyConfig": true,
         "GossipPort": 8074,
-        "StreamingPort": 8075
+        "StreamingPort": 8075,
+        "MaxIdleConns": 100,
+        "MaxIdleConnsPerHost": 128,
+        "IdleConnTimeoutMilliseconds": 90000
     },
     "MetricsSettings": {
         "Enable": false,
         "BlockProfileRate": 0,
         "ListenAddress": ":8067"
+    },
+    "ExperimentalSettings": {
+        "ClientSideCertEnable": false,
+        "ClientSideCertCheck": "secondary"
     },
     "AnalyticsSettings": {
         "MaxUsersForStatistics": 2500
@@ -313,17 +362,61 @@
         "PostIndexReplicas": 1,
         "PostIndexShards": 1,
         "AggregatePostsAfterDays": 365,
-        "PostsAggregatorJobStartTime": "03:00"
+        "PostsAggregatorJobStartTime": "03:00",
+        "IndexPrefix": "",
+        "LiveIndexingBatchSize": 1,
+        "BulkIndexingTimeWindowSeconds": 3600,
+        "RequestTimeoutSeconds": 30
     },
     "DataRetentionSettings": {
-        "Enable": false
+        "EnableMessageDeletion": false,
+        "EnableFileDeletion": false,
+        "MessageRetentionDays": 365,
+        "FileRetentionDays": 365,
+        "DeletionJobStartTime": "02:00"
+    },
+    "MessageExportSettings": {
+        "EnableExport": false,
+        "ExportFormat": "actiance",
+        "DailyRunTime": "01:00",
+        "ExportFromTimestamp": 0,
+        "BatchSize": 10000,
+        "GlobalRelaySettings": {
+            "CustomerType": "A9",
+            "SmtpUsername": "",
+            "SmtpPassword": "",
+            "EmailAddress": ""
+        }
     },
     "JobSettings": {
         "RunJobs": true,
         "RunScheduler": true
     },
     "PluginSettings": {
-        "Enable": false,
-        "Plugins": {}
+        "Enable": true,
+        "EnableUploads": true,
+        "Directory": "./plugins",
+        "ClientDirectory": "./client/plugins",
+        "Plugins": {
+            "mattermost-autolink": {
+{% include "./templates/autolink.json.j2" %}
+
+            }
+        },
+        "PluginStates": {
+            "jira": {
+                "Enable": true
+            },
+            "mattermost-autolink": {
+                "Enable": true
+            }
+        }
+    },
+    "DisplaySettings": {
+        "CustomUrlSchemes": [],
+        "ExperimentalTimezone": false
+    },
+    "TimezoneSettings": {
+        "SupportedTimezonesPath": "timezones.json"
     }
 }
