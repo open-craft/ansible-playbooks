@@ -32,6 +32,13 @@
     group: mattermost
     force: no
 
+- name: generate autolink configuration
+  template:
+    src: autolink.json.j2
+    dest: "{{ MATTERMOST_CONFIG_FILE|dirname }}/autolink.json"
+    owner: mattermost
+    group: mattermost
+
 - name: create Mattermost systemd service file
   template:
     src: mattermost.service.j2

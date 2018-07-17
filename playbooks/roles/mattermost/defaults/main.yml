@@ -30,6 +30,15 @@ MATTERMOST_PUBLIC_LINK_SALT: set-me-please
 # Sender for notification emails
 MATTERMOST_FEEDBACK_EMAIL: no-reply@example.com
 
+# Autolink configuration
+# Example:
+# MATTERMOST_JIRA_DOMAINS:
+#   - domain: jira.example.com
+#     projects:
+#       - DEV
+#       - OPS
+MATTERMOST_JIRA_DOMAINS: []
+
 #######################################################################
 # Settings below this point can safely be left at their default values.
 
