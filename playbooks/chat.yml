@@ -11,9 +11,6 @@
     - role: mattermost
       tags: 'mattermost'
 
-    - role: crafty
-      tags: 'crafty'
-
     - role: mattermail
       tags: 'mattermail'
 
