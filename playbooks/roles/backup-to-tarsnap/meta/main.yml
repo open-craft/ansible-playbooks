@@ -1,8 +1,0 @@
----
-
-allow_duplicates: yes
-dependencies:
-  - name: tarsnap
-    tarsnap_tarsnapper_conf: null
-    tarsnap_cache: "{{ TARSNAP_CACHE }}"
-    tarsnap_keyfile: "{{ TARSNAP_KEY_REMOTE_LOCATION }}"

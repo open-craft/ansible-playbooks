@@ -14,8 +14,8 @@ dependencies:
     tags: 'sanity-checker'
     when: COMMON_SERVER_INSTALL_SANITY_CHECKER
 
-  - name: backup-to-tarsnap
-    tags: 'backup-to-tarsnap'
+  - name: tarsnap
+    tags: 'tarsnap'
     when: not COMMON_SERVER_NO_BACKUPS
 
   - name: certbot
