@@ -1,5 +1,5 @@
 ---
-consul_version: 1.0.6
+consul_version: 1.2.1
 
 consul_ip: "{{ ansible_default_ipv4.address }}"
 consul_nodename: "{{ ansible_nodename }}"

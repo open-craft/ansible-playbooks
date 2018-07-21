@@ -30,6 +30,11 @@
     - { path: "{{ consul_config_dir }}", owner: root }
     - { path: "{{ consul_data_dir }}", owner: consul }
 
+- name: Determine current Consul version
+  shell: consul version | sed -n 's/Consul v\(.*\)/\1/p'
+  register: consul_current_version
+  changed_when: false
+
 - name: Download and unarchive the Consul binary
   unarchive:
     src: "{{ consul_url }}"
@@ -37,7 +42,8 @@
     owner: consul
     group: consul
     remote_src: yes
-    creates: "{{ consul_bin_dir }}/consul"
+  when: consul_current_version.rc != 0 or consul_current_version.stdout != consul_version
+  notify: restart consul
 
 - name: Create Consul configuration file
   template:
