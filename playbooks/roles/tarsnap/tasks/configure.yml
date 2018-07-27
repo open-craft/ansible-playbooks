@@ -1,12 +1,12 @@
 ---
 
 - fail: msg="Please specify tarsnap key"
-  when: "{{ TARSNAP_KEY == None }}"
+  when: "TARSNAP_KEY is not defined or TARSNAP_KEY == ''"
 
 - fail: msg="Please configure TARSNAP_BACKUP_FOLDERS, we want all servers to be backed up :)"
-  when: "{{ TARSNAP_BACKUP_FOLDERS == None }}"
+  when: "TARSNAP_BACKUP_FOLDERS is not defined or TARSNAP_BACKUP_FOLDERS == ''"
 
-# Note: tarsnap.key template is actually neccessaty. YAML strips whitespace from
+# Note: tarsnap.key template is actually neccessary. YAML strips whitespace from
 # variables, and tarsnap requires key to end with a newline.
 - name: Copy key file into place
   template:

@@ -20,6 +20,3 @@
 	path = playbooks/roles/load-balancer
 	url = https://github.com/open-craft/ansible-load-balancer
 	branch = master
-[submodule "playbooks/roles/geerlingguy.java"]
-	path = playbooks/roles/geerlingguy.java
-	url = https://github.com/geerlingguy/ansible-role-java
