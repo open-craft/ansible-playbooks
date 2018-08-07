@@ -43,7 +43,7 @@
 - name: store git hash
   copy:
     dest: "{{ MATTERMAIL_HOME }}/.hash"
-    content: "{{ githash }}"
+    content: "{{ githash.after }}"
     owner: mattermail
     group: mattermail
   register: mattermail_version
