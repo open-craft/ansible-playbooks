@@ -12,6 +12,9 @@
     "enable_syslog": {{ "true" if consul_enable_syslog else "false" }},
 {% if consul_server %}
     "bootstrap_expect": {{ consul_servers | length }},
+    "connect": {
+        "enabled": true
+    },
 {% endif %}
 {% if consul_encrypt != "" %}
     "encrypt": "{{ consul_encrypt }}",
