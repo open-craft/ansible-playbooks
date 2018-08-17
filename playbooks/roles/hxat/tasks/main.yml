@@ -1,0 +1,130 @@
+---
+# This role contains tasks specific to hxat nodes.
+
+- name: Install packages for HxAT
+  become: yes
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - libapache2-mod-wsgi
+    - libxml2-dev
+    - libxslt1-dev
+    - postgresql
+    - postgresql-contrib
+    - libpq-dev
+    - redis-server
+
+- name: Install psycopg2
+  become: yes
+  pip:
+    name: psycopg2
+
+# Database
+
+- name: ensure database is created
+  become: yes
+  become_user: postgres
+  postgresql_db: name={{hxat_dbname}}
+
+- name: ensure user has access to database
+  become: yes
+  become_user: postgres
+  postgresql_user: db={{hxat_dbname}} name={{hxat_dbuser}} password={{hxat_dbpassword}} priv=ALL
+
+- name: ensure user does not have unnecessary privilege
+  become: yes
+  become_user: postgres
+  postgresql_user: name={{hxat_dbuser}} role_attr_flags=NOSUPERUSER,NOCREATEDB
+
+# HxAT Code
+
+- name: remove current code if exists
+  become: yes
+  file:
+    state: absent
+    path: "{{ hxat_app_path }}"
+
+- name: clone repository and checkout correct version
+  become: yes
+  git:
+    repo: "{{ hxat_app_repository }}"
+    dest: "{{ hxat_app_path }}"
+    version: "{{ hxat_version }}"
+
+- name: correct cryptograpy requirement version
+  become: yes
+  replace:
+    dest: "{{ hxat_app_path }}/annotationsx/requirements/aws.txt"
+    regexp: 'cryptography==[\d\.]+'
+    replace: 'cryptography==1.2.3'
+
+- name: change owner
+  become: yes
+  file:
+    path: "{{ hxat_app_path }}"
+    owner: www-data
+    group: www-data
+    recurse: yes
+
+- name: install python requirements
+  become: yes
+  pip:
+    requirements: "{{ hxat_app_path}}/requirements.txt"
+
+- name: get settings from template
+  become: yes
+  become_user: www-data
+  template:
+    src: aws.py.j2
+    dest: "{{ hxat_app_path }}/annotationsx/settings/aws.py"
+    mode: 0644
+
+- name: get secure settings from template
+  become: yes
+  become_user: www-data
+  template:
+    src: secure.py.j2
+    dest: "{{ hxat_app_path }}/annotationsx/settings/secure.py"
+    mode: 0644
+
+- name: setup django database
+  become: yes
+  become_user: www-data
+  django_manage:
+    app_path: "{{ hxat_app_path }}"
+    command: migrate
+
+- name: collect django static
+  become: yes
+  become_user: www-data
+  django_manage:
+    app_path: "{{ hxat_app_path }}"
+    command: collectstatic
+
+# Apache deployment
+
+- name: disable default site
+  become: yes
+  file:
+    state: absent
+    path: /etc/apache2/sites-enabled/000-default.conf
+
+- name: make sure mod_wsgi is present
+  become: yes
+  apache2_module:
+    state: present
+    name: wsgi
+
+- name: get apache conf from template
+  become: yes
+  template:
+    src: apache2.conf.j2
+    dest: /etc/apache2/sites-enabled/hxat.conf
+    mode: 0644
+
+- name: ensure apache reload its configuration
+  become: yes
+  service:
+    name: apache2
+    state: reloaded

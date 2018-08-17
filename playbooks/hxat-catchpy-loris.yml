@@ -1,0 +1,39 @@
+---
+## This playbook deploys hxat, catchpy and loris roles.
+
+# Apply common configuration to all hosts
+- hosts: all
+  
+  roles:
+    - common-apache2
+
+# Configure and deploy catchpy servers.
+- hosts: catchpy
+
+  roles:
+    - role: catchpy
+      vars:
+        ansible_python_interpreter: /usr/bin/python2
+  tags:
+    - catchpy
+
+# Configure and deploy hxat servers.
+- hosts: hxat
+
+  roles:
+    - role: hxat
+      vars:
+        ansible_python_interpreter: /usr/bin/python2
+  tags:
+    - hxat
+
+# Configure and deploy loris servers.
+- hosts: loris
+
+  roles:
+    - role: loris
+      vars:
+        ansible_python_interpreter: /usr/bin/python2
+  
+  tags:
+    - loris
