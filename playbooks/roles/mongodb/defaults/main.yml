@@ -8,9 +8,14 @@ MONGODB_SERVER_BACKUP_DIR: /var/lib/mongodb/backup
 # PROMETHEUS ##################################################################
 
 MONGODB_EXPORTER_ENABLED: true
-MONGODB_EXPORTER_VERSION: 1.0.0
-MONGODB_EXPORTER_DOWNLOAD_URL: https://github.com/dcu/mongodb_exporter/releases/download/v{{ MONGODB_EXPORTER_VERSION }}/mongodb_exporter-linux-amd64
+MONGODB_EXPORTER_VERSION: 0.6.1
+MONGODB_EXPORTER_REPO: https://github.com/percona/mongodb_exporter.git
 MONGODB_EXPORTER_PASSWORD: null
+
+MONGODB_HOME: /var/lib/mongodb
+GO_PATH: "{{ MONGODB_HOME }}"
+MONGODB_EXPORTER_DIR: "github.com/percona/mongodb_exporter"
+MONGODB_EXPORTER_PATH: "{{ GO_PATH }}/src/{{ MONGODB_EXPORTER_DIR }}"
 
 MONGODB_EXPORTER_CONSUL_SERVICE:
   service:

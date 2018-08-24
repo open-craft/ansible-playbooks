@@ -8,19 +8,19 @@
   user:
     name: mongodb
     group: mongodb
-    home: /var/lib/mongodb
+    home: "{{ MONGODB_HOME }}"
     system: yes
 
-- name: mount /var/lib/mongodb
+- name: Mount MongoDB home
   mount:
-    name: /var/lib/mongodb
+    name: "{{ MONGODB_HOME }}"
     src: "{{ MONGODB_OPENSTACK_DB_DEVICE }}"
     fstype: ext4
     state: mounted
 
-- name: mkdir /var/lib/mongodb/{db,log}
+- name: Create db and log directories for MongoDB home
   file:
-    path: "/var/lib/mongodb/{{ item }}"
+    path: "{{ MONGODB_HOME }}/{{ item }}"
     state: directory
     mode: 0750
     owner: mongodb
@@ -29,17 +29,17 @@
     - db
     - log
 
-- name: chown -R /var/lib/mongodb
+- name: Change MongoDB Home owner
   file:
-    path: /var/lib/mongodb
+    path: "{{ MONGODB_HOME }}"
     owner: mongodb
     group: mongodb
     recurse: yes
     state: directory
 
-- name: chmod /var/lib/mongodb
+- name: Change MongoDB permissions
   file:
-    path: /var/lib/mongodb
+    path: "{{ MONGODB_HOME }}"
     mode: 0700
     state: directory
 
@@ -70,11 +70,33 @@
 - name: Install Prometheus MongoDB exporter
   when: MONGODB_EXPORTER_ENABLED
   block:
+    - name: Install golang package
+      apt:
+        name:
+          - golang
+        update_cache: yes
 
     - name: Download MongoDB exporter
-      get_url:
-        url: "{{ MONGODB_EXPORTER_DOWNLOAD_URL }}"
+      git:
+        repo: "{{ MONGODB_EXPORTER_REPO }}"
+        dest: "{{ MONGODB_EXPORTER_PATH }}"
+        version: "{{ MONGODB_EXPORTER_VERSION }}"
+
+    - name: Compile MongoDB exporter files
+      make:
+        chdir: "{{ MONGODB_EXPORTER_PATH }}"
+        target: build
+      environment:
+        GOPATH: "{{ GO_PATH }}"
+
+    - name: create symlink to exporter binary
+      file:
+        src: "{{ MONGODB_EXPORTER_PATH }}/mongodb_exporter"
         dest: /usr/local/bin/mongodb_exporter
+        state: link
+        force: yes
+        owner: mongodb
+        group: mongodb
         mode: 0755
 
     - name: Create MongoDB exporter environment file
