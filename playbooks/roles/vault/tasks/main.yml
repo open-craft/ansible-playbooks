@@ -38,7 +38,7 @@
   notify: restart vault
 
 - name: Determine current Vault version
-  shell: vault version | sed -n 's/Vault v\(.*\)/\1/p'
+  shell: vault version | cut -d" " -f 2 - | cut -b 2- -
   register: vault_current_version
   changed_when: false
 
@@ -49,7 +49,7 @@
     owner: vault
     group: vault
     remote_src: yes
-  when: vault_current_version.rc != 0 or vault_version not in vault_current_version.stdout
+  when: vault_current_version.rc != 0 or vault_current_version.stdout != vault_version
   register: vault_binary
   notify: restart vault
 

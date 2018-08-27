@@ -1,0 +1,94 @@
+---
+
+# TODO: add the rest
+# TODO: add HAProxy installation
+# TODO: add installation of script that wraps consul-template calls
+
+- name: Copy over consul-template template files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ consul_template_tmpl_dir }}/{{ item }}"
+  with_items:
+    - backend.map.ctmpl
+    - certs.pem.ctmpl
+    - haproxy.cfg.ctmpl
+
+- name: Copy over consul-template configuration files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ consul_template_config_dir }}/{{ item }}"
+  with_items:
+    - backend.map.hcl
+    - certs.pem.hcl
+    - haproxy.cfg.hcl
+
+- name: Ensure that {{ maintenance_server_static_root }} exists
+  file:
+    path: "{{ maintenance_server_static_root }}"
+    owner: www-data
+    group: www-data
+    state: directory
+
+- name: Copy Nginx site configuration
+  template:
+    src: nginx-maintenance.conf
+    dest: /etc/nginx/sites-available/maintenance
+  notify:
+    - reload nginx
+
+- name: Enable Nginx config
+  file:
+    src: /etc/nginx/sites-available/maintenance
+    dest: /etc/nginx/sites-enabled/maintenance
+    state: link
+  notify:
+    - reload nginx
+
+- name: Install maintenance content
+  git:
+    repo: "{{ maintenance_pages_repo }}"
+    dest: "{{ maintenance_server_static_root }}/default"
+
+- name: open HTTP and HTTPS port on the firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - 80
+    - 443
+
+# Ensures that haproxy logs to /var/log
+- name: restart rsyslog
+  service:
+    name: rsyslog
+    state: restarted
+
+- name: Install Prometheus HAProxy exporter
+  when: HAPROXY_EXPORTER_ENABLED
+  block:
+    - name: Download HAProxy exporter
+      unarchive:
+        src: "{{ HAPROXY_EXPORTER_DOWNLOAD_URL }}"
+        remote_src: yes
+        dest: /opt
+        creates: "{{ HAPROXY_EXPORTER_BINARY }}"
+
+    - name: Copy HAProxy exporter service definition
+      template:
+        src: haproxy-exporter.service.j2
+        dest: /etc/systemd/system/haproxy-exporter.service
+
+    - name: Start HAProxy exporter
+      systemd:
+        daemon-reload: yes
+        name: haproxy-exporter.service
+        state: started
+        enabled: yes
+
+    - name: Create Consul service definition file
+      copy:
+        content: "{{ HAPROXY_EXPORTER_CONSUL_SERVICE | to_nice_json }}"
+        dest: /etc/consul/haproxy-exporter.json
+      notify:
+        - reload consul

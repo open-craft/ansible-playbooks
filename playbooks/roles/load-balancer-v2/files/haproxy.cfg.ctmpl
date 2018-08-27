@@ -1,0 +1,120 @@
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats timeout 2m
+    user haproxy
+    group haproxy
+    daemon
+
+    # Default SSL material locations
+    ca-base /etc/ssl/certs
+    crt-base /etc/ssl/private
+
+    # Default ciphers to use on SSL-enabled listening sockets.
+    # For more information, see ciphers(1SSL). This list is from:
+    #  https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+    ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS
+    ssl-default-bind-options no-sslv3
+
+    tune.ssl.default-dh-param 2048
+
+defaults
+    mode http
+    option http-server-close
+    option forwardfor
+    balance roundrobin
+    log global
+    option httplog
+    option dontlognull
+    option dontlog-normal
+    option redispatch
+    retries 3
+    timeout connect 5000
+    timeout client  50000
+    timeout server  2m
+    errorfile 400 /etc/haproxy/errors/400.http
+    errorfile 403 /etc/haproxy/errors/403.http
+    errorfile 408 /etc/haproxy/errors/408.http
+    errorfile 500 /etc/haproxy/errors/500.http
+    errorfile 502 /etc/haproxy/errors/502.http
+    errorfile 503 /etc/haproxy/errors/503.http
+    errorfile 504 /etc/haproxy/errors/504.http
+
+frontend fe_http
+    bind *:80
+    acl acme_challenge path_beg /.well-known/acme-challenge/
+    redirect scheme https code 301 unless acme_challenge
+    use_backend be_acme_challenge if acme_challenge
+
+frontend fe_https
+    bind *:443 ssl crt /etc/haproxy/certs.pem
+
+    # Use the error backend if the path begins with /error
+    acl error_mode path_beg /error
+    use_backend error if error_mode
+
+    # X-Forwarded-For is added by "option forwardfor"
+    http-request set-header X-Forwarded-Port %[dst_port]
+    http-request add-header X-Forwarded-Proto https
+
+    # If the backend raises a 50x error redirect to /error so the error backend is used.
+    acl backend_fail status 500:599
+    acl error_backend res.hdr(X-Maintenance) yes
+    http-response redirect location /error if backend_fail !error_backend
+    use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/backend.map)]
+
+    # For errors raised by HAProxy redirect to /error so they will go to the error backend.
+    errorloc 500 /error
+    errorloc 502 /error
+    errorloc 503 /error
+    errorloc 504 /error
+
+backend be_acme_challenge
+    server srv_lets_encrypt 127.0.0.1:8080
+
+# When the AppServer raises the "sinking ship" 50x error this backend gets
+# activated and serves an alternate error page that can be customised
+# per-instance.
+backend error
+    server error-page 127.0.0.1:{{ maintenance_server_port }}
+
+# The following backends can be manually activated during times of scheduled
+# or unscheduled maintenance. The instructions for how to activate them can be
+# found here: https://gitlab.com/opencraft/documentation/private/blob/master/ops/incidents.md
+backend scheduled-maintenance
+    http-response redirect location / unless { capture.req.uri / }
+    server scheduled-maintenance-page 127.0.0.1:{{ maintenance_scheduled_server_port }}
+
+backend unscheduled-maintenance
+    http-response redirect location / unless { capture.req.uri / }
+    server unscheduled-maintenance-page 127.0.0.1:{{ maintenance_unscheduled_server_port }}
+
+# This backend can be used when an instance is being provisioned
+backend provisioning
+    http-response redirect location / unless { capture.req.uri / }
+    server provisioning-page 127.0.0.1:{{ maintenance_provisioning_server_port }}
+
+{{- $prefix := "/ocim/instances" }}
+{{- range nodes }}
+{{- $path := (printf "%v@%v" $prefix .Datacenter) }}
+{{ range $ocim_id, $pairs := tree $path | byKey }}
+# TODO: the "name" transformation tactic here won't work for many cases.
+{{- $server_name := (index $pairs "name").Value | replaceAll " " "_" | toLower }}
+{{- $http_auth_info_base64 := (index $pairs "basic_auth").Value }}
+{{- $active_app_servers := (index $pairs "active_app_servers").Value | parseJSON }}
+{{- $domain := (index $pairs "domain").Value }}
+{{- $domain_slug := (index $pairs "domain_slug").Value }}
+{{ $health_check := (index $pairs "health_checks_enabled").Value | parseBool }}
+# Backend configuration for {{ $domain }}
+backend be-{{ $domain_slug }}
+    cookie openedx-backend insert postonly indirect
+    acl has-authorization req.hdr(Authorization) -m found
+    http-request set-header Authorization 'Basic {{ $http_auth_info_base64 }}' unless has-authorization
+    option httpchk /heartbeat
+    {{- range $active_app_servers }}
+    server {{ $server_name }} {{ .public_ip }}:80 cookie {{ $server_name }} {{ if $health_check }}check{{ end }}
+    {{- end }}
+{{- end }}
+{{- end }}
