@@ -2,10 +2,11 @@
 
 # Using our own repository to work around missing user names
 # This will become unnecessary when https://github.com/edx/xblock-lti-consumer/pull/32 is merged
+# Another option is enabling LTI usernames in edx.org
 # hxat_app_repository: https://github.com/lduarte1991/hxat
 hxat_app_repository: https://github.com/open-craft/hxat
 hxat_app_path: /srv/hxat
-hxat_version: v1.1.2.1
+hxat_version: paulo/edx-lti  # patched v1.1.2
 
 # database
 
