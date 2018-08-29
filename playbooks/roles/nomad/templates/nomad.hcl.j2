@@ -23,6 +23,10 @@ client {
   enabled = true
   servers = ["{{ nomad_servers | join('", "') }}"]
 
+  options {
+    "driver.raw_exec.enable" = "1"
+  }
+
   reserved {
     memory = {{ nomad_client_reserved_mem }}
   }
