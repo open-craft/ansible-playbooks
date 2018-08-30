@@ -1,8 +1,5 @@
 ---
 
-- fail: msg="Please specify tarsnap key"
-  when: "TARSNAP_KEY is not defined or TARSNAP_KEY == ''"
-
 - fail: msg="Please configure TARSNAP_BACKUP_FOLDERS, we want all servers to be backed up :)"
   when: "TARSNAP_BACKUP_FOLDERS is not defined or TARSNAP_BACKUP_FOLDERS == ''"
 
