@@ -1,4 +1,5 @@
 ---
+
 - name: Create consul group
   group:
     name: consul
