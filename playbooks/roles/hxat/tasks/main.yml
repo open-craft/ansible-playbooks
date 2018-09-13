@@ -72,14 +72,6 @@
   pip:
     requirements: "{{ hxat_app_path}}/requirements.txt"
 
-- name: get settings from template
-  become: yes
-  become_user: www-data
-  template:
-    src: aws.py.j2
-    dest: "{{ hxat_app_path }}/annotationsx/settings/aws.py"
-    mode: 0644
-
 - name: get secure settings from template
   become: yes
   become_user: www-data
