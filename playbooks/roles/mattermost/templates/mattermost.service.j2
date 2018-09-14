@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart={{ MATTERMOST_INSTALL_DIR }}/mattermost/bin/platform
+ExecStart={{ MATTERMOST_INSTALL_DIR }}/mattermost/bin/mattermost server
 Restart=always
 RestartSec=10
 WorkingDirectory={{ MATTERMOST_INSTALL_DIR }}/mattermost

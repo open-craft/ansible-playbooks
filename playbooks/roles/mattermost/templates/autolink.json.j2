@@ -6,12 +6,12 @@
 {% set domain_loop = loop %}
 {% for project in domain.projects %}
                     {
-                        "Pattern": "(?P<project>{{ project }})-(?P<id>\\d{1,6})",
-                        "Template": "[${project}-${id}](https://{{ domain.domain }}/browse/${project}-${id})"
+                        "Pattern": "(?P<project>{{ project }})-(?P<id>\\d{1,6})(?P<comma>[,;]*)",
+                        "Template": "[${project}-${id}](https://{{ domain.domain }}/browse/${project}-${id})${comma}"
                     },
                     {
-                        "Pattern": "https://{{ domain.domain }}/browse/(?P<project>{{ project }})-(?P<id>\\d{1,6})",
-                        "Template": "[${project}-${id}](https://{{ domain.domain }}/browse/${project}-${id})"
+                        "Pattern": "https://{{ domain.domain }}/browse/(?P<project>{{ project }})-(?P<id>\\d{1,6})(?P<query>\\?\\S*\\w)?",
+                        "Template": "[${project}-${id}](https://{{ domain.domain }}/browse/${project}-${id}${query})"
                     }{{ "," if not (loop.last and domain_loop.last) else "" }}
 {% endfor %}
 {% endfor %}
