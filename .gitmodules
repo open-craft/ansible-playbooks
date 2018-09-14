@@ -19,4 +19,7 @@
 [submodule "playbooks/roles/load-balancer"]
 	path = playbooks/roles/load-balancer
 	url = https://github.com/open-craft/ansible-load-balancer
-	branch = master
+	branch = v1
+[submodule "playbooks/roles/load-balancer-v2"]
+	path = playbooks/roles/load-balancer-v2
+	url = git@github.com:open-craft/ansible-load-balancer
