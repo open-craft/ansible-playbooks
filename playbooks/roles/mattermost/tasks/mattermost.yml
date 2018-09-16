@@ -104,6 +104,13 @@
         url: "{{ MATTERMOST_UNLINK_DOWNLOAD_URL }}"
         dest: "{{ MATTERMOST_UNLINK_DOWNLOAD_DEST }}"
 
+    - name: create plugin directory
+      file:
+        path: "{{ MATTERMOST_INSTALL_DIR }}/mattermost/plugins"
+        state: directory
+        owner: mattermost
+        group: mattermost
+
     - name: unpack Mattermost autolink plugin
       unarchive:
         src: "{{ MATTERMOST_UNLINK_DOWNLOAD_DEST }}"

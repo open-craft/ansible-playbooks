@@ -11,6 +11,9 @@ Restart=always
 RestartSec=10
 User=mattermail
 Group=mattermail
+# Mattermail seems to be leaking memory, so we let systemd kill it if it uses too much memory.
+MemoryHigh=120M
+MemoryMax=150M
 
 [Install]
 WantedBy=multi-user.target
