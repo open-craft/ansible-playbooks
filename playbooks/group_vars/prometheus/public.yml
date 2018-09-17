@@ -64,7 +64,7 @@ prometheus_rules:
         summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) memory usage high."
         description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] memory usage has been above {{ PROMETHEUS_ALERT_MEMORY_THRESHOLD }}% for 5 minutes."
     - alert: "low_disk_space"
-      expr: "(100 * (1 - (node_filesystem_free / node_filesystem_size))) > {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}"
+      expr: "(100 * (1 - (node_filesystem_free{mountpoint!~\"/snap.*\"} / node_filesystem_size{mountpoint!~\"/snap.*\"}))) > {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}"
       for: "5m"
       labels:
         severity: "warning"
