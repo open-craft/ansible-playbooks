@@ -1,3 +1,5 @@
+---
+
 dependencies:
   - name: nginx-proxy
     when: consul_http_password is not none
