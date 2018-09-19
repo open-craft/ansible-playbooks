@@ -1,12 +1,12 @@
 ---
-# Playbook to set up common services on any type of appserver.
+# Playbook to set up common services on Open edX appservers.  These services run after setting up
+# Open edX: The node-exporter role depends on nginx already being installed.  The filebeat role
+# reuses Elastic packages installed by the edx-configuration playbook.
 
-- name: Set up common services on appservers
+- name: Set up common services on Open edX appservers – finalization
   hosts: app
   become: true
   roles:
-    - role: consul
-      when: consul_servers | length > 0
     - role: node-exporter
       when: NODE_EXPORTER_PASSWORD is not none
     - role: filebeat

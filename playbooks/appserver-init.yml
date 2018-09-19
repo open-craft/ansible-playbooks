@@ -1,0 +1,13 @@
+---
+# Playbook to set up common services on Open edX appservers.  These services run before setting up
+# Open edX: The consul_connect role sets up the tunnels to Redis and Memcached, which need to be in
+# place before running the edx-configuration playbook.
+
+- name: Set up common services on Open edX appservers – initialization
+  hosts: app
+  become: true
+  roles:
+    - role: consul
+      when: consul_servers | length > 0
+    - role: consul-connect
+      when: consul_connect_instance_id
