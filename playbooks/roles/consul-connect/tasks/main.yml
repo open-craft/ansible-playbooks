@@ -4,7 +4,7 @@
     src: consul-connect.service.j2
     dest: /etc/systemd/system/consul-connect.service
   vars:
-    upstream_specs: "{{ appserver_memcached_upstream_specs }}{{ appserver_redis_upstream_specs }}"
+    upstream_specs: "{{ consul_connect_memcached_upstream_specs }}{{ consul_connect_redis_upstream_specs }}"
 
 - name: Start and enable the Consul Connect proxy
   systemd:

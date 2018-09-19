@@ -1,0 +1,14 @@
+---
+consul_connect_instance_id: null
+
+# The local ports that will be tunnelled to memcached and redis.
+consul_connect_memcached_ports:
+  - 11211
+  - 11212
+  - 11213
+consul_connect_redis_port: 6379
+
+# Build upstream specs for the Consul Connect command line.
+consul_connect_memcached_upstream_specs: |-
+  {% for port in consul_connect_memcached_ports %} -upstream memcached-{{ consul_connect_instance_id }}-{{ loop.index0 }}:{{ port }}{% endfor %}
+consul_connect_redis_upstream_specs: " -upstream redis-{{ consul_connect_instance_id }}:{{ consul_connect_redis_port }}"
