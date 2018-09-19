@@ -70,34 +70,47 @@
 - name: Install Prometheus MongoDB exporter
   when: MONGODB_EXPORTER_ENABLED
   block:
-    - name: Install golang package
-      apt:
-        name:
-          - golang
-        update_cache: yes
-
-    - name: Download MongoDB exporter
-      git:
-        repo: "{{ MONGODB_EXPORTER_REPO }}"
-        dest: "{{ MONGODB_EXPORTER_PATH }}"
-        version: "{{ MONGODB_EXPORTER_VERSION }}"
-
-    - name: Compile MongoDB exporter files
-      make:
-        chdir: "{{ MONGODB_EXPORTER_PATH }}"
-        target: build
-      environment:
-        GOPATH: "{{ GO_PATH }}"
-
-    - name: create symlink to exporter binary
+    - name: Create custom fact directory
       file:
-        src: "{{ MONGODB_EXPORTER_PATH }}/mongodb_exporter"
-        dest: /usr/local/bin/mongodb_exporter
-        state: link
-        force: yes
-        owner: mongodb
-        group: mongodb
-        mode: 0755
+        path: "/etc/ansible/facts.d"
+        state: "directory"
+
+    - name: Store MongoDB exporter version
+      copy:
+        content: |
+          {"version": "{{ MONGODB_EXPORTER_VERSION }}"}
+        dest: /etc/ansible/facts.d/mongodb_exporter.fact
+      register: mongodb_exporter_version
+
+    - name: Upgrade MongoDB exporter
+      when: mongodb_exporter_version.changed
+      block:
+        - name: Install golang package
+          apt:
+            name:
+              - golang
+            update_cache: yes
+
+        - name: Download MongoDB exporter
+          git:
+            repo: "{{ MONGODB_EXPORTER_REPO }}"
+            dest: "{{ MONGODB_EXPORTER_PATH }}"
+            version: "{{ MONGODB_EXPORTER_VERSION }}"
+          when: ansible_local.mongodb_exporter.version is version('MONGODB_EXPORTER_VERSION', '!=')
+
+        - name: Compile MongoDB exporter files
+          make:
+            chdir: "{{ MONGODB_EXPORTER_PATH }}"
+            target: build
+          environment:
+            GOPATH: "{{ GO_PATH }}"
+
+        - name: Add MongoDB exporter binary to the path
+          copy:
+            src: "{{ MONGODB_EXPORTER_PATH }}/mongodb_exporter"
+            dest: /usr/local/bin/mongodb_exporter
+            remote_src: yes
+            mode: 0755
 
     - name: Create MongoDB exporter environment file
       copy:
@@ -113,11 +126,11 @@
         src: mongodb_exporter.service
         dest: /etc/systemd/system/mongodb_exporter.service
 
-    - name: Start MongoDB exporter
+    - name: Start and enable MongoDB exporter
       systemd:
         daemon-reload: yes
         name: mongodb_exporter.service
-        state: started
+        state: restarted
         enabled: yes
 
     - name: Create Consul service definition file

@@ -8,12 +8,13 @@ MONGODB_SERVER_BACKUP_DIR: /var/lib/mongodb/backup
 # PROMETHEUS ##################################################################
 
 MONGODB_EXPORTER_ENABLED: true
-MONGODB_EXPORTER_VERSION: 0.6.1
+MONGODB_EXPORTER_VERSION: "v0.6.2"
 MONGODB_EXPORTER_REPO: https://github.com/percona/mongodb_exporter.git
 MONGODB_EXPORTER_PASSWORD: null
 
+# This is not meant to be changed, but to improve the readability and to reduce the repetition
 MONGODB_HOME: /var/lib/mongodb
-GO_PATH: "{{ MONGODB_HOME }}"
+GO_PATH: "/tmp/mongodb"
 MONGODB_EXPORTER_DIR: "github.com/percona/mongodb_exporter"
 MONGODB_EXPORTER_PATH: "{{ GO_PATH }}/src/{{ MONGODB_EXPORTER_DIR }}"
 
