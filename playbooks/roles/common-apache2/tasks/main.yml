@@ -1,0 +1,32 @@
+---
+# This role contains common tasks that will run on all nodes.
+
+- name: add `ppa:certbot/certbot` repo
+  become: yes
+  apt_repository:
+    repo: ppa:certbot/certbot
+
+- name: install common packages
+  become: yes
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - apache2
+    - build-essential
+    - certbot
+    - git
+    - libffi-dev
+    - openssl
+    - python-certbot-apache
+    - python-dev
+    - python-pip
+    - python-setuptools
+
+- name: include `certbot-renew.sh` script
+  become: yes
+  template:
+    src: certbot-renew.sh
+    dest: /root/certbot-renew.sh
+    mode: 0700
