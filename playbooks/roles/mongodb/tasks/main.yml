@@ -72,7 +72,7 @@
   block:
     - name: Create custom fact directory
       file:
-        path: "/etc/ansible/facts.d"
+        path: /etc/ansible/facts.d
         state: "directory"
 
     - name: Store MongoDB exporter version
@@ -82,8 +82,8 @@
         dest: /etc/ansible/facts.d/mongodb_exporter.fact
       register: mongodb_exporter_version
 
-    - name: Upgrade MongoDB exporter
-      when: mongodb_exporter_version.changed
+    - name: Install and Upgrade MongoDB exporter
+      when: ansible_local.mongodb_exporter is not defined or ansible_local.mongodb_exporter.version != MONGODB_EXPORTER_VERSION
       block:
         - name: Install golang package
           apt:
@@ -96,7 +96,6 @@
             repo: "{{ MONGODB_EXPORTER_REPO }}"
             dest: "{{ MONGODB_EXPORTER_PATH }}"
             version: "{{ MONGODB_EXPORTER_VERSION }}"
-          when: ansible_local.mongodb_exporter.version is version('MONGODB_EXPORTER_VERSION', '!=')
 
         - name: Compile MongoDB exporter files
           make:
@@ -111,6 +110,12 @@
             dest: /usr/local/bin/mongodb_exporter
             remote_src: yes
             mode: 0755
+
+        - name: Store MongoDB exporter version
+          copy:
+            content: |
+              {"version": "{{ MONGODB_EXPORTER_VERSION }}"}
+            dest: /etc/ansible/facts.d/mongodb_exporter.fact
 
     - name: Create MongoDB exporter environment file
       copy:
