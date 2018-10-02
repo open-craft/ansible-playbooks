@@ -5,6 +5,15 @@ BACKUP_PRUNER_LOG_DIR: /var/log/backup-pruner
 BACKUP_PRUNER_SCRIPT: /usr/local/sbin/backup-pruner.sh
 BACKUP_PRUNER_SNITCH: null
 
+# Whether to ensure GNU Parallel only schedules jobs if swapping in and out is not taking place.
+BACKUP_PRUNER_JOB_NOSWAP: true
+# How many jobs to spawn at once. Making this number too high on a small server may spell issues.
+BACKUP_PRUNER_JOB_PARALLELISM: 2
+# How many times to retry a job if it fails.
+BACKUP_PRUNER_JOB_RETRIES: 3
+# The Linux nice value to give to processes kicked off by GNU Parallel.
+BACKUP_PRUNER_JOB_NICENESS: -20
+
 # Can be changed to normal tarsnapper once we merge this branch
 # and code winds up on PIP
 BACKUP_PRUNER_TARSNAPPER_VERSION: git+https://github.com/miracle2k/tarsnapper.git@0fedc22bcf8863fecb78c290a42dc28de96363b2

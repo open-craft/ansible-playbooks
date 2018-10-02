@@ -19,7 +19,12 @@ task='output=$(/usr/local/sbin/tarsnap-{}.sh expire 2>&1 | tee -a {{ BACKUP_PRUN
 # Cron will send email if there is any stdout or stderr output regardless of the
 # response code, so by only including output for failed tasks in the output, an
 # email will only be sent out if and only if one or more backup pruners failed.
-echo "$jobs" | tail -n +2 | parallel --no-notice -j0 --joblog {{ BACKUP_PRUNER_JOB_LOG }} $task
+echo "$jobs" | tail -n +2 | parallel {% if BACKUP_PRUNER_JOB_NOSWAP %}--noswap{% endif %} \
+  --no-notice \
+  -j{{ BACKUP_PRUNER_JOB_PARALLELISM }} \
+  --retries {{ BACKUP_PRUNER_JOB_RETRIES }} \
+  --nice {{ BACKUP_PRUNER_JOB_NICENESS }} \
+  --joblog {{ BACKUP_PRUNER_JOB_LOG }} $task
 status=$?
 
 if [ $status -eq 0 ]
