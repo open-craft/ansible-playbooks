@@ -8,19 +8,19 @@
   user:
     name: mongodb
     group: mongodb
-    home: /var/lib/mongodb
+    home: "{{ MONGODB_HOME }}"
     system: yes
 
-- name: mount /var/lib/mongodb
+- name: Mount MongoDB home
   mount:
-    name: /var/lib/mongodb
+    name: "{{ MONGODB_HOME }}"
     src: "{{ MONGODB_OPENSTACK_DB_DEVICE }}"
     fstype: ext4
     state: mounted
 
-- name: mkdir /var/lib/mongodb/{db,log}
+- name: Create db and log directories for MongoDB home
   file:
-    path: "/var/lib/mongodb/{{ item }}"
+    path: "{{ MONGODB_HOME }}/{{ item }}"
     state: directory
     mode: 0750
     owner: mongodb
@@ -29,17 +29,17 @@
     - db
     - log
 
-- name: chown -R /var/lib/mongodb
+- name: Change MongoDB Home owner
   file:
-    path: /var/lib/mongodb
+    path: "{{ MONGODB_HOME }}"
     owner: mongodb
     group: mongodb
     recurse: yes
     state: directory
 
-- name: chmod /var/lib/mongodb
+- name: Change MongoDB permissions
   file:
-    path: /var/lib/mongodb
+    path: "{{ MONGODB_HOME }}"
     mode: 0700
     state: directory
 
@@ -70,12 +70,39 @@
 - name: Install Prometheus MongoDB exporter
   when: MONGODB_EXPORTER_ENABLED
   block:
+    - name: Create custom fact directory
+      file:
+        path: /etc/ansible/facts.d
+        state: "directory"
 
-    - name: Download MongoDB exporter
-      get_url:
-        url: "{{ MONGODB_EXPORTER_DOWNLOAD_URL }}"
-        dest: /usr/local/bin/mongodb_exporter
-        mode: 0755
+    - name: Install and Upgrade MongoDB exporter
+      when: ansible_local.mongodb_exporter is not defined or ansible_local.mongodb_exporter.version != MONGODB_EXPORTER_VERSION
+      block:
+        - name: Install golang package
+          apt:
+            name:
+              - golang
+            update_cache: yes
+
+        - name: Download MongoDB exporter
+          git:
+            repo: "{{ MONGODB_EXPORTER_REPO }}"
+            dest: "{{ MONGODB_EXPORTER_PATH }}"
+            version: "{{ MONGODB_EXPORTER_VERSION }}"
+
+        - name: Compile MongoDB exporter files
+          make:
+            chdir: "{{ MONGODB_EXPORTER_PATH }}"
+            target: build
+          environment:
+            GOPATH: "{{ GO_PATH }}"
+
+        - name: Add MongoDB exporter binary to the path
+          copy:
+            src: "{{ MONGODB_EXPORTER_PATH }}/mongodb_exporter"
+            dest: /usr/local/bin/mongodb_exporter
+            remote_src: yes
+            mode: 0755
 
     - name: Create MongoDB exporter environment file
       copy:
@@ -91,12 +118,18 @@
         src: mongodb_exporter.service
         dest: /etc/systemd/system/mongodb_exporter.service
 
-    - name: Start MongoDB exporter
+    - name: Start and enable MongoDB exporter
       systemd:
         daemon-reload: yes
         name: mongodb_exporter.service
-        state: started
+        state: restarted
         enabled: yes
+
+    - name: Store MongoDB exporter version
+      copy:
+        content: |
+          {"version": "{{ MONGODB_EXPORTER_VERSION }}"}
+        dest: /etc/ansible/facts.d/mongodb_exporter.fact
 
     - name: Create Consul service definition file
       copy:
