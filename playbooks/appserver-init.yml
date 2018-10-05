@@ -10,4 +10,4 @@
     - role: consul
       when: consul_servers | length > 0
     - role: consul-connect
-      when: consul_connect_instance_id
+      when: consul_connect_instance_id is not none

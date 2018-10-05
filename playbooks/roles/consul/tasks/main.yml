@@ -1,5 +1,9 @@
 ---
 
+- name: Install unzip
+  apt:
+    name: unzip
+
 - name: Create consul group
   group:
     name: consul
@@ -30,10 +34,6 @@
   with_items:
     - { path: "{{ consul_config_dir }}", owner: root }
     - { path: "{{ consul_data_dir }}", owner: consul }
-
-- name: Install unzip
-  apt:
-    name: unzip
 
 - name: Determine current Consul version
   shell: consul version | sed -n 's/Consul v\(.*\)/\1/p'
