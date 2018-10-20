@@ -114,8 +114,8 @@
         group: mongodb
 
     - name: Copy MongoDB exporter service definition
-      copy:
-        src: mongodb_exporter.service
+      template:
+        src: mongodb_exporter.service.j2
         dest: /etc/systemd/system/mongodb_exporter.service
 
     - name: Start and enable MongoDB exporter

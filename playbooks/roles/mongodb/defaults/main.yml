@@ -11,6 +11,7 @@ MONGODB_EXPORTER_ENABLED: true
 MONGODB_EXPORTER_VERSION: "v0.6.2"
 MONGODB_EXPORTER_REPO: https://github.com/percona/mongodb_exporter.git
 MONGODB_EXPORTER_PASSWORD: null
+MONGODB_EXPORTER_EXTRA_OPTS: "-collect.topmetrics"
 
 # This is not meant to be changed, but to improve the readability and to reduce the repetition
 MONGODB_HOME: /var/lib/mongodb
