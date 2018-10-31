@@ -2,7 +2,7 @@
 ## This playbook deploys hxat, catchpy and loris roles.
 
 # Apply common configuration to all hosts
-- hosts: all
+- hosts: catchpy:hxat:loris
   
   roles:
     - common-apache2
