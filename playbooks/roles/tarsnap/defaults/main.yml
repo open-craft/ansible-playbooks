@@ -47,10 +47,21 @@ TARSNAP_ARCHIVE_NAME: 'backup'
 # Optional snitch to be sent
 TARSNAP_BACKUP_SNITCH: null
 
-# Backups should be daily at most
-TARSNAP_BACKUP_HOUR: '*'
+# Tarsnap backup cron settings.
+# This will be translated to
+# a crontab record. Read https://linux.die.net/man/5/crontab
+# for more info on crontab syntax and
+# https://docs.ansible.com/ansible/2.5/modules/cron_module.html for
+# more info on ansible's cron module.
+# By default backups will happen every hour on the 10th minute.
+# For production instances backups should be daily at most.
+# For stage instances it's OK to do weekly backups.
 # Avoid 0 minute --- as Dead Man's snitch might do false positive then
 TARSNAP_BACKUP_MINUTE: '10'
+TARSNAP_BACKUP_HOUR: '*'
+TARSNAP_BACKUP_DAY: '*'
+TARSNAP_BACKUP_MONTH: '*'
+TARSNAP_BACKUP_WEEKDAY: '*'
 
 TARSNAP_CACHE: "/var/cache/tarsnap"
 
