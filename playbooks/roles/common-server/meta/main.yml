@@ -37,7 +37,3 @@ dependencies:
   - name: filebeat
     tags: 'filebeat'
     when: COMMON_SERVER_INSTALL_FILEBEAT
-
-  - name: sftp
-    tags: 'sftp'
-    when: COMMON_SERVER_INSTALL_SFTP

@@ -6,3 +6,4 @@
 - import_tasks: nginx.yml
 - import_tasks: etckeeper.yml
 - import_tasks: chkrootkit.yml
+- import_tasks: sftp.yml
