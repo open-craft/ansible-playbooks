@@ -1,0 +1,70 @@
+// Declare internals
+
+const internals = {
+  security: { wall: {} }
+};
+
+// Wall entity configuration
+
+internals.security.wall.entity = {
+  idp: {
+    tags: ['edx'],
+    provider: {
+      issuer: '{{ nexus_oauth_issuer }}',
+      authorization_endpoint: '{{ nexus_oauth_authorize_endpoint }}',
+      token_endpoint: '{{ nexus_oauth_token_endpoint }}',
+      userinfo_endpoint: '{{ nexus_oauth_userinfo_endpoint }}'
+    },
+    client: {
+      client_id: '{{ nexus_idp_client_id }}',
+      grant_types: ['refresh_token', 'authorization_code'],
+      id_token_signed_response_alg: 'HS256',
+      clock_tolerance: 3
+    },
+    authParams: {
+      nonce: false,
+      state: false, // Disable until NDPD-303 is resolved
+      scope: '{{ nexus_idp_auth_scopes }}'
+    }
+  }
+};
+// Wall resource configuration
+
+internals.security.wall.resource = {
+  google: {
+    provider: {
+      authorization_endpoint: '{{ google_auth_endpoint }}',
+      token_endpoint: '{{ google_token_endpoint }}'
+    },
+    client: {
+      client_id: '{{ google_client_id }}'
+    }
+  }
+};
+
+// Define exports
+
+module.exports = {
+  security: {
+    wall: {
+      entity: internals.security.wall.entity,
+      resource: internals.security.wall.resource
+    }
+  },
+  yar: {
+    cookieOptions: { isSecure: false }
+  },
+  mattermost: {
+    session: {
+      cookie: { options: { isSecure: false } }
+    }
+  },
+  agenda: {
+    jobs: {
+      edxCourseSync: { recurrence: '75 minutes' },
+      googleEventSync: { recurrence: '45 minutes' },
+      rssFeedUpdate: { recurrence: '10 minutes' }
+    }
+  }
+};
+  

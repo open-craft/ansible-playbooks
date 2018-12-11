@@ -1,0 +1,29 @@
+---
+# defaults file for notre-dame-nexus-dashboard
+nexus_dashboard_reposority: git@gitlab.com:opencraft/client/notre-dame/notre-dame-platform.git
+nexus_dashboard_app_dest: "/home/ubuntu/notre-dame-platform"
+nexus_dashboard_code_dir: "/opt/notredame/apps/notre-dame-platform"
+nexus_dashboard_staging_loc: '{{ nexus_dashboard_code_dir }}/config/staging.js'
+nexus_dashboard_ecosystem_loc: '/opt/notredame/apps/ecosystem/ecosystem.yml' 
+nexus_dashboard_host: null
+nexus_dashboard_port: '9000'
+nexus_mongo_host: '127.0.0.1'
+nexus_mongo_port: '27017'
+edx_uri: null
+nexus_redis_host: '127.0.0.1'
+nexus_redis_port: '6379'
+nexus_zmq_host: '127.0.0.1'
+nexus_mattermost_proxy_uri: null
+
+# oauth provider settings
+nexus_oauth_issuer: null
+nexus_oauth_authorize_endpoint: '{{ nexus_oauth_issuer }}/authorize'
+nexus_oauth_token_endpoint: '{{ nexus_oauth_issuer }}/access_token'
+nexus_oauth_userinfo_endpoint: '{{ nexus_oauth_issuer }}/user_info'
+nexus_idp_client_id: 'client-id'
+nexus_idp_client_secret: null
+nexus_idp_auth_scopes: 'openid profile email'
+
+google_auth_endpoint: 'https://accounts.google.com/o/oauth2/v2/auth'
+google_token_endpoint: 'https://www.googleapis.com/oauth2/v4/token'
+google_client_id: null

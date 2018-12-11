@@ -1,0 +1,47 @@
+apps:
+  - name      : ndp
+    script    : {{ nexus_dashboard_code_dir }}/src/server.js
+    cwd       : {{ nexus_dashboard_code_dir }}
+    exec_mode : fork
+    env       :
+      NODE_ENV    : 'staging'
+      APP_URI     : 'http://{{ nexus_dashboard_host }}:{{ nexus_dashboard_port }}/'
+      MC_HOST     : '0.0.0.0'
+      MC_PORT     : '{{ nexus_dashboard_port }}'
+      DB_MAIN_URI : 'mongodb://{{ nexus_mongo_host }}:{{ nexus_mongo_port }}/ndplatform'
+      CH_MAIN_URL : 'redis://{{ nexus_redis_host }}:{{ nexus_redis_port }}'
+      WE_IDP_CS   : '{{ nexus_idp_client_secret }}'
+      WE_IDP_RU   : 'http://{{ nexus_dashboard_host }}:{{ nexus_dashboard_port }}/auth/idp/callback'
+      WR_GOOGLE_CS: none
+      WR_GOOGLE_RU: 'http://{{ nexus_dashboard_host }}:{{ nexus_dashboard_port }}/auth/google/callback'
+      WS_URI      : 'mongodb://{{ nexus_mongo_host }}:{{ nexus_mongo_port }}/ndwall'
+      WS_PASS     : none
+      NSC_NAME    : 'ldsn'
+      NSC_PASS    : none
+      MQ_ADR_XS   : 'tcp://{{ nexus_zmq_host }}:8700'
+      MQ_ADR_XP   : 'tcp://{{ nexus_zmq_host }}:8701'
+      DX_URI      : '{{ edx_uri }}'
+      #DX_URI      : 'https://staging.learn-nexus.nd.edu'
+      MM_URI      : '{{ nexus_mattermost_proxy_uri }}'
+      #MM_URI      : 'https://staging.social-nexus.nd.edu'
+      AG_URI      : 'mongodb://{{ nexus_mongo_host }}:{{ nexus_mongo_port }}/ndagenda'
+  - name      : ndw
+    script    : {{ nexus_dashboard_code_dir }}/src/worker.js
+    cwd       : {{ nexus_dashboard_code_dir }}
+    exec_mode : fork
+    env       :
+      NODE_ENV    : 'staging'
+      APP_URI     : 'http://{{ nexus_dashboard_host }}:{{ nexus_dashboard_port }}/'
+      DB_MAIN_URI : 'mongodb://{{ nexus_mongo_host }}:{{ nexus_mongo_port }}/ndplatform'
+      CH_MAIN_URL : 'redis://{{ nexus_redis_host }}:{{ nexus_redis_port }}'
+      WE_IDP_CS   : '{{ nexus_idp_client_secret }}'
+      WE_IDP_RU   : 'http://{{ nexus_dashboard_host }}:{{ nexus_dashboard_port }}/auth/idp/callback'
+      WR_GOOGLE_CS: none
+      WR_GOOGLE_RU: 'http://{{ nexus_dashboard_host }}:{{ nexus_dashboard_port }}/auth/google/callback'
+      WS_URI      : 'mongodb://{{ nexus_mongo_host }}:{{ nexus_mongo_port }}/ndwall'
+      WS_PASS     : none
+      MQ_ADR_XS   : 'tcp://{{ nexus_zmq_host }}:8700'
+      MQ_ADR_XP   : 'tcp://{{ nexus_zmq_host }}:8701'
+      DX_URI      : '{{ edx_uri }}'
+      #DX_URI      : 'https://staging.learn-nexus.nd.edu'
+      AG_URI      : 'mongodb://{{ nexus_mongo_host }}:{{ nexus_mongo_port }}/ndagenda'
