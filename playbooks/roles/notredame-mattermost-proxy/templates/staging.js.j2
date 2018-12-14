@@ -1,0 +1,29 @@
+// Define exports
+
+module.exports = {
+  auth: {
+    oidc: {
+      provider: {
+        issuer: '{{ nexus_mmproxy_oauth_issuer }}',
+        authorizationEndpoint: '{{ nexus_mmproxy_oauth_authorize_endpoint }}',
+        tokenEndpoint: '{{ nexus_mmproxy_oauth_token_endpoint }}',
+        userinfoEndpoint: '{{ nexus_mmproxy_oauth_userinfo_endpoint }}'
+      },
+      client: {
+        clientId: '{{ nexus_mmproxy_idp_client_id }}',
+        grantTypes: ['authorization_code'],
+        idTokenSignedResponseAlg: 'HS256'
+      }
+    }
+  },
+  dashboard: {
+    session: {
+      cookie: { name: 'ldsn', options: { secure: false } }
+    }
+  },
+  mattermost: {
+    session: {
+      cookie: { name: 'MMAUTHTOKEN', options: { secure: false } }
+    }
+  }
+};

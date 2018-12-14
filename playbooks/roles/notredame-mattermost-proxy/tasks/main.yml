@@ -1,16 +1,16 @@
 ---
-# tasks file for notre-dame-nexus-dashboard
+# task file for notredame-mattermost-proxy
 
 - name: Create application group
   group:
-    name: "{{ nexus_dashboard_group }}"
+    name: "{{ nexus_mmproxy_group }}"
     system: yes
 
 - name: Create application user
   user:
-    name: "{{ nexus_dashboard_user }}"
-    group: "{{ nexus_dashboard_group }}"
-    home: "{{ nexus_dashboard_app_dir }}"
+    name: "{{ nexus_mmproxy_user }}"
+    group: "{{ nexus_mmproxy_group }}"
+    home: "{{ nexus_mmproxy_app_dir }}"
     createhome: no
     system: yes
 
@@ -19,25 +19,25 @@
     path: /notredame/apps/ecosystem
     state: directory
     mode: 0755
-    owner: "{{ nexus_dashboard_user }}"
-    group: "{{ nexus_dashboard_group }}"
+    owner: "{{ nexus_mmproxy_user }}"
+    group: "{{ nexus_mmproxy_group }}"
 
 - name: Install read-only ssh key
   copy:
     content: "{{ NOTREDAME_GIT_IDENTITY }}"
     dest: "{{ notredame_git_identity }}"
-    owner: "{{ nexus_dashboard_user }}"
-    group: "{{ nexus_dashboard_group }}"
+    owner: "{{ nexus_mmproxy_user }}"
+    group: "{{ nexus_mmproxy_group }}"
     mode: "0600"
 
 - name: Checkout the repository
   git:
-    repo: "{{ nexus_dashboard_repository }}"
-    dest: "{{ nexus_dashboard_code_dir }}"
+    repo: "{{ nexus_mmproxy_repository }}"
+    dest: "{{ nexus_mmproxy_code_dir }}"
     key_file: "{{ notredame_git_identity }}"
     accept_hostkey: yes
     ssh_opts: "-o StrictHostKeyChecking=no"
-  become_user: "{{ nexus_dashboard_user }}"
+  become_user: "{{ nexus_mmproxy_user }}"
 
 - name: Remove read-only ssh key
   file:
@@ -48,6 +48,11 @@
   template:
     src: ecosystem.yml.j2
     dest: /notredame/apps/ecosystem/ecosystem.yml
+
+- name: Create root credentials file
+  template:
+    src: root-credentials.txt.j2
+    dest: "{{ nexus_mmproxy_root_credentials_dest }}"
 
 - name: Install the gpg key for nodejs LTS
   apt_key:
@@ -72,18 +77,13 @@
 - name: Run npm install
   command: npm install
   args:
-    chdir: "{{ nexus_dashboard_code_dir }}"
-  become_user: "{{ nexus_dashboard_user }}"
-
-- name: Run build dist
-  command: npm run build:dist
-  args:
-    chdir: "{{ nexus_dashboard_code_dir }}"
+    chdir: "{{ nexus_mmproxy_code_dir }}"
+  become_user: "{{ nexus_mmproxy_user }}"
 
 - name: Update staging.js config file
   template:
     src: staging.js.j2
-    dest: "{{ nexus_dashboard_staging_loc }}"
+    dest: "{{ nexus_mmproxy_staging_loc }}"
     force: yes
 
 - name: Delete old pm2 services
@@ -93,5 +93,4 @@
 - name: Start pm2 service
   command: pm2 start ecosystem.yml --update-env
   args:
-    chdir: "{{ nexus_dashboard_ecosystem_loc }}"
-
+    chdir: "{{ nexus_mmproxy_ecosystem_loc }}"

@@ -1,0 +1,24 @@
+apps:
+  - name      : ndmp
+    script    : {{ nexus_mmproxy_code_dir }}/lib/index.js
+    cwd       : {{ nexus_mmproxy_code_dir }}
+    exec_mode : cluster
+    instances : 0
+    env       :
+      NODE_ENV                  : 'staging'
+      MP_HOST                   : '{{ nexus_mmproxy_host }}'
+      MP_PORT                   : '{{ nexus_mmproxy_port }}'
+      MP_TARGET_HOST            : '{{ nexus_mmproxy_target_host }}'
+      MP_TARGET_PORT            : '{{ nexus_mmproxy_target_port }}'
+      MP_MDB_MAIN_URI           : 'mongodb://{{ nexus_mmproxy_mongo_host }}:{{ nexus_mmproxy_mongo_port }}/ndmproxy'
+      MP_AUTH_DEST_CN           : 'ndmpdt'
+      MP_AUTH_LOGOUT_CN         : 'ndmplgt'
+      MP_AUTH_OIDC_CS           : '{{ nexus_mmproxy_idp_client_secret }}'
+      MP_AUTH_OIDC_RDURI        : '{{ nexus_mmproxy_redirect_uri }}'
+      MP_AUTH_OIDC_CN           : 'ndmpdcsn'
+      MP_EDX_URL                : '{{ nexus_mmproxy_edx_url }}'
+      MP_MMS_CREDS_DEST         : '{{ nexus_mmproxy_root_credentials_dest }}'
+      MP_MMS_OSS_SITE_URL       : '{{ nexus_mmproxy_site_url }}'
+      MP_MMS_OSS_ALLOW_CORS_FROM: '{{ nexus_mmproxy_allow_cors_from }}'
+      MP_UCOOKIE_SECURE         : 'false'
+      MP_UIRON_PASSWD           : '{{ nexus_mmproxy_iron_passwd }}'

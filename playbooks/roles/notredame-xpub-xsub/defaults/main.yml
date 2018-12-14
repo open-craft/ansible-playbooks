@@ -1,0 +1,11 @@
+---
+# default file for notredame-xpub-xsub
+
+nexus_pubsub_group: "nexus"
+nexus_pubsub_user: "nexus"
+nexus_pubsub_app_dir: "/notredame/apps"
+nexus_pubsub_repository: git@gitlab.com:opencraft/client/notre-dame/xpub-xsub.git
+nexus_pubsub_code_dir: "{{ nexus_pubsub_app_dir }}/xpub-xsub"
+nexus_pubsub_ecosystem_loc: "{{ nexus_pubsub_app_dir }}/ecosystem"
+notredame_git_identity: '{{ nexus_pubsub_app_dir }}/notredame_git_identity'
+NOTREDAME_GIT_IDENTITY: null

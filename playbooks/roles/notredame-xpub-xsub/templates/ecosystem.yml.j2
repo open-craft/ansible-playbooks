@@ -1,0 +1,9 @@
+apps:
+  - name      : ndxps
+    script    : {{ nexus_pubsub_code_dir }}/lib/index.js
+    cwd       : {{ nexus_pubsub_code_dir }}
+    exec_mode : fork
+    env       :
+      NODE_ENV  : 'staging'
+      XSUB_PORT : '8700'
+      XPUB_PORT : '8701'
