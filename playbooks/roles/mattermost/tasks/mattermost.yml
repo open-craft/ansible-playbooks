@@ -104,6 +104,13 @@
         url: "{{ MATTERMOST_UNLINK_DOWNLOAD_URL }}"
         dest: "{{ MATTERMOST_UNLINK_DOWNLOAD_DEST }}"
 
+    - name: create data directory
+      file:
+        path: "{{ MATTERMOST_INSTALL_DIR }}/mattermost/data"
+        state: directory
+        owner: mattermost
+        group: mattermost
+
     - name: create plugin directory
       file:
         path: "{{ MATTERMOST_INSTALL_DIR }}/mattermost/plugins"
