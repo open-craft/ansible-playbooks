@@ -1,0 +1,12 @@
+---
+# Playbook for setting up a zMQ server.
+
+- name: Set up zmq servers
+  hosts: staging-xpub-xsub
+  become: true
+  roles:
+    - role: common-server
+      tags: 'common-server'
+
+    - role: notredame-xpub-xsub
+      tags: 'notredame-xpub-xsub'

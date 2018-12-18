@@ -1,0 +1,18 @@
+---
+# Playbook for setting up a nexus learner dashboard server.
+
+- name: Set up learner dashboard servers
+  hosts: staging-learner-dashboard
+  become: true
+  roles:
+    - role: common-server
+      tags: 'common-server'
+
+    - role: notre-dame-nexus-dashboard
+      tags: 'notre-dame-nexus-dashboard'
+
+    - role: notredame-mattermost-proxy
+      tags: 'notredame-mattermost-proxy'
+
+    - role: mattermost
+      tags: 'mattermost'

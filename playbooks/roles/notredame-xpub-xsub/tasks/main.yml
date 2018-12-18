@@ -47,6 +47,8 @@
     repo: "{{ nexus_pubsub_repository }}"
     dest: "{{ nexus_pubsub_code_dir }}"
     key_file: "{{ notredame_git_identity }}"
+    accept_hostkey: yes
+    ssh_opts: "-o StrictHostKeyChecking=no"
   become_user: "{{ nexus_pubsub_user }}"
 
 - name: Remove read-only ssh key
@@ -79,6 +81,12 @@
   command: npm install -g pm2
   become: true
 
+- name: Remove node_modules folder
+  file:
+    path: "{{ nexus_pubsub_code_dir }}/node_modules"
+    state: absent
+  become_user: "{{ nexus_pubsub_user }}"
+
 - name: Run npm install
   command: npm install
   args:
@@ -93,3 +101,4 @@
   command: pm2 start ecosystem.yml --update-env
   args:
     chdir: "{{ nexus_pubsub_ecosystem_loc }}"
+  become_user: "{{ nexus_pubsub_user }}"
