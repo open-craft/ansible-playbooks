@@ -26,7 +26,7 @@
         "EnableTesting": false,
         "EnableDeveloper": false,
         "EnableSecurityFixAlert": true,
-        "EnableInsecureOutgoingConnections": false,
+        "EnableInsecureOutgoingConnections": true,
         "EnableMultifactorAuthentication": false,
         "EnforceMultifactorAuthentication": false,
         "AllowCorsFrom": "",
@@ -48,7 +48,7 @@
         "EnableUserTypingMessages": true,
         "EnableChannelViewedMessages": true,
         "EnableUserStatuses": true,
-        "ClusterLogTimeoutMilliseconds": 2000,
+        "ClusterLogTimeoutMilliseconds": 2000
     },
     "TeamSettings": {
         "SiteName": "Mattermost",
@@ -74,7 +74,7 @@
         "UserStatusAwayTimeout": 300,
         "MaxChannelsPerTeam": 2000,
         "MaxNotificationsPerChannel": 1000,
-        "TeammateNameDisplay": "username",
+        "TeammateNameDisplay": "username"
     },
     "SqlSettings": {
         "DriverName": "postgres",
@@ -127,7 +127,7 @@
         "EnableSignInWithEmail": true,
         "EnableSignInWithUsername": true,
         "SendEmailNotifications": true,
-        "RequireEmailVerification": true,
+        "RequireEmailVerification": false,
         "FeedbackName": "Mattermost Notification",
         "FeedbackEmail": "{{ MATTERMOST_FEEDBACK_EMAIL }}",
         "FeedbackOrganization": "",
@@ -144,7 +144,7 @@
         "EnableEmailBatching": false,
         "EmailBatchingBufferSize": 256,
         "EmailBatchingInterval": 30,
-        "SkipServerCertificateVerification": false,
+        "SkipServerCertificateVerification": false
     },
     "RateLimitSettings": {
         "Enable": false,
@@ -261,7 +261,7 @@
         "NicknameAttribute": "",
         "LocaleAttribute": "",
         "PositionAttribute": "",
-        "LoginButtonText": "With SAML",
+        "LoginButtonText": "With SAML"
     },
     "NativeAppSettings": {
         "AppDownloadLink": "https://about.mattermost.com/downloads/",
@@ -276,7 +276,7 @@
         "UseExperimentalGossip": false,
         "ReadOnlyConfig": true,
         "GossipPort": 8074,
-        "StreamingPort": 8075,
+        "StreamingPort": 8075
     },
     "MetricsSettings": {
         "Enable": false,
@@ -302,36 +302,9 @@
         "Password": "",
         "EnableIndexing": false,
         "EnableSearching": false,
-        "Sniff": true,
+        "Sniff": true
     },
     "DataRetentionSettings": {
-        "Enable": false,
+        "Enable": false
     },
-    "PluginSettings": {
-        "Enable": true,
-        "EnableUploads": true,
-        "Directory": "./plugins",
-        "ClientDirectory": "./client/plugins",
-        "Plugins": {
-            "mattermost-autolink": {
-{% include "./templates/autolink.json.j2" %}
-
-            }
-        },
-        "PluginStates": {
-            "jira": {
-                "Enable": true
-            },
-            "mattermost-autolink": {
-                "Enable": true
-            }
-        }
-    },
-    "DisplaySettings": {
-        "CustomUrlSchemes": [],
-        "ExperimentalTimezone": false
-    },
-    "TimezoneSettings": {
-        "SupportedTimezonesPath": "timezones.json"
-    }
 }

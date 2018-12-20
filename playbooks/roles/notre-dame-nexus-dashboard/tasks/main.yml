@@ -1,6 +1,19 @@
 ---
 # tasks file for notre-dame-nexus-dashboard
 
+- name: Install required packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - libtool
+    - pkg-config
+    - build-essential
+    - autoconf
+    - automake
+    - uuid-dev
+    - libzmq3-dev
+
 - name: Create application group
   group:
     name: "{{ nexus_dashboard_group }}"
@@ -48,6 +61,7 @@
   template:
     src: ecosystem.yml.j2
     dest: /notredame/apps/ecosystem/ecosystem.yml
+  become_user: "{{ nexus_dashboard_user }}"
 
 - name: Install the gpg key for nodejs LTS
   apt_key:

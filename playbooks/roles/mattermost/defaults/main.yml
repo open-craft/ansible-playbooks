@@ -43,7 +43,7 @@ MATTERMOST_JIRA_DOMAINS: []
 # Settings below this point can safely be left at their default values.
 
 MATTERMOST_STATUS_DIR: /var/lib/mattermost
-MATTERMOST_LOG_DIR: /var/log/mattermost
+MATTERMOST_LOG_DIR: /var/log/mattermost/
 
 # Directory to unpack the distribution tarball to.  The tarball contains a directory named
 # "mattermost", so this does not need to be included here.

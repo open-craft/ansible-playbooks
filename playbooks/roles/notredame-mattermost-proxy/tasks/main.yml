@@ -47,12 +47,14 @@
 - name: Create ecosystem.yml file
   template:
     src: ecosystem.yml.j2
-    dest: /notredame/apps/ecosystem/ecosystem.yml
+    dest: /notredame/apps/ecosystem/mmecosystem.yml
+  become_user: "{{ nexus_mmproxy_user }}"
 
 - name: Create root credentials file
   template:
     src: root-credentials.txt.j2
     dest: "{{ nexus_mmproxy_root_credentials_dest }}"
+  become_user: "{{ nexus_mmproxy_user }}"
 
 - name: Install the gpg key for nodejs LTS
   apt_key:
@@ -86,11 +88,8 @@
     dest: "{{ nexus_mmproxy_staging_loc }}"
     force: yes
 
-- name: Delete old pm2 services
-  command: pm2 delete all
-  ignore_errors: yes
-
 - name: Start pm2 service
-  command: pm2 start ecosystem.yml --update-env
+  command: pm2 start mmecosystem.yml --update-env
   args:
     chdir: "{{ nexus_mmproxy_ecosystem_loc }}"
+  become_user: "{{ nexus_mmproxy_user }}"
