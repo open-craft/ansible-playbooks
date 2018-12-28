@@ -4,6 +4,6 @@ apps:
     cwd       : {{ nexus_pubsub_code_dir }}
     exec_mode : fork
     env       :
-      NODE_ENV  : 'staging'
+      NODE_ENV  : '{{ nexus_pubsub_env }}'
       XSUB_PORT : '8700'
       XPUB_PORT : '8701'

@@ -6,6 +6,7 @@ nexus_mmproxy_user: "nexus"
 nexus_mmproxy_app_dir: "/notredame/apps"
 nexus_mmproxy_repository: git@gitlab.com:opencraft/client/notre-dame/mattermost-proxy.git
 nexus_mmproxy_code_dir: "{{ nexus_mmproxy_app_dir }}/mattermost-proxy"
+nexus_mmproxy_env: "staging|production"
 nexus_mmproxy_staging_loc: "{{ nexus_mmproxy_code_dir }}/config/staging.js"
 nexus_mmproxy_ecosystem_loc: "{{ nexus_mmproxy_app_dir }}/ecosystem"
 notredame_git_identity: "{{ nexus_mmproxy_app_dir }}/notredame_git_identity"
@@ -17,12 +18,14 @@ nexus_mmproxy_oauth_userinfo_endpoint: '{{ nexus_mmproxy_oauth_issuer }}/user_in
 nexus_mmproxy_idp_client_id: 'client-id'
 nexus_mmproxy_idp_client_secret: 'client-secret'
 
-nexus_mmproxy_host: null
+nexus_mmproxy_host: '0.0.0.0'
 nexus_mmproxy_port: '9010'
 nexus_mmproxy_target_host: 'localhost'
 nexus_mmproxy_target_port: '8065'
 nexus_mmproxy_mongo_host: '127.0.0.1'
 nexus_mmproxy_mongo_port: '27017'
+nexus_mmproxy_mongo_user: null
+nexus_mmproxy_mongo_passwd: null
 nexus_mmproxy_redirect_uri: 'http://{{ nexus_mmproxy_host }}:{{ nexus_mmproxy_port }}/proxy/auth/oidc/complete'
 nexus_mmproxy_edx_url: null
 nexus_mmproxy_root_credentials_dest: '{{ nexus_mmproxy_ecosystem_loc }}/mattermost-root-credentials.txt'

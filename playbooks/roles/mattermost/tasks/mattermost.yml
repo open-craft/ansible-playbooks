@@ -78,6 +78,7 @@
       service:
         name: mattermost
         state: stopped
+      ignore_errors: yes
 
     - name: remove Mattermost installation directory
       file:

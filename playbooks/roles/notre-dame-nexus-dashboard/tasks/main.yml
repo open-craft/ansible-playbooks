@@ -93,6 +93,7 @@
   command: npm run build:dist
   args:
     chdir: "{{ nexus_dashboard_code_dir }}"
+  become_user: "{{ nexus_dashboard_user }}"
 
 - name: Update staging.js config file
   template:

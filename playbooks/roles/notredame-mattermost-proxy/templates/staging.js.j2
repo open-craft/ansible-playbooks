@@ -18,12 +18,12 @@ module.exports = {
   },
   dashboard: {
     session: {
-      cookie: { name: 'ldsn', options: { secure: false } }
+      cookie: { name: 'ldsn', options: { domain: '.nd.edu', secure: true } }
     }
   },
   mattermost: {
     session: {
-      cookie: { name: 'MMAUTHTOKEN', options: { secure: false } }
+      cookie: { name: 'MMAUTHTOKEN', options: { domain: '.nd.edu', secure: true } }
     }
   }
 };

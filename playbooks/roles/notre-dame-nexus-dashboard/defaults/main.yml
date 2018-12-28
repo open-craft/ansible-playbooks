@@ -5,10 +5,13 @@ nexus_dashboard_user: "nexus"
 nexus_dashboard_group: "nexus"
 nexus_dashboard_app_dir: "/notredame/apps"
 nexus_dashboard_code_dir: "{{ nexus_dashboard_app_dir }}/notre-dame-platform"
+nexus_dashboard_env: "staging|production"
 nexus_dashboard_staging_loc: '{{ nexus_dashboard_code_dir }}/config/staging.js'
-nexus_dashboard_ecosystem_loc: '/notredame/apps/ecosystem' 
-nexus_dashboard_host: null
+nexus_dashboard_ecosystem_loc: '/notredame/apps/ecosystem'
+nexus_dashboard_uri: null 
 nexus_dashboard_port: '9000'
+nexus_dashboard_mongo_user: null
+nexus_dashboard_mongo_passwd: null
 nexus_dashboard_mongo_host: '127.0.0.1'
 nexus_dashboard_mongo_port: '27017'
 nexus_dashboard_edx_uri: null # should be instance running custom lms
