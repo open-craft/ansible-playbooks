@@ -20,3 +20,6 @@
 	path = playbooks/roles/load-balancer
 	url = https://github.com/open-craft/ansible-load-balancer
 	branch = master
+[submodule "playbooks/roles/elastic.elasticsearch"]
+	path = playbooks/roles/elastic.elasticsearch
+	url = https://github.com/elastic/ansible-elasticsearch.git
