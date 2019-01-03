@@ -32,3 +32,6 @@
 [submodule "playbooks/roles/geerlingguy.php-mysql"]
 	path = playbooks/roles/geerlingguy.php-mysql
 	url = https://github.com/geerlingguy/ansible-role-php-mysql
+[submodule "playbooks/roles/geerlingguy.php-versions"]
+	path = playbooks/roles/geerlingguy.php-versions
+	url = https://github.com/geerlingguy/ansible-role-php-versions

@@ -11,7 +11,7 @@
     - php_memory_ilimit: "128M"
     - php_max_execution_time: "90"
     - php_upload_max_filesize: "256M"
-    - php_version: "5.5"
+    - php_version: "5.6"
     - php_enable_php_fpm: true
     - php_webserver_daemon: "nginx"
     - php_packages:
@@ -24,14 +24,13 @@
       - php-curl
       - php-imap
       - php-json
-    - php_mysql_package: php-mysql
-    - inventory_hostname: opencraft
+    - php_mysql_package: php5.6-mysql
   roles:
     - common
     - { role: geerlingguy.security, security_sudoers_passwordless: [ubuntu] }
     - { role: kamaln7.swapfile, swapfile_size: 2GB }
     # - tarsnap
     - geerlingguy.nginx
-    - geerlingguy.php
+    - geerlingguy.php-versions
     - geerlingguy.php-mysql
-    - { role: nginx, tags: ["nginx"]}
+    - nginx
