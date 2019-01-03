@@ -1,0 +1,37 @@
+---
+- hosts: wordpress
+  remote_user: ubuntu
+  become: yes
+  vars:
+    # - tarsnap_cache: /var/tarsnap/cache
+    # - tarsnap_cron_hour: "*"
+    # - tarsnap_tarsnapper_conf: "../../tarsnap/files/conf/tarsnapper.{{ inventory_hostname }}.conf"
+    - excluded_mounts: ['mail', 'media']
+    - nginx_remove_default_vhost: true
+    - php_memory_ilimit: "128M"
+    - php_max_execution_time: "90"
+    - php_upload_max_filesize: "256M"
+    - php_version: "5.5"
+    - php_enable_php_fpm: true
+    - php_webserver_daemon: "nginx"
+    - php_packages:
+      - php-common
+      - php-fpm
+      - php-cli
+      - php-dev
+      - libpcre3-dev
+      - php-gd
+      - php-curl
+      - php-imap
+      - php-json
+    - php_mysql_package: php-mysql
+    - inventory_hostname: opencraft
+  roles:
+    - common
+    - { role: geerlingguy.security, security_sudoers_passwordless: [ubuntu] }
+    - { role: kamaln7.swapfile, swapfile_size: 2GB }
+    # - tarsnap
+    - geerlingguy.nginx
+    - geerlingguy.php
+    - geerlingguy.php-mysql
+    - { role: nginx, tags: ["nginx"]}

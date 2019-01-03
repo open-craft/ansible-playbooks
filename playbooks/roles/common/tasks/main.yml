@@ -1,0 +1,50 @@
+- name: Copy hosts file
+  copy: src=hosts dest=/etc/hosts owner=root group=root mode=644
+
+- name: apt-get update && dist-upgrade
+  apt: upgrade=dist update_cache=yes cache_valid_time=18000
+
+- name: Check if packages need to be autoremoved
+  command: apt-get --dry-run autoremove
+  register: check_autoremove
+  changed_when: False
+
+- name: Autoremove unused packages
+  command: apt-get -y autoremove
+  when: "'packages will be REMOVED' in check_autoremove.stdout"
+
+- name: Install prerequisite packages
+  apt: pkg={{ item }} state=installed update_cache=yes cache_valid_time=18000
+  with_items:
+    - htop
+    - ntp
+    - sudo
+    - vim
+    - iftop
+    - iotop
+    - mosh
+    - git
+    - screen
+    - build-essential
+    - apticron
+    - apt-file
+    - etckeeper
+    - links
+    - tree
+    - pwgen
+    - libxml2-dev
+    - libxslt1-dev
+    - python-dev
+    - tmpreaper
+
+- name: Activate tmpreaper
+  lineinfile: dest=/etc/tmpreaper.conf state=absent regexp="^SHOWWARNING=true"
+
+- name: Configure git author <root@<current_host>
+  shell: git config --global user.name "Xavier Antoviaque" && git config --global user.email "xavier@antoviaque.org"
+
+- name: etckeeper - Use git
+  copy: src=etckeeper.conf dest=/etc/etckeeper/etckeeper.conf owner=root group=root mode=644 backup=yes
+
+- name: etckeeper - git init && commit
+  shell: etckeeper init && etckeeper commit "Initial commit." creates=/etc/.git

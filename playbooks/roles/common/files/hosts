@@ -1,0 +1,28 @@
+127.0.0.1 localhost
+
+149.202.186.232	cardstories cardstories.vm.plebia.org
+149.202.174.74	control control.vm.plebia.org
+149.202.186.230	mail mail.vm.plebia.org
+149.202.181.25	mysql mysql.vm.plebia.org
+149.202.186.237	opencraft opencraft.vm.plebia.org
+167.114.234.59	opencraft-console opencraft-console.vm.plebia.org
+149.202.186.241	opencraft-tasks opencraft-tasks.vm.plebia.org
+149.202.177.205	postgresql postgresql.vm.plebia.org
+149.202.186.178	web web.vm.plebia.org
+149.202.186.213	web-tartaruga web-tartaruga.vm.plebia.org
+
+149.202.169.78	opencraft-mongodb-integration opencraft-mongodb-integration.vm.plebia.org
+
+91.121.66.184 media media.vm.plebia.org
+176.31.121.212 tmp.media tmp.media.vm.plebia.org
+
+217.182.80.219 discourse-kickstart kickstart.opencraft.com
+54.37.149.167 discourse-opencraft forum.opencraft.com
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
