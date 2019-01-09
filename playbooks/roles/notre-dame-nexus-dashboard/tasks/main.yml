@@ -70,7 +70,7 @@
 
 - name: Install the nodejs LTS repos
   apt_repository:
-    repo: "deb https://deb.nodesource.com/node_8.x xenial main"
+    repo: "deb https://deb.nodesource.com/node_{{ nexus_dashboard_node_version }}.x xenial main"
     state: present
     update_cache: yes
 

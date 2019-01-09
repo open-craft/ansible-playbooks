@@ -21,6 +21,7 @@ nexus_dashboard_zmq_host: null
 nexus_mattermost_proxy_uri: null
 nexus_dashboard_mongo_encryption_passwd: null
 nexus_dashboard_cookie_passwd: null
+nexus_dashboard_node_version: '8'
 
 # oauth provider settings
 nexus_dashboard_oauth_issuer: null

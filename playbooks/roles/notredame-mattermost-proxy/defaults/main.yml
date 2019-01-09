@@ -9,6 +9,7 @@ nexus_mmproxy_code_dir: "{{ nexus_mmproxy_app_dir }}/mattermost-proxy"
 nexus_mmproxy_env: "staging|production"
 nexus_mmproxy_staging_loc: "{{ nexus_mmproxy_code_dir }}/config/staging.js"
 nexus_mmproxy_ecosystem_loc: "{{ nexus_mmproxy_app_dir }}/ecosystem"
+nexus_mmproxy_node_version: '8'
 notredame_git_identity: "{{ nexus_mmproxy_app_dir }}/notredame_git_identity"
 
 nexus_mmproxy_oauth_issuer: null
@@ -26,10 +27,10 @@ nexus_mmproxy_mongo_host: '127.0.0.1'
 nexus_mmproxy_mongo_port: '27017'
 nexus_mmproxy_mongo_user: null
 nexus_mmproxy_mongo_passwd: null
-nexus_mmproxy_redirect_uri: 'http://{{ nexus_mmproxy_host }}:{{ nexus_mmproxy_port }}/proxy/auth/oidc/complete'
 nexus_mmproxy_edx_url: null
 nexus_mmproxy_root_credentials_dest: '{{ nexus_mmproxy_ecosystem_loc }}/mattermost-root-credentials.txt'
 nexus_mmproxy_site_url: null
+nexus_mmproxy_redirect_uri: '{{ nexus_mmproxy_site_url }}/proxy/auth/oidc/complete'
 nexus_mmproxy_allow_cors_from: null
 nexus_mmproxy_root_pwd: null
 nexus_mmproxy_iron_passwd: null
