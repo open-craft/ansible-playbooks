@@ -13,3 +13,15 @@
       # Appservers may have some Elastic stuff already installed on them.
       filebeat_elastic_apt_pin: 200
       when: filebeat_logstash_hosts | length > 0
+  tasks:
+    # Bug ref https://github.com/ansible/ansible/issues/11327
+    # (Issue is closed, but bug still exists.)
+    #
+    # Have to force reload nginx to take up the new configuration.
+    # consul meta skips nginx-proxy role when consul_http_password is none,
+    # which causes node-exporter's nginx-proxy "reload nginx" handler to be
+    # skipped as well.
+    - name: reload nginx
+      service:
+        name: nginx
+        state: reloaded
