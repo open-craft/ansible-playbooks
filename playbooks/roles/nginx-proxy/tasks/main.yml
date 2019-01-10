@@ -17,19 +17,23 @@
   template:
     src: nginx-proxy.j2
     dest: "{{ NGINX_PROXY_CONFIG_PATH }}"
-  notify:
-    - reload nginx
+  register: sites_available
 
 - name: enable nginx site configuration
   file:
     src: "{{ NGINX_PROXY_CONFIG_PATH }}"
     dest: "/etc/nginx/sites-enabled/{{ NGINX_PROXY_CONFIG_PATH | basename }}"
     state: link
-  notify:
-    - reload nginx
+  register: sites_enabled
 
 - name: open public port on the firewall
   ufw:
     rule: allow
     port: "{{ NGINX_PROXY_PUBLIC_PORT }}"
     proto: tcp
+
+- name: reload nginx
+  service:
+    name: nginx
+    state: reloaded
+  when: sites_available.changed or sites_enabled.changed
