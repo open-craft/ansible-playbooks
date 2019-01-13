@@ -1,12 +1,9 @@
 ---
-- hosts: wordpress
-  remote_user: ubuntu
-  become: yes
+- name: Deploy the OpenCraft.com server with wordpress
+  hosts: wordpress
+  become: true
   vars:
-    # - tarsnap_cache: /var/tarsnap/cache
-    # - tarsnap_cron_hour: "*"
-    # - tarsnap_tarsnapper_conf: "../../tarsnap/files/conf/tarsnapper.{{ inventory_hostname }}.conf"
-    - excluded_mounts: ['mail', 'media']
+    - OPS_EMAIL: "ops@example.com"
     - nginx_remove_default_vhost: true
     - php_memory_ilimit: "128M"
     - php_max_execution_time: "90"
@@ -14,6 +11,7 @@
     - php_version: "5.6"
     - php_enable_php_fpm: true
     - php_webserver_daemon: "nginx"
+    - php_fpm_listen: "/var/run/php/php5-fpm.sock"
     - php_packages:
       - php-common
       - php-fpm
@@ -26,11 +24,9 @@
       - php-json
     - php_mysql_package: php5.6-mysql
   roles:
-    - common
-    - { role: geerlingguy.security, security_sudoers_passwordless: [ubuntu] }
-    - { role: kamaln7.swapfile, swapfile_size: 2GB }
-    # - tarsnap
-    - geerlingguy.nginx
+    - role: common-server
+      tags: 'common-server'
+
     - geerlingguy.php-versions
     - geerlingguy.php-mysql
-    - nginx
+    - wordpress
