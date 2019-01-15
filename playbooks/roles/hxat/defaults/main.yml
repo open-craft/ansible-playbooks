@@ -38,6 +38,9 @@ hxat_annotation_db_api_key: 49a70e80-3c06-11e7-a919-92ebcb67fe33
 hxat_annotation_db_secret_token: bd79cd1c-3c06-11e7-a919-92ebcb67fe33
 hxat_annotation_pagination_limit_default: 20
 
+# Show keyboard icon (accessibility tools)
+hxat_accessibility: true
+
 hxat_admin_roles:
   - Admin
   - Instructor
