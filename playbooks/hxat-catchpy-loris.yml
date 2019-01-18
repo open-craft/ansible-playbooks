@@ -2,10 +2,23 @@
 ## This playbook deploys hxat, catchpy and loris roles.
 
 # Apply common configuration to all hosts
+
 - hosts: catchpy:hxat:loris
   
   roles:
-    - common-apache2
+    # The recommended configuration for these tools involved using apache2.
+    # Our common-server role includes node-exporter, which depends on nginx. We disable node-exporter here
+    # because nginx and apache2 can't coexist without further changes. A better solution would be to move
+    # hxat/catchpy/loris to nginx.
+    - role: common-server
+      COMMON_SERVER_INSTALL_NODE_EXPORTER: false
+      # certbot is installed by the the common-apache2 role
+      COMMON_SERVER_INSTALL_CERTBOT: false
+      # FIXME de-commonize the TARSNAP stuff; we'll need different backup folders in each one of the 3 servers, and different backup script(s)
+      # FIXME add DB dumper script
+      # FIXME add tarsnap key
+      TARSNAP_BACKUP_FOLDERS: "{{ FIXME_ADD_SOME__DOWNLOAD_LOG_DIR }} {{ DALITE_LOG_DOWNLOAD_DB_DIR }}"
+    - role: common-apache2
 
 # Configure and deploy catchpy servers.
 - hosts: catchpy
