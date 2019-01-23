@@ -53,6 +53,7 @@
   shell: "nomad -autocomplete-install"
   become: no
   when: nomad_binary.changed
+  ignore_errors: yes
 
 - name: Install Nomad environment variables
   lineinfile:
@@ -83,7 +84,7 @@
 - name: Open TCP/UDP ports on firewall needed for Nomad API/RPC/gossip
   ufw:
     rule: allow
-    port: "{{ '4646:4648' if nomad_server else '4646:4647' }}" 
+    port: "{{ '4646:4648' if nomad_server else '4646:4647' }}"
     proto: "{{ item }}"
   with_items:
     - tcp
