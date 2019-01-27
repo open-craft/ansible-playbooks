@@ -18,9 +18,10 @@
 
   roles:
     - role: tarsnap
-      # FIXME add DB dumper script
-      TARSNAP_KEY: "{{ HXAT_PRODUCTION_RW_TARSNAP_KEY }}"
-      TARSNAP_BACKUP_FOLDERS: "{{ FIXME_ADD_SOME__DOWNLOAD_LOG_DIR }} {{ SOME_LOG_DOWNLOAD_DB_DIR }}"
+      TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/catchpy-pre-backup.sh"
+      TARSNAP_KEY: "{{ CATCHPY_PRODUCTION_RW_TARSNAP_KEY }}"
+      TARSNAP_BACKUP_FOLDERS: "/var/backups/catchpy /etc"
+      TARSNAP_BACKUP_SNITCH: "{{ CATCHPY_TARSNAP_SNITCH }}"
     - role: catchpy
       vars:
         ansible_python_interpreter: /usr/bin/python2
@@ -32,9 +33,10 @@
 
   roles:
     - role: tarsnap
-      # FIXME add DB dumper script
-      TARSNAP_KEY: "{{ CATCHPY_PRODUCTION_RW_TARSNAP_KEY }}"
-      TARSNAP_BACKUP_FOLDERS: "{{ FIXME_ADD_SOME__DOWNLOAD_LOG_DIR }} {{ SOME_LOG_DOWNLOAD_DB_DIR }}"
+      TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/hxat-pre-backup.sh"
+      TARSNAP_KEY: "{{ HXAT_PRODUCTION_RW_TARSNAP_KEY }}"
+      TARSNAP_BACKUP_FOLDERS: "/var/backups/hxat /etc"
+      TARSNAP_BACKUP_SNITCH: "{{ HXAT_TARSNAP_SNITCH }}"
     - role: hxat
       vars:
         ansible_python_interpreter: /usr/bin/python2

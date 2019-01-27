@@ -37,6 +37,14 @@
   become_user: postgres
   postgresql_user: name={{catchpy_dbuser}} role_attr_flags=NOSUPERUSER,NOCREATEDB
 
+- name: copy pre backup script
+  template:
+    src: catchpy-pre-backup.sh
+    dest: /usr/local/sbin/catchpy-pre-backup.sh
+    owner: root
+    group: root
+    mode: 0700
+
 # catchpy code
 
 - stat: path={{ catchpy_app_path }}
