@@ -15,7 +15,7 @@
 
 # Configure and deploy catchpy servers.
 - hosts: catchpy
-
+  become: true
   roles:
     - role: tarsnap
       TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/catchpy-pre-backup.sh"
@@ -30,7 +30,7 @@
 
 # Configure and deploy hxat servers.
 - hosts: hxat
-
+  become: true
   roles:
     - role: tarsnap
       TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/hxat-pre-backup.sh"
