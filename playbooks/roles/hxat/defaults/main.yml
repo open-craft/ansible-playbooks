@@ -2,7 +2,7 @@
 
 hxat_app_repository: https://github.com/lduarte1991/hxat
 hxat_app_path: /srv/hxat
-hxat_version: v1.1.3
+hxat_version: v1.1.4
 
 # database
 
@@ -37,6 +37,9 @@ hxat_annotation_db_url: "{{ hxat_annotation_db_server }}/annos"
 hxat_annotation_db_api_key: 49a70e80-3c06-11e7-a919-92ebcb67fe33
 hxat_annotation_db_secret_token: bd79cd1c-3c06-11e7-a919-92ebcb67fe33
 hxat_annotation_pagination_limit_default: 20
+
+# Show keyboard icon (accessibility tools)
+hxat_accessibility: true
 
 hxat_admin_roles:
   - Admin

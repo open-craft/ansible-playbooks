@@ -2,15 +2,26 @@
 ## This playbook deploys hxat, catchpy and loris roles.
 
 # Apply common configuration to all hosts
+
 - hosts: catchpy:hxat:loris
   
   roles:
-    - common-apache2
+    # The recommended configuration for these tools involved using apache2.
+    # Our common-server role includes common-server-init, which installs nginx and can conflict with apache2.
+    # TODO: Consider using nginx for hxat/catchpy/loris. Or add common-server here to get the rest of features (consul, …)
+    # For now, instead of using common-server we manually add the features we need, e.g. tarsnap for backups
+    # The common-apache2 role also installs certbot
+    - role: common-apache2
 
 # Configure and deploy catchpy servers.
 - hosts: catchpy
-
+  become: true
   roles:
+    - role: tarsnap
+      TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/catchpy-pre-backup.sh"
+      TARSNAP_KEY: "{{ CATCHPY_PRODUCTION_RW_TARSNAP_KEY }}"
+      TARSNAP_BACKUP_FOLDERS: "/var/backups/catchpy /etc"
+      TARSNAP_BACKUP_SNITCH: "{{ CATCHPY_TARSNAP_SNITCH }}"
     - role: catchpy
       vars:
         ansible_python_interpreter: /usr/bin/python2
@@ -19,8 +30,13 @@
 
 # Configure and deploy hxat servers.
 - hosts: hxat
-
+  become: true
   roles:
+    - role: tarsnap
+      TARSNAP_BACKUP_PRE_SCRIPT: "/usr/local/sbin/hxat-pre-backup.sh"
+      TARSNAP_KEY: "{{ HXAT_PRODUCTION_RW_TARSNAP_KEY }}"
+      TARSNAP_BACKUP_FOLDERS: "/var/backups/hxat /etc"
+      TARSNAP_BACKUP_SNITCH: "{{ HXAT_TARSNAP_SNITCH }}"
     - role: hxat
       vars:
         ansible_python_interpreter: /usr/bin/python2
@@ -31,6 +47,8 @@
 - hosts: loris
 
   roles:
+    # loris DB/images not backed up with tarsnap since no courses use image annotations yet
+
     - role: loris
       vars:
         ansible_python_interpreter: /usr/bin/python2
