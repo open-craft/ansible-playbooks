@@ -13,3 +13,11 @@
 
     - role: greendayonfire.mongodb
       tags: 'greendayonfire.mongodb'
+
+  post_tasks:
+      - name: "Make sure admin user has extra custom mongo roles."
+        command: >
+            mongo --quiet -u {{ mongodb_user_admin_name }} \
+                -p {{ mongodb_user_admin_password }} --port {{ mongodb_net_port}}
+                --eval 'db.grantRolesToUser("{{ mongodb_user_admin_name}}", ["{{item.role}}"])' {{item.db}}
+        with_items: {{ mongodb_user_admin_roles }}
