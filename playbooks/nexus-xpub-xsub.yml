@@ -2,7 +2,7 @@
 # Playbook for setting up a zMQ server.
 
 - name: Set up zmq servers
-  hosts: staging-xpub-xsub
+  hosts: nexus-xpub-xsub
   become: true
   roles:
     - role: common-server

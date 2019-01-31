@@ -3,7 +3,7 @@ MATTERMOST_HOSTNAME: "{{ inventory_hostname }}"
 
 MATTERMOST_OPS_EMAIL: ops@exmaple.com
 
-MATTERMOST_VERSION: 4.0.0
+MATTERMOST_VERSION: 5.1.0
 MATTERMOST_UNLINK_VERSION: 0.2.0
 
 # Restrict registration to email addresses in this domain
@@ -29,6 +29,10 @@ MATTERMOST_PUBLIC_LINK_SALT: set-me-please
 
 # Sender for notification emails
 MATTERMOST_FEEDBACK_EMAIL: no-reply@example.com
+MATTERMOST_SMTP_USERNAME: set-me-please
+MATTERMOST_SMTP_PASSWORD: set-me-please
+MATTERMOST_SMTP_SERVER: 'localhost'
+MATTERMOST_SMTP_PORT: '25'
 
 # Autolink configuration
 # Example:
@@ -52,10 +56,19 @@ MATTERMOST_INSTALL_DIR: /opt
 MATTERMOST_VERSION_FILE: "{{ MATTERMOST_STATUS_DIR }}/version"
 MATTERMOST_INSTALL_TAG_FILE: "{{ MATTERMOST_STATUS_DIR }}/installation-complete"
 
-MATTERMOST_DOWNLOAD_URL: "https://releases.mattermost.com/{{ MATTERMOST_VERSION }}/mattermost-{{ MATTERMOST_VERSION }}-linux-amd64.tar.gz"
+MATTERMOST_DOWNLOAD_URL: "https://releases.mattermost.com/{{ MATTERMOST_VERSION }}/mattermost-team-{{ MATTERMOST_VERSION }}-linux-amd64.tar.gz"
 MATTERMOST_DOWNLOAD_DEST: "/tmp/{{ MATTERMOST_DOWNLOAD_URL|basename }}"
 
 MATTERMOST_UNLINK_DOWNLOAD_URL: "https://github.com/mattermost/mattermost-plugin-autolink/releases/download/v{{ MATTERMOST_UNLINK_VERSION }}/mattermost-plugin-autolink-linux-amd64.tar.gz"
 MATTERMOST_UNLINK_DOWNLOAD_DEST: "/tmp/{{ MATTERMOST_UNLINK_DOWNLOAD_URL|basename }}"
 
 MATTERMOST_CONFIG_FILE: "{{ MATTERMOST_STATUS_DIR }}/config.json"
+MATTERMOST_SESSION_LENGTH: 30
+MATTERMOST_MAX_USERS_PER_TEAM: 50
+MATTERMOST_MAX_CHANNEL_NOTIFICATIONS: 1000000
+MATTERMOST_TEAMMATE_NAME: 'username'
+MATTERMOST_FILE_DRIVER: 'amazons3'
+MATTERMOST_REQUIRE_EMAIL_VERIFICATION: 'true'
+MATTERMOST_FEEDBACK_NAME: 'Mattermost Notification'
+MATTERMOST_PUSH_NOTIFICATION_SERVER: 'http://push-test.mattermost.com'
+MATTERMOST_CONNECTION_SECURITY: null

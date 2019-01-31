@@ -104,9 +104,11 @@
 - name: Delete old pm2 services
   command: pm2 delete all
   ignore_errors: yes
+  become_user: "{{ nexus_dashboard_user }}"
 
 - name: Start pm2 service
   command: pm2 start ecosystem.yml --update-env
   args:
     chdir: "{{ nexus_dashboard_ecosystem_loc }}"
+  become_user: "{{ nexus_dashboard_user }}"
 

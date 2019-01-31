@@ -11,13 +11,13 @@
   template:
     src: mattermost-nginx.j2
     dest: /etc/nginx/sites-available/mattermost
-#  notify:
-#    - reload nginx
+  notify:
+    - reload nginx
 
 - name: enable nginx site configuration
   file:
     src: /etc/nginx/sites-available/mattermost
     dest: /etc/nginx/sites-enabled/mattermost
     state: link
-#  notify:
-#    - reload nginx
+  notify:
+    - reload nginx

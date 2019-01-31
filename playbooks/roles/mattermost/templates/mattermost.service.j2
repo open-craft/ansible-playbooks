@@ -4,7 +4,11 @@ After=network-online.target
 
 [Service]
 Type=simple
+{% if MATTERMOST_VERSION == '4.0.0' -%}
 ExecStart={{ MATTERMOST_INSTALL_DIR }}/mattermost/bin/platform
+{% else -%}
+ExecStart={{ MATTERMOST_INSTALL_DIR }}/mattermost/bin/mattermost server
+{% endif -%}
 Restart=always
 RestartSec=10
 WorkingDirectory={{ MATTERMOST_INSTALL_DIR }}/mattermost

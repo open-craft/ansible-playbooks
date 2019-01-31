@@ -1,6 +1,11 @@
 {
     "ServiceSettings": {
+        {% if MATTERMOST_VERSION == '4.0.0' -%}
         "SiteURL": "",
+        {% else -%}
+        "SiteURL": "https://{{ MATTERMOST_HOSTNAME }}/",
+        "WebsocketURL": "",
+        {% endif -%}
         "LicenseFileLocation": "",
         "ListenAddress": ":8065",
         "ConnectionSecurity": "",
@@ -21,24 +26,35 @@
         "EnableOnlyAdminIntegrations": true,
         "EnablePostUsernameOverride": false,
         "EnablePostIconOverride": false,
+        {% if MATTERMOST_VERSION == '4.0.0' -%}
         "EnableAPIv3": true,
+        {% else -%}
+        "AllowedUntrustedInternalConnections": "",
+        "EnableUserAccessTokens": false,
+        "AllowCookiesForSubdomains": false,
+        {% endif -%}
         "EnableLinkPreviews": false,
         "EnableTesting": false,
         "EnableDeveloper": false,
         "EnableSecurityFixAlert": true,
-        "EnableInsecureOutgoingConnections": true,
+        "EnableInsecureOutgoingConnections": false,
         "EnableMultifactorAuthentication": false,
         "EnforceMultifactorAuthentication": false,
         "AllowCorsFrom": "",
-        "SessionLengthWebInDays": 5,
-        "SessionLengthMobileInDays": 5,
-        "SessionLengthSSOInDays": 5,
+        "SessionLengthWebInDays": {{ MATTERMOST_SESSION_LENGTH }},
+        "SessionLengthMobileInDays": {{ MATTERMOST_SESSION_LENGTH }},
+        "SessionLengthSSOInDays": {{ MATTERMOST_SESSION_LENGTH }},
         "SessionCacheInMinutes": 10,
         "WebsocketSecurePort": 443,
         "WebsocketPort": 80,
         "WebserverMode": "gzip",
         "EnableCustomEmoji": false,
         "EnableEmojiPicker": true,
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
+        "EnableGifPicker": false,
+        "GfycatApiKey": "2_KtH_W5",
+        "GfycatApiSecret": "3wLVZPiswc3DnaiaFoLkDvB4X0IV6CpMkj4tf2inJRsBY6-FnkT08zGmppWFgeof",
+        {% endif -%}
         "RestrictCustomEmojiCreation": "all",
         "RestrictPostDelete": "all",
         "AllowEditPost": "always",
@@ -48,16 +64,33 @@
         "EnableUserTypingMessages": true,
         "EnableChannelViewedMessages": true,
         "EnableUserStatuses": true,
-        "ClusterLogTimeoutMilliseconds": 2000
+        "ClusterLogTimeoutMilliseconds": 2000,
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
+        "ExperimentalEnableAuthenticationTransfer": true,
+        "CloseUnusedDirectMessages": false,
+        "EnablePreviewFeatures": true,
+        "EnableTutorial": true,
+        "ExperimentalEnableDefaultChannelLeaveJoinMessages": true,
+        "ExperimentalGroupUnreadChannels": "disabled",
+        "ImageProxyType": "",
+        "ImageProxyURL": "",	
+        "ImageProxyOptions": "",
+        "EnableAPITeamDeletion": false,
+        "ExperimentalEnableHardenedMode": false,
+        "ExperimentalLimitClientConfig": false,
+        "EnableEmailInvitations": true
+        {% endif %}
     },
     "TeamSettings": {
         "SiteName": "Mattermost",
-        "MaxUsersPerTeam": 100,
+        "MaxUsersPerTeam": {{ MATTERMOST_MAX_USERS_PER_TEAM }},
         "EnableTeamCreation": true,
         "EnableUserCreation": true,
         "EnableOpenServer": false,
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
         "EnableUserDeactivation": false,
-        "RestrictCreationToDomains": "",
+        {% endif -%}
+        "RestrictCreationToDomains": "{{ MATTERMOST_RESTRICT_TO_EMAIL_DOMAIN }}",
         "EnableCustomBrand": false,
         "CustomBrandText": "",
         "CustomDescriptionText": "",
@@ -70,31 +103,64 @@
         "RestrictPublicChannelDeletion": "all",
         "RestrictPrivateChannelDeletion": "all",
         "RestrictPrivateChannelManageMembers": "all",
-        "EnableXToLeaveChannelsFromLHS": false,
         "UserStatusAwayTimeout": 300,
         "MaxChannelsPerTeam": 2000,
-        "MaxNotificationsPerChannel": 1000,
-        "TeammateNameDisplay": "username"
+        "MaxNotificationsPerChannel": {{ MATTERMOST_MAX_CHANNEL_NOTIFICATIONS }},
+        "TeammateNameDisplay": "{{ MATTERMOST_TEAMMATE_NAME }}",
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
+        "EnableXToLeaveChannelsFromLHS": false,
+        "EnableConfirmNotificationsToChannel": true,
+        "ExperimentalEnableAutomaticReplies": false,
+        "ExperimentalHideTownSquareinLHS": false,
+        "ExperimentalTownSquareIsReadOnly": false,
+        "ExperimentalPrimaryTeam": ""
+        {% endif -%}
     },
+    {% if MATTERMOST_VERSION != '4.0.0' -%}
+    "ClientRequirements": {	
+        "AndroidLatestVersion": "",
+        "AndroidMinVersion": "",
+        "DesktopLatestVersion": "",
+        "DesktopMinVersion": "",
+        "IosLatestVersion": "",
+        "IosMinVersion": ""
+    },
+    {% endif -%}
     "SqlSettings": {
         "DriverName": "postgres",
         "DataSource": "{{ MATTERMOST_POSTGRES_URL }}",
         "DataSourceReplicas": [],
         "DataSourceSearchReplicas": [],
+        {% if MATTERMOST_VERSION == '4.0.0' -%}
         "MaxIdleConns": 10,
         "MaxOpenConns": 10,
+        {% else -%}
+        "MaxIdleConns": 20,
+        "ConnMaxLifetimeMilliseconds": 3600000,
+        "MaxOpenConns": 300,
+        {% endif -%}
         "Trace": false,
         "AtRestEncryptKey": "{{ MATTERMOST_POSTGRES_ENCRYPT_KEY }}",
         "QueryTimeout": 30
     },
     "LogSettings": {
+        {% if MATTERMOST_VERSION == '4.0.0' -%}
         "EnableConsole": true,
         "ConsoleLevel": "DEBUG",
+        {% else -%}
+        "EnableConsole": false,
+        "ConsoleLevel": "INFO",
+        "ConsoleJson": true,
+        {% endif -%}
         "EnableFile": true,
         "FileLevel": "INFO",
+        {% if MATTERMOST_VERSION == '4.0.0' -%}
+        "FileFormat": "",
+        {% else -%}
         "FileJson": true,
+        {% endif -%}
         "FileLocation": "{{ MATTERMOST_LOG_DIR }}",
-        "EnableWebhookDebugging": false,
+        "EnableWebhookDebugging": {{ 'true' if MATTERMOST_VERSION == '4.0.0' else 'false' }},
         "EnableDiagnostics": true
     },
     "PasswordSettings": {
@@ -106,8 +172,12 @@
     },
     "FileSettings": {
         "EnableFileAttachments": true,
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
+        "EnableMobileUpload": true,
+        "EnableMobileDownload": true,
+        {% endif -%}
         "MaxFileSize": 52428800,
-        "DriverName": "local",
+        "DriverName": "{{ MATTERMOST_FILE_DRIVER }}",
         "Directory": "./data/",
         "EnablePublicLink": false,
         "PublicLinkSalt": "{{ MATTERMOST_PUBLIC_LINK_SALT }}",
@@ -127,24 +197,36 @@
         "EnableSignInWithEmail": true,
         "EnableSignInWithUsername": true,
         "SendEmailNotifications": true,
-        "RequireEmailVerification": false,
-        "FeedbackName": "Mattermost Notification",
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
+        "UseChannelInEmailNotifications": false,
+        {% endif -%}
+        "RequireEmailVerification": {{ MATTERMOST_REQUIRE_EMAIL_VERIFICATION }},
+        "FeedbackName": "{{ MATTERMOST_FEEDBACK_NAME }}",
         "FeedbackEmail": "{{ MATTERMOST_FEEDBACK_EMAIL }}",
         "FeedbackOrganization": "",
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
         "EnableSMTPAuth": false,
-        "SMTPUsername": "",
-        "SMTPPassword": "",
-        "SMTPServer": "localhost",
-        "SMTPPort": "25",
-        "ConnectionSecurity": "",
+        {% endif -%}
+        "SMTPUsername": "{{ MATTERMOST_SMTP_USERNAME }}",
+        "SMTPPassword": "{{ MATTERMOST_SMTP_PASSWORD }}",
+        "SMTPServer": "{{ MATTERMOST_SMTP_SERVER }}",
+        "SMTPPort": "{{ MATTERMOST_SMTP_PORT }}",
+        "ConnectionSecurity": "{{ MATTERMOST_CONNECTION_SECURITY }}",
         "InviteSalt": "{{ MATTERMOST_INVITE_SALT }}",
         "SendPushNotifications": true,
-        "PushNotificationServer": "",
+        "PushNotificationServer": "{{ MATTERMOST_PUSH_NOTIFICATION_SERVER }}",
         "PushNotificationContents": "generic",
-        "EnableEmailBatching": false,
+        "EnableEmailBatching": true,
         "EmailBatchingBufferSize": 256,
         "EmailBatchingInterval": 30,
-        "SkipServerCertificateVerification": false
+        "SkipServerCertificateVerification": {{ 'false' if MATTERMOST_VERSION == '4.0.0' else 'false,' }}
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
+        "EnablePreviewModeBanner": true,
+        "EmailNotificationContentsType": "full",
+        "LoginButtonColor": "#0000",
+        "LoginButtonBorderColor": "#2389D7",
+        "LoginButtonTextColor": "#2389D7"
+        {% endif -%}
     },
     "RateLimitSettings": {
         "Enable": false,
@@ -152,7 +234,6 @@
         "MaxBurst": 100,
         "MemoryStoreSize": 10000,
         "VaryByRemoteAddr": true,
-        "VaryByUser": false,
         "VaryByHeader": ""
     },
     "PrivacySettings": {
@@ -165,6 +246,9 @@
         "AboutLink": "https://about.mattermost.com/default-about/",
         "HelpLink": "https://about.mattermost.com/default-help/",
         "ReportAProblemLink": "https://about.mattermost.com/default-report-a-problem/",
+        "AdministratorsGuideLink": "https://about.mattermost.com/administrators-guide/",
+        "TroubleshootingForumLink": "https://about.mattermost.com/troubleshooting-forum/",
+        "CommercialSupportLink": "https://about.mattermost.com/commercial-support/",
         "SupportEmail": "feedback@mattermost.com"
     },
     "AnnouncementSettings": {
@@ -261,6 +345,13 @@
         "NicknameAttribute": "",
         "LocaleAttribute": "",
         "PositionAttribute": "",
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
+        "ScopingIDPProviderId": "",
+        "ScopingIDPName": "",
+        "LoginButtonColor": "#34a28b",
+        "LoginButtonBorderColor": "#2389D7",
+        "LoginButtonTextColor": "#ffffff",
+        {% endif -%}
         "LoginButtonText": "With SAML"
     },
     "NativeAppSettings": {
@@ -276,6 +367,11 @@
         "UseExperimentalGossip": false,
         "ReadOnlyConfig": true,
         "GossipPort": 8074,
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
+        "MaxIdleConns": 100,
+        "MaxIdleConnsPerHost": 128,
+        "IdleConnTimeoutMilliseconds": 90000,
+        {% endif -%}
         "StreamingPort": 8075
     },
     "MetricsSettings": {
@@ -283,6 +379,12 @@
         "BlockProfileRate": 0,
         "ListenAddress": ":8067"
     },
+    {% if MATTERMOST_VERSION != '4.0.0' -%}
+    "ExperimentalSettings": {
+        "ClientSideCertEnable": false,
+        "ClientSideCertCheck": "secondary"
+    },
+    {% endif -%}
     "AnalyticsSettings": {
         "MaxUsersForStatistics": 2500
     },
@@ -302,9 +404,73 @@
         "Password": "",
         "EnableIndexing": false,
         "EnableSearching": false,
+        {% if MATTERMOST_VERSION != '4.0.0' -%}
+        "PostIndexReplicas": 1,
+        "PostIndexShards": 1,
+        "AggregatePostsAfterDays": 365,
+        "PostsAggregatorJobStartTime": "03:00",
+        "IndexPrefix": "",
+        "LiveIndexingBatchSize": 1,
+        "BulkIndexingTimeWindowSeconds": 3600,
+        "RequestTimeoutSeconds": 30,
+        {% endif -%}
         "Sniff": true
     },
     "DataRetentionSettings": {
+        {% if MATTERMOST_VERSION == '4.0.0' -%}
         "Enable": false
+        {% else -%}
+        "EnableMessageDeletion": false,
+        "EnableFileDeletion": false,
+        "MessageRetentionDays": 365,
+        "FileRetentionDays": 365,
+        "DeletionJobStartTime": "02:00"
+        {% endif -%}
+    },
+    {% if MATTERMOST_VERSION != '4.0.0' -%}
+    "MessageExportSettings": {
+        "EnableExport": false,
+        "ExportFormat": "actiance",
+        "DailyRunTime": "01:00",
+        "ExportFromTimestamp": 0,
+        "BatchSize": 10000,
+        "GlobalRelaySettings": {
+            "CustomerType": "A9",
+            "SmtpUsername": "",
+            "SmtpPassword": "",
+            "EmailAddress": ""
+        }
+    },
+    "JobSettings": {
+        "RunJobs": true,
+        "RunScheduler": true
+    },
+    "PluginSettings": {
+        "Enable": true,
+        "EnableUploads": true,
+        "Directory": "./plugins",
+        "ClientDirectory": "./client/plugins",
+        "Plugins": {
+            "mattermost-autolink": {
+{% include "./templates/autolink.json.j2" %}
+
+            }
+        },
+        "PluginStates": {
+            "jira": {
+                "Enable": true
+            },
+            "mattermost-autolink": {
+                "Enable": true
+            }
+        }
+    },
+    "DisplaySettings": {
+        "CustomUrlSchemes": [],
+        "ExperimentalTimezone": false
+    },
+    "TimezoneSettings": {
+        "SupportedTimezonesPath": "timezones.json"
     }
+    {% endif -%}
 }
