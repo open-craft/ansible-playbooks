@@ -1,0 +1,6 @@
+template {
+  source           = "{{ consul_template_tmpl_dir }}/haproxy.cfg.ctmpl"
+  destination      = "/etc/haproxy/haproxy.cfg"
+  create_dest_dirs = false
+  backup           = true
+}

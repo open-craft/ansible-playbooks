@@ -1,0 +1,11 @@
+{{- $prefix := "/ocim/instances" }}
+{{- range nodes }}
+{{- $path := (printf "%v@%v" $prefix .Datacenter) }}
+{{ range $ocim_id, $pairs := tree $path | byKey }}
+{{- $domain := "domain_slug" }}
+{{- $load_balanced_domains := (index $pairs "domains").Value | parseJSON }}
+{{- range $load_balanced_domain := $load_balanced_domains }}
+{{ $load_balanced_domain }} be-{{ $domain }}
+{{- end }}
+{{- end }}
+{{- end }}

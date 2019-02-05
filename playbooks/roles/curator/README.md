@@ -1,7 +1,7 @@
 Curator
 =======
 
-?
+A role to install Curator which can delete Elasticsearch indices on a timed basis.
 
 Requirements
 ------------

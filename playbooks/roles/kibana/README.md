@@ -1,7 +1,7 @@
 Kibana
 ======
 
-?
+A role to install Kibana which allows us to view logs stored in Elasticsearch.
 
 Requirements
 ------------
@@ -16,7 +16,7 @@ See `defaults/main.yml`.
 Dependencies
 ------------
 
-N/A
+See `meta/main.yml`.
 
 Example Playbook
 ----------------

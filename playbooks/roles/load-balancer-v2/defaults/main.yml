@@ -1,0 +1,33 @@
+---
+
+# HAPROXY #####################################################################
+
+# todo: add the rest
+
+# Configuration for Nginx server serving maintenance pages.
+maintenance_server_port: 8888
+maintenance_scheduled_server_port: "{{ maintenance_server_port + 1 }}"
+maintenance_unscheduled_server_port: "{{ maintenance_server_port + 2 }}"
+maintenance_provisioning_server_port: "{{ maintenance_server_port + 3 }}"
+maintenance_server_static_root: /var/www/maintenance
+maintenance_pages_repo: "https://github.com/open-craft/maintenance-pages"
+
+# PROMETHEUS ##################################################################
+
+# todo: lowercase these - yelling sucks
+HAPROXY_EXPORTER_ENABLED: false
+HAPROXY_EXPORTER_VERSION: 0.10.0
+HAPROXY_EXPORTER_BASENAME: "haproxy_exporter-{{ HAPROXY_EXPORTER_VERSION }}.linux-amd64"
+HAPROXY_EXPORTER_BINARY: "/opt/{{ HAPROXY_EXPORTER_BASENAME }}/haproxy_exporter"
+HAPROXY_EXPORTER_ARCHIVE: "{{ HAPROXY_EXPORTER_BASENAME }}.tar.gz"
+HAPROXY_EXPORTER_DOWNLOAD_URL: "https://github.com/prometheus/haproxy_exporter/releases/download/v{{ HAPROXY_EXPORTER_VERSION }}/{{ HAPROXY_EXPORTER_ARCHIVE }}"
+HAPROXY_EXPORTER_PASSWORD: null
+
+HAPROXY_EXPORTER_CONSUL_SERVICE:
+  service:
+    name: haproxy-exporter
+    tags:
+      - haproxy-exporter
+      - monitor-https
+    port: 19101
+    enable_tag_override: true
