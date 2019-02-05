@@ -1,0 +1,9 @@
+---
+
+- name: Ensure the SSHD CA is installed
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^TrustedCA...'
+    line: "TrustedCA /etc/sshd/..."
+    state: present
+  notify: Restart sshd
