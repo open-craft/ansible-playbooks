@@ -71,6 +71,10 @@ filebeat_prospectors:
     paths:
       - /var/log/syslog
     include_lines: ['nomad']
+  - fields:
+      type: "vault"
+    paths:
+      - "/var/log/vault/*.log"
 
 # PROMETHEUS ##################################################################
 
