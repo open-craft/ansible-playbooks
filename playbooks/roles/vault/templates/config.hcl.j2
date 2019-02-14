@@ -14,6 +14,7 @@ listener "tcp" {
     tls_require_and_verify_client_cert = "{{ "true" if vault_tcp_tls_require_and_verify_client_cert else "false" }}"
 }
 
+{% if vault_consul_storage %}
 storage "consul" {
     scheme           = "{{ vault_consul_scheme }}"
     address          = "{{ vault_consul_address }}"
@@ -21,3 +22,4 @@ storage "consul" {
     token            = "{{ vault_consul_acl_token }}"
     consistency_mode = "{{ vault_consul_consistency_mode }}"
 }
+{% endif %}

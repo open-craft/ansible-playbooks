@@ -41,6 +41,7 @@ vault_tcp_tls_require_and_verify_client_cert: true
 vault_ufw: true
 
 # Storage stanza
+vault_consul_storage: true
 vault_consul_scheme: "http"
 vault_consul_address: "127.0.0.1:8500"
 vault_consul_path: "vault/"
