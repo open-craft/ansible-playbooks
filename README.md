@@ -245,3 +245,8 @@ This ansible repository deploys MySQL server on OpenStack provider.
 
 1. Check that backups are saved to tarsnap
 1. Check contents of these backups.
+
+### Run molecule tests
+
+1. pip install -r test-requirements.txt
+1. molecule -s vault test
