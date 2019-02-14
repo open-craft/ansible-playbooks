@@ -14,6 +14,9 @@ vault_tls_dir: "{{ vault_config_dir }}/tls"
 # Vault user
 vault_user_createhome: no
 
+# Vault server
+vault_server_options: "-config {{ vault_config_dir }}"
+
 # TLS settings
 vault_tls_cert: ""
 vault_tls_key: ""
