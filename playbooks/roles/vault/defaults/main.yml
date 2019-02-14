@@ -11,6 +11,9 @@ vault_config_dir: "/etc/vault"
 vault_policy_dir: "{{ vault_config_dir }}/policies"
 vault_tls_dir: "{{ vault_config_dir }}/tls"
 
+# Vault user
+vault_user_createhome: no
+
 # TLS settings
 vault_tls_cert: ""
 vault_tls_key: ""

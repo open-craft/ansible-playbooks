@@ -9,7 +9,7 @@
   user:
     name: vault
     group: vault
-    createhome: no
+    createhome: "{{ vault_user_createhome }}"
     system: yes
 
 - name: Create vault directories
