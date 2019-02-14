@@ -1,11 +1,12 @@
 {{- $prefix := "/ocim/instances" }}
-{{- range nodes }}
-{{- $path := (printf "%v@%v" $prefix .Datacenter) }}
-{{ range $ocim_id, $pairs := tree $path | byKey }}
-{{- $domain := "domain_slug" }}
+{{- /* Loop over all instances. */ -}}
+{{- /* $pairs here refers to the key/value pairs at each /ocim/instances/<ID> */ -}}
+{{ range $instance_id, $pairs := tree $prefix | byKey }}
+{{- /* Get the value at the "domain_slug" key for this instance, i.e. /ocim/instances/$instance_id/domain_slug */ -}}
+{{- $domain_slug := (index $pairs "domain_slug").Value }}
 {{- $load_balanced_domains := (index $pairs "domains").Value | parseJSON }}
+{{- /* Loop over all of the domains associated with this instance, and map them to the same backend, `be-$domain_slug`. */ -}}
 {{- range $load_balanced_domain := $load_balanced_domains }}
-{{ $load_balanced_domain }} be-{{ $domain }}
-{{- end }}
+{{ $load_balanced_domain }} be-{{ $domain_slug }}
 {{- end }}
 {{- end }}
