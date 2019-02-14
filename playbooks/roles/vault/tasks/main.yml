@@ -61,7 +61,7 @@
 
 - name: Install Vault environment variables
   lineinfile:
-    path: "/home/{{ ansible_ssh_user }}/.bashrc"
+    path: "{{ ansible_env.HOME }}/.bashrc"
     line: "export {{ item }}"
   with_items: "{{ vault_env }}"
 
