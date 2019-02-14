@@ -89,6 +89,7 @@
     rule: allow
     port: "8200:8201"
     proto: "tcp"
+  when: vault_ufw
 
 - name: Allow the mlock syscall to be used by the Vault binary
   shell: setcap cap_ipc_lock=+ep $(readlink -f {{ vault_bin_dir }}/vault)

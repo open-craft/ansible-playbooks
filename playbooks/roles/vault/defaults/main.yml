@@ -31,6 +31,9 @@ vault_tcp_tls_key_file: "{{ vault_tls_dir }}/key.pem"
 vault_tcp_tls_client_ca_file: "{{ vault_tls_dir }}/ca.pem"
 vault_tcp_tls_require_and_verify_client_cert: true
 
+# Firewall
+vault_ufw: true
+
 # Storage stanza
 vault_consul_scheme: "http"
 vault_consul_address: "127.0.0.1:8500"
