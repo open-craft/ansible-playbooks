@@ -35,6 +35,8 @@ scenario:
     - create
     - converge
     - verify
+    - idempotence
+    - verify
     - destroy
 verifier:
   name: testinfra
