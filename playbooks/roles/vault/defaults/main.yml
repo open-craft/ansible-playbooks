@@ -11,6 +11,13 @@ vault_config_dir: "/etc/vault"
 vault_policy_dir: "{{ vault_config_dir }}/policies"
 vault_tls_dir: "{{ vault_config_dir }}/tls"
 
+# Vault user
+vault_user_createhome: no
+
+# Vault server
+vault_server_options: "-config {{ vault_config_dir }}"
+vault_server_scheme: "https"
+
 # TLS settings
 vault_tls_cert: ""
 vault_tls_key: ""
@@ -31,7 +38,11 @@ vault_tcp_tls_key_file: "{{ vault_tls_dir }}/key.pem"
 vault_tcp_tls_client_ca_file: "{{ vault_tls_dir }}/ca.pem"
 vault_tcp_tls_require_and_verify_client_cert: true
 
+# Firewall
+vault_ufw: true
+
 # Storage stanza
+vault_consul_storage: true
 vault_consul_scheme: "http"
 vault_consul_address: "127.0.0.1:8500"
 vault_consul_path: "vault/"
@@ -41,7 +52,7 @@ vault_consul_consistency_mode: "strong"
 # Env
 vault_env:
   - "VAULT_LOG_LEVEL=debug"
-  - "VAULT_ADDR=https://127.0.0.1:8200"
+  - "VAULT_ADDR={{ vault_server_scheme }}://127.0.0.1:8200"
   - "VAULT_CACERT={{ vault_tcp_tls_client_ca_file }}"
   - "VAULT_CLIENT_CERT={{ vault_tcp_tls_cert_file }}"
   - "VAULT_CLIENT_KEY={{ vault_tcp_tls_key_file }}"

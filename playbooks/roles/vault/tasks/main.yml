@@ -9,7 +9,7 @@
   user:
     name: vault
     group: vault
-    createhome: no
+    createhome: "{{ vault_user_createhome }}"
     system: yes
 
 - name: Create vault directories
@@ -61,7 +61,7 @@
 
 - name: Install Vault environment variables
   lineinfile:
-    path: "/home/{{ ansible_ssh_user }}/.bashrc"
+    path: "{{ ansible_env.HOME }}/.bashrc"
     line: "export {{ item }}"
   with_items: "{{ vault_env }}"
 
@@ -89,6 +89,7 @@
     rule: allow
     port: "8200:8201"
     proto: "tcp"
+  when: vault_ufw
 
 - name: Allow the mlock syscall to be used by the Vault binary
   shell: setcap cap_ipc_lock=+ep $(readlink -f {{ vault_bin_dir }}/vault)
