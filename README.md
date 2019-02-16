@@ -249,4 +249,4 @@ This ansible repository deploys MySQL server on OpenStack provider.
 ### Run molecule tests
 
 1. pip install -r test-requirements.txt
-1. molecule -s vault test
+1. molecule test -s vault
