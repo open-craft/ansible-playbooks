@@ -4,19 +4,11 @@
 vault_version: "1.0.2"
 vault_url: "https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip"
 
-# Directories
-vault_bin_dir: "/usr/local/bin"
-vault_log_dir: "/var/log/vault"
-vault_config_dir: "/etc/vault"
-vault_policy_dir: "{{ vault_config_dir }}/policies"
-vault_tls_dir: "{{ vault_config_dir }}/tls"
-
 # Vault user
 vault_user_createhome: no
 
 # Vault server
 vault_server_options: "-config {{ vault_config_dir }}"
-vault_server_scheme: "https"
 
 # TLS settings
 vault_tls_cert: ""
@@ -31,11 +23,6 @@ vault_api_addr: "" # example: https://vault-a-1.mysite.com:8200
 vault_cluster_addr: "" # example: https://vault-a-1.mysite.com:8201
 
 # Listener stanza
-vault_tcp_address: "0.0.0.0:8200"
-vault_tcp_cluster_address: "0.0.0.0:8201"
-vault_tcp_tls_cert_file: "{{ vault_tls_dir }}/cert.pem"
-vault_tcp_tls_key_file: "{{ vault_tls_dir }}/key.pem"
-vault_tcp_tls_client_ca_file: "{{ vault_tls_dir }}/ca.pem"
 vault_tcp_tls_require_and_verify_client_cert: true
 
 # Firewall
@@ -48,11 +35,3 @@ vault_consul_address: "127.0.0.1:8500"
 vault_consul_path: "vault/"
 vault_consul_acl_token: null
 vault_consul_consistency_mode: "strong"
-
-# Env
-vault_env:
-    VAULT_LOG_LEVEL: debug
-    VAULT_ADDR: "{{ vault_server_scheme }}://127.0.0.1:8200"
-    VAULT_CACERT: "{{ vault_tcp_tls_client_ca_file }}"
-    VAULT_CLIENT_CERT: "{{ vault_tcp_tls_cert_file }}"
-    VAULT_CLIENT_KEY: "{{ vault_tcp_tls_key_file }}"
