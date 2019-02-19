@@ -1,0 +1,19 @@
+---
+vault_ssh_signer_mgmt_token: null
+vault_ssh_signer_ca: ca
+vault_ssh_signer_role_core: |
+      {
+        "allow_user_certificates": true,
+        "allowed_users": "*",
+        "default_extensions": [
+          {
+            "permit-pty": ""
+          }
+        ],
+        "key_type": "ca",
+        "default_user": "ubuntu",
+        "ttl": "720h0m0s"
+      }
+vault_env_token_ssh_signer:
+  VAULT_TOKEN: "{{ vault_ssh_signer_mgmt_token }}"
+vault_env_ssh_signer: "{{ vault_env_base | combine(vault_env_token_ssh_signer) }}"

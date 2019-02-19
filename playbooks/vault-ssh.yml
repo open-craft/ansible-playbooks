@@ -1,0 +1,12 @@
+---
+- name: Set up vault ssh signers
+  hosts: vault-host
+  become: true
+
+  tasks:
+    - include_role:
+        name: vault-ssh-signer
+      vars:
+        vault_ssh_signer_ca: "{{ item }}"
+      with_items:
+        - backup-pruner
