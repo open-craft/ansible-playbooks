@@ -18,7 +18,7 @@
     state: directory
     owner: "{{ item.owner }}"
     group: vault
-    mode: 0750
+    mode: 0755
   with_items:
     - { path: "{{ vault_bin_dir }}", owner: root }
     - { path: "{{ vault_log_dir }}", owner: vault }
@@ -54,16 +54,22 @@
   notify: restart vault
 
 - name: Configure `vault` autocomplete
-  shell: "vault -autocomplete-install"
   become: no
+  shell: "vault -autocomplete-install"
   when: vault_binary.changed
   ignore_errors: yes
 
 - name: Install Vault environment variables
+  become: no
+  template:
+    src: vault-env.j2
+    dest: "/home/{{ ansible_ssh_user }}/.vault-env"
+
+- name: Source Vault environment variables
+  become: no
   lineinfile:
-    path: "$HOME/.bashrc"
-    line: "export {{ item }}"
-  with_items: "{{ vault_env }}"
+    path: "/home/{{ ansible_ssh_user }}/.bashrc"
+    line: "source $HOME/.vault-env"
 
 - name: Create Vault configuration file
   template:

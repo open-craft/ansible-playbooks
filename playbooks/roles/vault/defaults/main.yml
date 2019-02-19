@@ -51,8 +51,8 @@ vault_consul_consistency_mode: "strong"
 
 # Env
 vault_env:
-  - "VAULT_LOG_LEVEL=debug"
-  - "VAULT_ADDR={{ vault_server_scheme }}://127.0.0.1:8200"
-  - "VAULT_CACERT={{ vault_tcp_tls_client_ca_file }}"
-  - "VAULT_CLIENT_CERT={{ vault_tcp_tls_cert_file }}"
-  - "VAULT_CLIENT_KEY={{ vault_tcp_tls_key_file }}"
+    VAULT_LOG_LEVEL: debug
+    VAULT_ADDR: "{{ vault_server_scheme }}://127.0.0.1:8200"
+    VAULT_CACERT: "{{ vault_tcp_tls_client_ca_file }}"
+    VAULT_CLIENT_CERT: "{{ vault_tcp_tls_cert_file }}"
+    VAULT_CLIENT_KEY: "{{ vault_tcp_tls_key_file }}"
