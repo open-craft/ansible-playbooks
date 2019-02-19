@@ -16,6 +16,7 @@ platforms:
       - IPC_LOCK
     groups:
       - vault
+      - vault-policy
 provisioner:
   name: ansible
   options:
