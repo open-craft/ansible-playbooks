@@ -1,0 +1,19 @@
+---
+- name: retrieve the {{ vault_ssh_signer_ca }} CA
+  shell: cat /etc/ssh/vault-{{ vault_ssh_signer_ca }}.pem
+  register: result
+  changed_when: false
+  delegate_to: "{{ vault_host }}"
+
+- name: copy the CA
+  copy:
+    content: "{{ result.stdout }}"
+    dest: /etc/ssh/trusted-user-ca-keys.pem
+
+- name: ensure the SSHD CA is installed
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^TrustedUserCAKeys'
+    line: "TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem"
+    state: present
+  notify: restart sshd

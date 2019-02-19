@@ -17,6 +17,17 @@ platforms:
     groups:
       - vault
       - vault-policy
+    networks:
+      - name: vault
+  - name: backup-pruner
+    image: xenial
+    command: /sbin/init
+    security_opts: ['seccomp=unconfined']
+    tmpfs: ['/tmp', '/run', '/run/lock']
+    volumes: ['/sys/fs/cgroup:/sys/fs/cgroup:ro']
+    hostname: backup-pruner
+    networks:
+      - name: vault
 provisioner:
   name: ansible
   options:

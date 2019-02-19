@@ -10,3 +10,11 @@
         vault_ssh_signer_ca: "{{ item }}"
       with_items:
         - backup-pruner
+
+- name: Disseminate vault ssh CA
+  hosts: backup-pruner
+  become: true
+  roles:
+    - role: vault-ssh-host
+      vars:
+        vault_ssh_signer_ca: backup-pruner
