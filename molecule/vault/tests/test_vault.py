@@ -1,6 +1,10 @@
-def test_vault(host):
-    cmd = host.run("bash -c 'PS1=yes ; source /root/.bashrc ; vault status'")
+import json
+
+testinfra_hosts = ['vault-host']
+
+def test_vault_deploy(host):
+    cmd = host.run(". /home/ubuntu/.vault-env ; vault status --format json")
     print(cmd.stdout)
     print(cmd.stderr)
-    assert 'Initialized     true' in cmd.stdout
+    assert json.loads(cmd.stdout)['initialized'] is True
     assert cmd.rc == 0

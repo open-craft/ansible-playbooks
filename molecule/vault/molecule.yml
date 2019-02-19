@@ -18,6 +18,8 @@ platforms:
       - vault
 provisioner:
   name: ansible
+  options:
+    e: ansible_ssh_user=ubuntu
   lint:
     name: ansible-lint
   env:
