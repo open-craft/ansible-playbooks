@@ -18,7 +18,7 @@
     state: directory
     owner: "{{ item.owner }}"
     group: vault
-    mode: 0750
+    mode: 0755
   with_items:
     - { path: "{{ vault_bin_dir }}", owner: root }
     - { path: "{{ vault_log_dir }}", owner: vault }
