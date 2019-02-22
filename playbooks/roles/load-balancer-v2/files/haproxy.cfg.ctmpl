@@ -51,13 +51,13 @@ frontend fe_http
 frontend fe_https
     bind *:443 ssl crt /etc/haproxy/certs.pem
 
-    # Use the error backend if the path begins with /error
-    acl error_mode path_beg /error
-    use_backend error if error_mode
-
     # X-Forwarded-For is added by "option forwardfor"
     http-request set-header X-Forwarded-Port %[dst_port]
     http-request add-header X-Forwarded-Proto https
+
+    # Use the error backend if the path begins with /error
+    acl error_mode path_beg /error
+    use_backend error if error_mode
 
     # If the backend raises a 50x error redirect to /error so the error backend is used.
     acl backend_fail status 500:599
@@ -78,30 +78,26 @@ backend be_acme_challenge
 # activated and serves an alternate error page that can be customised
 # per-instance.
 backend error
-    server error-page 127.0.0.1:{{ maintenance_server_port }}
+    server error-page 127.0.0.1:8888
 
 # The following backends can be manually activated during times of scheduled
 # or unscheduled maintenance. The instructions for how to activate them can be
 # found here: https://gitlab.com/opencraft/documentation/private/blob/master/ops/incidents.md
 backend scheduled-maintenance
     http-response redirect location / unless { capture.req.uri / }
-    server scheduled-maintenance-page 127.0.0.1:{{ maintenance_scheduled_server_port }}
+    server scheduled-maintenance-page 127.0.0.1:8889
 
 backend unscheduled-maintenance
     http-response redirect location / unless { capture.req.uri / }
-    server unscheduled-maintenance-page 127.0.0.1:{{ maintenance_unscheduled_server_port }}
+    server unscheduled-maintenance-page 127.0.0.1:8890
 
 # This backend can be used when an instance is being provisioned
 backend provisioning
     http-response redirect location / unless { capture.req.uri / }
-    server provisioning-page 127.0.0.1:{{ maintenance_provisioning_server_port }}
+    server provisioning-page 127.0.0.1:8891
 
 {{- $prefix := "/ocim/instances" }}
-{{- range nodes }}
-{{- $path := (printf "%v@%v" $prefix .Datacenter) }}
-{{ range $ocim_id, $pairs := tree $path | byKey }}
-# TODO: the "name" transformation tactic here won't work for many cases.
-{{- $server_name := (index $pairs "name").Value | replaceAll " " "_" | toLower }}
+{{ range $instance_id, $pairs := tree $prefix | byKey }}
 {{- $http_auth_info_base64 := (index $pairs "basic_auth").Value }}
 {{- $active_app_servers := (index $pairs "active_app_servers").Value | parseJSON }}
 {{- $domain := (index $pairs "domain").Value }}
@@ -113,8 +109,9 @@ backend be-{{ $domain_slug }}
     acl has-authorization req.hdr(Authorization) -m found
     http-request set-header Authorization 'Basic {{ $http_auth_info_base64 }}' unless has-authorization
     option httpchk /heartbeat
+    {{- /* Loop over all active appservers for this instance. */ -}}
+    {{- /* Each appserver in this list is a dict of the form {id: int, public_ip: str}. */ -}}
     {{- range $active_app_servers }}
-    server {{ $server_name }} {{ .public_ip }}:80 cookie {{ $server_name }} {{ if $health_check }}check{{ end }}
+    server appserver-{{ .id }} {{ .public_ip }}:80 cookie appserver-{{ .id }} {{ if $health_check }}check{{ end }}
     {{- end }}
-{{- end }}
 {{- end }}

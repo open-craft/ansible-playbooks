@@ -2,7 +2,11 @@
 
 # HAPROXY #####################################################################
 
-# todo: add the rest
+haproxy_ppa: "ppa:vbernat/haproxy-1.8"
+haproxy_version: "1.8.*"
+
+haproxy_consul_watch_prefix: "ocim/"
+haproxy_consul_lock_prefix: "lock/ocim/"
 
 # Configuration for Nginx server serving maintenance pages.
 maintenance_server_port: 8888
@@ -14,16 +18,15 @@ maintenance_pages_repo: "https://github.com/open-craft/maintenance-pages"
 
 # PROMETHEUS ##################################################################
 
-# todo: lowercase these - yelling sucks
-HAPROXY_EXPORTER_ENABLED: false
-HAPROXY_EXPORTER_VERSION: 0.10.0
-HAPROXY_EXPORTER_BASENAME: "haproxy_exporter-{{ HAPROXY_EXPORTER_VERSION }}.linux-amd64"
-HAPROXY_EXPORTER_BINARY: "/opt/{{ HAPROXY_EXPORTER_BASENAME }}/haproxy_exporter"
-HAPROXY_EXPORTER_ARCHIVE: "{{ HAPROXY_EXPORTER_BASENAME }}.tar.gz"
-HAPROXY_EXPORTER_DOWNLOAD_URL: "https://github.com/prometheus/haproxy_exporter/releases/download/v{{ HAPROXY_EXPORTER_VERSION }}/{{ HAPROXY_EXPORTER_ARCHIVE }}"
-HAPROXY_EXPORTER_PASSWORD: null
+haproxy_exporter_enabled: false
+haproxy_exporter_version: 0.10.0
+haproxy_exporter_basename: "haproxy_exporter-{{ haproxy_exporter_version }}.linux-amd64"
+haproxy_exporter_binary: "/opt/{{ haproxy_exporter_basename }}/haproxy_exporter"
+haproxy_exporter_archive: "{{ haproxy_exporter_basename }}.tar.gz"
+haproxy_exporter_download_url: "https://github.com/prometheus/haproxy_exporter/releases/download/v{{ haproxy_exporter_version }}/{{ haproxy_exporter_archive }}"
+haproxy_exporter_password: null
 
-HAPROXY_EXPORTER_CONSUL_SERVICE:
+haproxy_exporter_consul_service:
   service:
     name: haproxy-exporter
     tags:

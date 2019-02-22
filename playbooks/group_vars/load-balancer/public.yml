@@ -78,5 +78,5 @@ filebeat_prospectors:
 
 # PROMETHEUS ##################################################################
 
-HAPROXY_EXPORTER_ENABLED: true
-HAPROXY_EXPORTER_PASSWORD: "{{ NODE_EXPORTER_PASSWORD }}"
+haproxy_exporter_enabled: true
+haproxy_exporter_password: "{{ NODE_EXPORTER_PASSWORD }}"

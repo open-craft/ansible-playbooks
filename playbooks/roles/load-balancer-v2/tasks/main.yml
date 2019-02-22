@@ -1,55 +1,69 @@
 ---
 
-# TODO: add the rest
-# TODO: add HAProxy installation
-# TODO: add installation of script that wraps consul-template calls
+- name: Add HAProxy PPA
+  apt_repository:
+    repo: "{{ haproxy_ppa }}"
+  when: haproxy_ppa != ""
 
-- name: Copy over consul-template template files
+- name: Install HAProxy
+  apt:
+    name: haproxy={{ haproxy_version }}
+
+- name: Copy over all consul-template ctmpl files
   copy:
-    src: "{{ item }}"
-    dest: "{{ consul_template_tmpl_dir }}/{{ item }}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
   with_items:
-    - backend.map.ctmpl
-    - certs.pem.ctmpl
-    - haproxy.cfg.ctmpl
+    - src: "backend.map.ctmpl"
+      dest: "{{ consul_template_tmpl_dir }}/backend.map.ctmpl"
+      mode: "0644"
+    - src: "certs.pem.ctmpl"
+      dest: "{{ consul_template_tmpl_dir }}/certs.pem.ctmpl"
+      mode: "0644"
+    - src: "haproxy.cfg.ctmpl"
+      dest: "{{ consul_template_tmpl_dir }}/haproxy.cfg.ctmpl"
+      mode: "0644"
 
-- name: Copy over consul-template configuration files
+- name: Copy over all consul-template config and service files
   template:
-    src: "{{ item }}.j2"
-    dest: "{{ consul_template_config_dir }}/{{ item }}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
   with_items:
-    - backend.map.hcl
-    - certs.pem.hcl
-    - haproxy.cfg.hcl
+    - src: "backend.map.hcl.j2"
+      dest: "{{ consul_template_config_dir }}/backend.map.hcl"
+      mode: "0644"
+    - src: "certs.pem.hcl.j2"
+      dest: "{{ consul_template_config_dir }}/certs.pem.hcl"
+      mode: "0644"
+    - src: "haproxy.cfg.hcl.j2"
+      dest: "{{ consul_template_config_dir }}/haproxy.cfg.hcl"
+      mode: "0644"
+    - src: "consul-template-render.sh"
+      dest: "/usr/local/sbin/consul-template-render.sh"
+      mode: "0755"
+    - src: "consul-template-render.service"
+      dest: "/lib/systemd/system/consul-template-render.service"
+      mode: "0644"
 
-- name: Ensure that {{ maintenance_server_static_root }} exists
-  file:
-    path: "{{ maintenance_server_static_root }}"
-    owner: www-data
-    group: www-data
-    state: directory
+- name: Enable and start the consul-template-render service
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+    name: "consul-template-render"
 
-- name: Copy Nginx site configuration
-  template:
-    src: nginx-maintenance.conf
-    dest: /etc/nginx/sites-available/maintenance
-  notify:
-    - reload nginx
+- import_tasks: maintenance.yml
+- import_tasks: exporter.yml
+  when: haproxy_exporter_enabled
 
-- name: Enable Nginx config
-  file:
-    src: /etc/nginx/sites-available/maintenance
-    dest: /etc/nginx/sites-enabled/maintenance
-    state: link
-  notify:
-    - reload nginx
+- name: Restart rsyslog
+  service:
+    name: rsyslog
+    state: restarted
 
-- name: Install maintenance content
-  git:
-    repo: "{{ maintenance_pages_repo }}"
-    dest: "{{ maintenance_server_static_root }}/default"
-
-- name: open HTTP and HTTPS port on the firewall
+- name: Open HTTP and HTTPS port on the firewall
   ufw:
     rule: allow
     port: "{{ item }}"
@@ -57,38 +71,3 @@
   with_items:
     - 80
     - 443
-
-# Ensures that haproxy logs to /var/log
-- name: restart rsyslog
-  service:
-    name: rsyslog
-    state: restarted
-
-- name: Install Prometheus HAProxy exporter
-  when: HAPROXY_EXPORTER_ENABLED
-  block:
-    - name: Download HAProxy exporter
-      unarchive:
-        src: "{{ HAPROXY_EXPORTER_DOWNLOAD_URL }}"
-        remote_src: yes
-        dest: /opt
-        creates: "{{ HAPROXY_EXPORTER_BINARY }}"
-
-    - name: Copy HAProxy exporter service definition
-      template:
-        src: haproxy-exporter.service.j2
-        dest: /etc/systemd/system/haproxy-exporter.service
-
-    - name: Start HAProxy exporter
-      systemd:
-        daemon-reload: yes
-        name: haproxy-exporter.service
-        state: started
-        enabled: yes
-
-    - name: Create Consul service definition file
-      copy:
-        content: "{{ HAPROXY_EXPORTER_CONSUL_SERVICE | to_nice_json }}"
-        dest: /etc/consul/haproxy-exporter.json
-      notify:
-        - reload consul
