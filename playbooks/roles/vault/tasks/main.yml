@@ -98,5 +98,12 @@
   when: vault_ufw
 
 - name: Allow the mlock syscall to be used by the Vault binary
-  shell: setcap cap_ipc_lock=+ep $(readlink -f {{ vault_bin_dir }}/vault)
-  become: true
+  shell: |
+    if getcap $(readlink -f {{ vault_bin_dir }}/vault) | grep -q '= cap_ipc_lock+ep' ; then
+      echo already set
+    else
+      setcap cap_ipc_lock=+ep $(readlink -f {{ vault_bin_dir }}/vault)
+      echo cap_ipc_lock set
+    fi
+  register: result
+  changed_when: "'cap_ipc_lock set' in result.stdout"

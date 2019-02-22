@@ -42,12 +42,15 @@ We assume you've already configured the variables correctly.
     vault write auth/github/config organization=open-craft
     vault write auth/github/map/teams/core value=full-secret,add-github-users,policy-management
     vault write auth/github/map/teams/accounting-billing value=full-accounting
+    vault write auth/github/map/teams/newcomers value=newcomers
 
     # Use the token created from this as the `vault_policy_mgmt_token` going forward.
-    # It needs to be an orphan, because if you happen to revoke the master key, all children
-    # keys, including this one, will get revoked, and you'll be forced to regenerate
-    # the master key to do anything at the system level anymore.
     vault token create -ttl=87600h -policy=policy-management -orphan
+    # Use the token created from this as the `vault_ssh_signer_mgmt_token` going forward.
+    vault token create -ttl=87600h -policy=ssh-signer-management -orphan
+    # They need to be orphans, because if you happen to revoke the master key, all children
+    # keys, including these, will get revoked, and you'll be forced to regenerate
+    # the master key to do anything at the system level anymore.
 
     # Once we revoke this token, there are many system operations we can no longer do unless we re-generate it.
     # Up to you if you want to do this.

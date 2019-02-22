@@ -1,0 +1,45 @@
+---
+- name: enable the {{ vault_ssh_signer_ca }} signer
+  shell: |
+    set -e
+    if vault secrets list | grep -q '^ssh-signer-{{ vault_ssh_signer_ca }}/' ; then
+      echo already set
+    else
+      vault secrets enable -path=ssh-signer-{{ vault_ssh_signer_ca }} ssh
+      echo signer created
+    fi
+  register: result
+  changed_when: "'signer created' in result.stdout"
+  environment: "{{ vault_env_ssh_signer }}"
+
+- name: generate_signing_key for the {{ vault_ssh_signer_ca }} signer
+  shell: |
+    set -e
+    if vault read ssh-signer-{{ vault_ssh_signer_ca }}/config/ca ; then
+      echo already set
+    else
+      vault write ssh-signer-{{ vault_ssh_signer_ca}}/config/ca generate_signing_key=true
+      echo signing_key created
+    fi
+  register: result
+  changed_when: "'signing_key created' in result.stdout"
+  environment: "{{ vault_env_ssh_signer }}"
+
+- name: copy the role definition
+  copy:
+    content: "{{ vault_ssh_signer_role_core }}"
+    dest: /etc/ssh/role.core
+
+- name: create the role
+  shell: |
+    set -e
+    if vault read ssh-signer-{{ vault_ssh_signer_ca }}/roles/core ; then
+      echo already set
+    else
+      vault write ssh-signer-{{ vault_ssh_signer_ca }}/roles/core - < /etc/ssh/role.core
+      vault read -field=public_key ssh-signer-{{ vault_ssh_signer_ca }}/config/ca > /etc/ssh/vault-{{ vault_ssh_signer_ca }}.pem
+      echo role created
+    fi
+  register: result
+  changed_when: "'role created' in result.stdout"
+  environment: "{{ vault_env_ssh_signer }}"

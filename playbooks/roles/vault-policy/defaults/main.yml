@@ -1,10 +1,11 @@
 ---
-
-vault_config_dir: "/etc/vault"
-vault_policy_dir: "{{ vault_config_dir }}/policies"
-vault_tls_dir: "{{ vault_config_dir }}/tls"
-
 vault_policy_mgmt_token: null
+
+vault_policy_dir: "{{ vault_config_dir }}/policies"
+
+vault_env_token_policy:
+  VAULT_TOKEN: "{{ vault_policy_mgmt_token }}"
+vault_env_policy: "{{ vault_env_base | combine(vault_env_token_policy) }}"
 
 # Example:
 #

@@ -1,14 +1,5 @@
 ---
 
-- name: Log in to Vault
-  shell: |
-    vault login -token-only \
-      -ca-cert={{ vault_tls_dir }}/ca.pem \
-      -client-key={{ vault_tls_dir }}/key.pem \
-      -client-cert={{ vault_tls_dir }}/cert.pem \
-      {{ vault_policy_mgmt_token }}
-  no_log: true
-
 - name: Copy Vault policies to the server
   copy:
     content: "{{ item.policy }}"
@@ -18,9 +9,8 @@
 - name: Write Vault policies
   shell: |
     vault policy write \
-      -ca-cert={{ vault_tls_dir }}/ca.pem \
-      -client-key={{ vault_tls_dir }}/key.pem \
-      -client-cert={{ vault_tls_dir }}/cert.pem \
       {{ item.name }} \
       {{ vault_policy_dir }}/{{ item.name }}.json
   with_items: "{{ vault_policies }}"
+  changed_when: false  # policy write does not provide any information about the change
+  environment: "{{ vault_env_policy }}"
