@@ -3,8 +3,8 @@ MATTERMOST_HOSTNAME: "{{ inventory_hostname }}"
 
 MATTERMOST_OPS_EMAIL: ops@exmaple.com
 
-MATTERMOST_VERSION: 5.1.0
-MATTERMOST_UNLINK_VERSION: 0.2.0
+MATTERMOST_VERSION: 5.8.0
+MATTERMOST_UNLINK_VERSION: 0.3.0
 
 # Restrict registration to email addresses in this domain
 MATTERMOST_RESTRICT_TO_EMAIL_DOMAIN: example.com
