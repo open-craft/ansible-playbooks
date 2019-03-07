@@ -1,0 +1,4 @@
+# Set the zone forwardnig configuration in the 'forward_zones' list. Each entry will require a 'name' key and
+# a 'forward-addr'/'forward-host' key with appropriate values
+unbound_config_dir: /etc/unbound/unbound.conf.d
+forward_zones: []
