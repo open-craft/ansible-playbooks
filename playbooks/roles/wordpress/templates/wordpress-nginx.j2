@@ -1,0 +1,87 @@
+server {
+        listen *:80;
+        server_name {{ LANDING_HOSTNAME }} www.{{ LANDING_HOSTNAME }};
+
+        {{ NGINX_REWRITES }}
+
+        if ($http_x_forwarded_proto = "http") {
+                return 301 https://$server_name$request_uri;
+        }   
+
+        root /var/www/{{ LANDING_HOSTNAME }};
+        index index.html index.php;
+
+        access_log  /var/www/log/{{ LANDING_HOSTNAME }}_nginx_access.log;
+        error_log /var/www/log/{{ LANDING_HOSTNAME }}_nginx_error.log error;
+
+        location ~ [^/]\.php(/|$) {
+                fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+                if (!-f $document_root$fastcgi_script_name) {
+                        return 404;
+                }   
+
+                fastcgi_pass unix:/var/run/php/php5-fpm.sock;
+                fastcgi_index index.php;
+                # include fastcgi_params;
+                include fastcgi.conf;
+        }   
+
+        # deny access to .htaccess files
+        location ~ /\.ht {
+                deny  all;
+        }   
+
+        location /files {
+                autoindex off;
+                autoindex_exact_size off;
+                autoindex_localtime on; 
+
+                #auth_basic "Restricted";
+                #auth_basic_user_file /var/www/.htpasswd_opencraftstaff;
+        }   
+
+        # Wordpress config
+        # Global restrictions configuration file.
+        # Designed to be included in any server {} block.
+        location = /favicon.ico {
+                log_not_found off;
+                access_log off;
+        }
+
+        location = /robots.txt {
+                allow all;
+                log_not_found off;
+                access_log off;
+        }
+
+        # Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).
+        # Keep logging the requests to parse later (or to pass to firewall utilities such as fail2ban)
+        location ~ /\. {
+                deny all;
+        }
+
+        # Deny access to any files with a .php extension in the uploads directory
+        # Works in sub-directory installs and also in multisite network
+        # Keep logging the requests to parse later (or to pass to firewall utilities such as fail2ban)
+        location ~* /(?:uploads|files)/.*\.php$ {
+                deny all;
+        }
+
+        # WordPress single site rules.
+        # Designed to be included in any server {} block.
+
+        # This order might seem weird - this is attempted to match last if rules below fail.
+        # http://wiki.nginx.org/HttpCoreModule
+        location / {
+                try_files $uri $uri/ /index.php?$args;
+        }
+
+        # Add trailing slash to */wp-admin requests.
+        rewrite /wp-admin$ $scheme://$host$uri/ permanent;
+
+        # Directives to send expires headers and turn off 404 error logging.
+        location ~* ^.+\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
+        access_log off; log_not_found off; expires max;
+        }
+
+}

@@ -1,4 +1,12 @@
 ---
+- name: open HTTPS port on the firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - 443
+
 - name: mount /var/www
   mount: name=/var/www src=/dev/vdb1 fstype=ext4 state=mounted
 
@@ -8,17 +16,21 @@
 - name: mkdir /var/www/log
   file: path=/var/www/log mode=750 state=directory
 
-- name: Copy nginx global configuration
-  synchronize: src="global/" dest=/etc/nginx/global checksum=yes delete=yes owner=no group=no
+- name: Ensure directory for config files exists
+  file:
+    path: /etc/nginx/sites-available/wordpress
+    state: directory
 
-- name: Copy nginx site configurations
-  copy:
-    src: sites/
-    dest: /etc/nginx/sites-available/opencraft
+- name: create x template
+  template:
+    src: "{{ item }}"
+    dest: /etc/nginx/sites-available/wordpress/{{ item | basename | regex_replace('-nginx\.j2','.conf') }}
+  with_fileglob:
+    - ../templates/*-nginx.j2
 
 - name: Find needed nginx configurations
   find:
-    paths: /etc/nginx/sites-available/opencraft
+    paths: /etc/nginx/sites-available/wordpress
   register: found
 
 - name: Enable nginx site configurations

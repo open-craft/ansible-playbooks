@@ -1,9 +1,8 @@
 ---
-- name: Deploy the OpenCraft.com server with wordpress
+- name: Deploy the OpenCraft landing page
   hosts: wordpress
   become: true
   vars:
-    - OPS_EMAIL: "ops@example.com"
     - nginx_remove_default_vhost: true
     - php_memory_ilimit: "128M"
     - php_max_execution_time: "90"
