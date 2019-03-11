@@ -12,19 +12,7 @@ server {
 		try_files $uri $uri/ =404;
 	}
 
-	location ~ [^/]\.php(/|$) {
-		fastcgi_split_path_info ^(.+?\.php)(/.*)$;
-		if (!-f $document_root$fastcgi_script_name) {
-			return 404;
-		}
-
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
-		fastcgi_index index.php;
-		include fastcgi_params;
-	}
-
         # deny access to .htaccess files
-        #
         location ~ /\.ht {
                 deny  all;
         }
