@@ -21,12 +21,23 @@
     path: /etc/nginx/sites-available/wordpress
     state: directory
 
-- name: create x template
+- name: Copy nginx global configuration
+  synchronize: src="global/" dest=/etc/nginx/global checksum=yes delete=yes owner=no group=no
+
+- name: Add landing site nginx configuration
   template:
-    src: "{{ item }}"
-    dest: /etc/nginx/sites-available/wordpress/{{ item | basename | regex_replace('-nginx\.j2','.conf') }}
-  with_fileglob:
-    - ../templates/*-nginx.j2
+    src: ../templates/wordpress-nginx.j2
+    dest: /etc/nginx/sites-available/wordpress/{{ LANDING_SITE_HOSTNAME }}.conf
+
+- name: Add default site nginx configuration
+  template:
+    src: ../templates/default-nginx.j2
+    dest: /etc/nginx/sites-available/wordpress/{{ DEFAULT_SITE_HOSTNAME }}.conf
+
+- name: Add maintenance site nginx configuration
+  template:
+    src: ../templates/maintenance-nginx.j2
+    dest: /etc/nginx/sites-available/wordpress/{{ MAINTENANCE_SITE_HOSTNAME }}.conf
 
 - name: Find needed nginx configurations
   find:

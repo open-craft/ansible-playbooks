@@ -1,6 +1,6 @@
 server {
         listen *:80;
-        server_name {{ LANDING_HOSTNAME }} www.{{ LANDING_HOSTNAME }};
+        server_name {{ LANDING_SITE_HOSTNAME }} www.{{ LANDING_SITE_HOSTNAME }};
 
         {{ NGINX_REWRITES }}
 
@@ -8,11 +8,11 @@ server {
                 return 301 https://$server_name$request_uri;
         }   
 
-        root /var/www/{{ LANDING_HOSTNAME }};
+        root /var/www/{{ LANDING_SITE_HOSTNAME }};
         index index.html index.php;
 
-        access_log  /var/www/log/{{ LANDING_HOSTNAME }}_nginx_access.log;
-        error_log /var/www/log/{{ LANDING_HOSTNAME }}_nginx_error.log error;
+        access_log  /var/www/log/{{ LANDING_SITE_HOSTNAME }}_nginx_access.log;
+        error_log /var/www/log/{{ LANDING_SITE_HOSTNAME }}_nginx_error.log error;
 
         location ~ [^/]\.php(/|$) {
                 fastcgi_split_path_info ^(.+?\.php)(/.*)$;
