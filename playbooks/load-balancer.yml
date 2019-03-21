@@ -4,8 +4,6 @@
 - name: Set up load-balancing servers
   hosts: load-balancer
   become: true
-  vars:
-    caching_resolver_enabled: false
   roles:
     - role: common-server
       tags: 'common-server'
@@ -17,5 +15,5 @@
       tags: 'node-exporter'
 
     - role: unbound
-      when: caching_resolver_enabled
+      when: "{{ caching_resolver_enabled | default(false) }}"
       tags: 'unbound'
