@@ -3,6 +3,8 @@
 # This script watches a Consul KV path that is used to detect whether we need
 # to re-request certificates.
 
+cd {{ cert_manager_path }}
+
 consul watch -type=keyprefix -prefix={{ cert_manager_consul_watch_prefix }} \
     consul lock {{ cert_manager_consul_lock_prefix }} \
         pipenv run python manage_certs.py {% if cert_manager_stage %}--letsencrypt-use-staging{% endif %} \

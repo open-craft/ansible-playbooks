@@ -1,7 +1,23 @@
 ---
 
-# todo: download cert-manager from git
-# todo: install cert-manager system-wide
+- name: Download pip3
+  apt:
+    name: python3-pip
+
+- name: Download pipenv
+  pip:
+    executable: pip3
+    name: pipenv
+
+- name: Download cert-manager
+  git:
+    repo: "https://github.com/open-craft/cert-manager"
+    dest: "{{ cert_manager_path }}"
+
+- name: Install cert-manager requirements
+  shell: pipenv install
+  args:
+    chdir: "{{ cert_manager_path }}"
 
 - name: Copy over cert-manager script and service files
   template:
