@@ -72,29 +72,29 @@ frontend fe_https
     errorloc 504 /error
 
 backend be_acme_challenge
-    server srv_lets_encrypt 127.0.0.1:8080
+    server srv_lets_encrypt {{! cert_manager_server_address !}}
 
 # When the AppServer raises the "sinking ship" 50x error this backend gets
 # activated and serves an alternate error page that can be customised
 # per-instance.
 backend error
-    server error-page 127.0.0.1:8888
+    server error-page 127.0.0.1:{{! maintenance_server_port !}}
 
 # The following backends can be manually activated during times of scheduled
 # or unscheduled maintenance. The instructions for how to activate them can be
 # found here: https://gitlab.com/opencraft/documentation/private/blob/master/ops/incidents.md
 backend scheduled-maintenance
     http-response redirect location / unless { capture.req.uri / }
-    server scheduled-maintenance-page 127.0.0.1:8889
+    server scheduled-maintenance-page 127.0.0.1:{{! maintenance_scheduled_server_port !}}
 
 backend unscheduled-maintenance
     http-response redirect location / unless { capture.req.uri / }
-    server unscheduled-maintenance-page 127.0.0.1:8890
+    server unscheduled-maintenance-page 127.0.0.1:{{! maintenance_unscheduled_server_port !}}
 
 # This backend can be used when an instance is being provisioned
 backend provisioning
     http-response redirect location / unless { capture.req.uri / }
-    server provisioning-page 127.0.0.1:8891
+    server provisioning-page 127.0.0.1:{{! maintenance_provisioning_server_port !}}
 
 {{- $prefix := "/ocim/instances" }}
 {{ range $instance_id, $pairs := tree $prefix | byKey }}

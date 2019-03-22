@@ -9,8 +9,14 @@
   apt:
     name: haproxy={{ haproxy_version }}
 
+# The ctmpl files use `{{` and `}}` as Go template start- and end- strings.
+# So for Jinja2 rendering we'll use `!` next to the original delimiters.
 - name: Copy over all consul-template ctmpl files
-  copy:
+  template:
+    block_start_string: "{%!"
+    block_end_string: "!%}"
+    variable_start_string: "{{!"
+    variable_end_string : "!}}"
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
