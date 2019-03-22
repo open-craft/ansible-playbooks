@@ -15,5 +15,5 @@
       tags: 'node-exporter'
 
     - role: unbound
-      when: "{{ caching_resolver_enabled | default(false) }}"
+      when: "caching_resolver_enabled | default(false)"
       tags: 'unbound'
