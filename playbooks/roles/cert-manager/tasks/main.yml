@@ -1,0 +1,33 @@
+---
+
+# todo: download cert-manager from git
+# todo: install cert-manager system-wide
+
+- name: Copy over cert-manager script and service files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - src: "cert-manager.sh"
+      dest: "/usr/local/sbin/cert-manager.sh"
+      mode: "0755"
+    - src: "cert-manager.service"
+      dest: "/lib/systemd/system/cert-manager.service"
+      mode: "0644"
+
+- name: Enable and start the cert-manager service
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+    name: "cert-manager"
+
+- name: Open HTTP and HTTPS port on the firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - 80
+    - 443

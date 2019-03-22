@@ -1,0 +1,13 @@
+---
+
+# CERT MANAGER ################################################################
+
+cert_manager_stage: true
+cert_manager_email: "ops@opencraft.com"
+cert_manager_log_level: "debug"
+cert_manager_webroot_path: "/var/www/certbot"
+
+cert_manager_consul_ocim_prefix: "ocim/instances/"
+cert_manager_consul_certs_prefix: "ocim/certs/"
+cert_manager_consul_watch_prefix: "ocim/"
+cert_manager_consul_lock_prefix: "lock/ocim/"
