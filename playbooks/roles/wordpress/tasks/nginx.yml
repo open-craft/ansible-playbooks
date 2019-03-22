@@ -30,12 +30,12 @@
 
 - name: Enable nginx site configurations
   file:
-    src: /etc/nginx/sites-available/{{ item }}
-    dest: /etc/nginx/sites-enabled/{{ item }}
+    src: /etc/nginx/sites-available/{{ item }}.conf
+    dest: /etc/nginx/sites-enabled/{{ item }}.conf
     state: link
   with_items:
-    - "{{ LANDING_SITE_HOSTNAME }}.conf"
-    - "{{ MAINTENANCE_SITE_HOSTNAME }}.conf"
-    - "{{ DEFAULT_SITE_HOSTNAME }}.conf"
+    - "{{ LANDING_SITE_HOSTNAME }}"
+    - "{{ MAINTENANCE_SITE_HOSTNAME }}"
+    - "{{ DEFAULT_SITE_HOSTNAME }}"
   notify:
     - reload nginx
