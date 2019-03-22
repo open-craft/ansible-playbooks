@@ -23,3 +23,12 @@
 [submodule "playbooks/roles/elastic.elasticsearch"]
 	path = playbooks/roles/elastic.elasticsearch
 	url = https://github.com/elastic/ansible-elasticsearch.git
+[submodule "playbooks/roles/geerlingguy.php"]
+	path = playbooks/roles/geerlingguy.php
+	url = https://github.com/geerlingguy/ansible-role-php
+[submodule "playbooks/roles/geerlingguy.php-mysql"]
+	path = playbooks/roles/geerlingguy.php-mysql
+	url = https://github.com/geerlingguy/ansible-role-php-mysql
+[submodule "playbooks/roles/geerlingguy.php-versions"]
+	path = playbooks/roles/geerlingguy.php-versions
+	url = https://github.com/geerlingguy/ansible-role-php-versions

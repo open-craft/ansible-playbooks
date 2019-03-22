@@ -1,0 +1,19 @@
+server {
+	listen *:80;
+        server_name {{ MAINTENANCE_SITE_HOSTNAME }};
+
+	root /var/www/{{ MAINTENANCE_SITE_HOSTNAME }};
+	index index.html index.php;
+
+        access_log  /var/www/log/{{ MAINTENANCE_SITE_HOSTNAME }}_nginx_access.log;
+        error_log /var/www/log/{{ MAINTENANCE_SITE_HOSTNAME }}_nginx_error.log error;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+        # deny access to .htaccess files
+        location ~ /\.ht {
+                deny  all;
+        }
+}

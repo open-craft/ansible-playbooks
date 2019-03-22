@@ -1,0 +1,41 @@
+---
+- name: open HTTPS port on the firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - 443
+
+- name: mount /var/www
+  mount: name=/var/www src=/dev/vdb1 fstype=ext4 state=mounted
+
+- name: chown www-data /var/www
+  file: path=/var/www mode=750 owner=www-data group=www-data state=directory
+
+- name: mkdir /var/www/log
+  file: path=/var/www/log mode=750 state=directory
+
+- name: Copy nginx global configuration
+  synchronize: src="global/" dest=/etc/nginx/global checksum=yes delete=yes owner=no group=no
+
+- name: Add site nginx configurations
+  template:
+    src: ../templates/{{ item.template }}-nginx.j2
+    dest: /etc/nginx/sites-available/{{ item.hostname }}.conf
+  with_items:
+    - { template: "wordpress", hostname: "{{ LANDING_SITE_HOSTNAME }}" }
+    - { template: "maintenance", hostname: "{{ MAINTENANCE_SITE_HOSTNAME }}" }
+    - { template: "default", hostname: "{{ DEFAULT_SITE_HOSTNAME }}" }
+
+- name: Enable nginx site configurations
+  file:
+    src: /etc/nginx/sites-available/{{ item }}.conf
+    dest: /etc/nginx/sites-enabled/{{ item }}.conf
+    state: link
+  with_items:
+    - "{{ LANDING_SITE_HOSTNAME }}"
+    - "{{ MAINTENANCE_SITE_HOSTNAME }}"
+    - "{{ DEFAULT_SITE_HOSTNAME }}"
+  notify:
+    - reload nginx
