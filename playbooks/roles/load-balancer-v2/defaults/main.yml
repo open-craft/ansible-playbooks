@@ -2,6 +2,8 @@
 
 # HAPROXY #####################################################################
 
+haproxy_domain_regex: "haproxy.*\\.net\\.opencraft\\.hosting"
+
 haproxy_ppa: "ppa:vbernat/haproxy-1.8"
 haproxy_version: "1.8.*"
 

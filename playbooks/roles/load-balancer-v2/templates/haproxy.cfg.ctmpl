@@ -1,3 +1,4 @@
+#jinja2:variable_start_string:'{{!', variable_end_string:'!}}'
 global
     log /dev/log local0
     log /dev/log local1 notice
@@ -44,8 +45,10 @@ defaults
 
 frontend fe_http
     bind *:80
+    acl lb_domain hdr_reg(host) -i {{! haproxy_domain_regex !}}
     acl acme_challenge path_beg /.well-known/acme-challenge/
     redirect scheme https code 301 unless acme_challenge
+    use_backend be_acme_challenge_local if lb_domain
     use_backend be_acme_challenge if acme_challenge
 
 frontend fe_https
@@ -73,6 +76,9 @@ frontend fe_https
 
 backend be_acme_challenge
     server srv_lets_encrypt {{! cert_manager_server_address !}}
+
+backend be_acme_challenge_local
+    server srv_lets_encrypt 127.0.0.1:8080
 
 # When the AppServer raises the "sinking ship" 50x error this backend gets
 # activated and serves an alternate error page that can be customised
