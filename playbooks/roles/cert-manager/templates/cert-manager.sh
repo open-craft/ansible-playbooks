@@ -2,6 +2,11 @@
 
 # This script watches a Consul KV path that is used to detect whether we need
 # to re-request certificates.
+#
+# Specifically it watches the key prefix defined by `cert_manager_consul_watch_prefix`.
+# When any change is made to keys falling under that prefix, a lock is attempted at
+# `cert_manager_consul_lock_prefix`, and once gotten, we run the certificate management
+# code that will attempt to request/renew certificates.
 
 cd {{ cert_manager_path }}
 

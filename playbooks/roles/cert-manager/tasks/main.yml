@@ -39,6 +39,7 @@
     state: restarted
     name: "cert-manager"
 
+# For ACME challenges
 - name: Open HTTP and HTTPS port on the firewall
   ufw:
     rule: allow
