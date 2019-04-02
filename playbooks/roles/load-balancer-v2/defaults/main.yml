@@ -2,6 +2,8 @@
 
 # HAPROXY #####################################################################
 
+haproxy_domain_regex: "haproxy.*\\.net\\.opencraft\\.hosting"
+
 haproxy_ppa: "ppa:vbernat/haproxy-1.8"
 haproxy_version: "1.8.*"
 
@@ -15,6 +17,9 @@ maintenance_unscheduled_server_port: "{{ maintenance_server_port + 2 }}"
 maintenance_provisioning_server_port: "{{ maintenance_server_port + 3 }}"
 maintenance_server_static_root: /var/www/maintenance
 maintenance_pages_repo: "https://github.com/open-craft/maintenance-pages"
+
+# Certificate manager
+cert_manager_server_address: "127.0.0.1:8080"
 
 # PROMETHEUS ##################################################################
 

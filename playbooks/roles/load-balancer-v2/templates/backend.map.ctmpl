@@ -1,3 +1,4 @@
+#jinja2:variable_start_string:'{{!', variable_end_string:'!}}'
 {{- $prefix := "/ocim/instances" }}
 {{- /* Loop over all instances. */ -}}
 {{- /* $pairs here refers to the key/value pairs at each /ocim/instances/<ID> */ -}}
