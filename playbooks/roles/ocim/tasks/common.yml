@@ -16,3 +16,8 @@
     virtualenv: "{{ opencraft_virtualenv_dir }}"
     virtualenv_python: python3.5
   become_user: "{{ www_user }}"
+
+- name: Install JS dependencies
+  command: make install_js_dependencies
+  args:
+      chdir: "{{ opencraft_root_dir }}"
