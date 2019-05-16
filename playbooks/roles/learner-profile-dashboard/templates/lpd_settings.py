@@ -111,6 +111,12 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = "{{ LPD_MEDIA_ROOT }}"
 MEDIA_URL = "/media/"
 
+USE_REMOTE_STORAGE = True
+
+AWS_ACCESS_KEY_ID = "{{ LPD_AWS_ACCESS_KEY_ID }}"
+AWS_SECRET_ACCESS_KEY = "{{ LPD_AWS_SECRET_ACCESS_KEY }}"
+AWS_STORAGE_BUCKET_NAME = "{{ LPD_AWS_STORAGE_BUCKET_NAME }}"
+
 # List of knowledge component IDs for which LDA model calculates probabilities.
 # The order of the components must match exactly the order in which probabilities are returned by LDA model.
 # E.g. If LDA model returns [0.2, 0.8] and GROUP_KCS are equal to ['kc_id_1', 'kc_id_2'],
