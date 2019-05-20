@@ -7,8 +7,10 @@ haproxy_domain_regex: "haproxy.*\\.net\\.opencraft\\.hosting"
 haproxy_ppa: "ppa:vbernat/haproxy-1.8"
 haproxy_version: "1.8.*"
 
-haproxy_consul_watch_prefix: "ocim/"
+haproxy_consul_watch_prefix: "ocim/instances"
 haproxy_consul_lock_prefix: "lock/ocim/"
+haproxy_consul_certs_prefix: "ocim/certs"
+haproxy_ocim_certs_dir: "/etc/haproxy/certs/ocim"
 
 # Configuration for Nginx server serving maintenance pages.
 maintenance_server_port: 8888
