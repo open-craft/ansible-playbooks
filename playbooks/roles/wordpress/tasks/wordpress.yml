@@ -1,0 +1,79 @@
+---
+
+# - name: add apt key for nodejs and yarn
+#   apt_key:
+#     url: "{{ item }}"
+#     state: present
+#   with_items:
+#     - https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+#     - https://dl.yarnpkg.com/debian/pubkey.gpg
+#
+# - name: add repo for nodejs and yarn
+#   apt_repository:
+#     repo: "{{ item }}"
+#     update_cache: yes
+#   with_items:
+#     - "deb https://deb.nodesource.com/node_0.10 {{ ansible_distribution_release }} main"
+#     - "deb https://dl.yarnpkg.com/debian/ stable main"
+#
+# - name: Install dependencies
+#   apt:
+#     name: "{{ item }}"
+#     update_cache: yes
+#   with_items:
+#     - unzip
+#     - composer
+#     - yarn
+#     - nodejs
+
+- name: Create server directories
+  file:
+    path: "/var/www/{{ item }}"
+    state: directory
+    mode: 755
+  with_items:
+    - "{{ LANDING_SITE_HOSTNAME }}"
+    - "{{ DEFAULT_SITE_HOSTNAME }}"
+    - "{{ MAINTENANCE_SITE_HOSTNAME }}"
+
+- name: Download and extract latest version of wordpress
+  unarchive:
+    src: https://wordpress.org/latest.zip
+    dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}"
+    owner: www-data
+    group: www-data
+    remote_src: yes
+
+- name: Move files to correct directory
+  shell: cp -r /var/www/{{ LANDING_SITE_HOSTNAME }}/wordpress/. /var/www/{{ LANDING_SITE_HOSTNAME }}
+
+- name: Create configuration file
+  template:
+    src: ../templates/wp-config.php.j2
+    dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}/wp-config.php"
+    owner: www-data
+    group: www-data
+    mode: '0644'
+
+- name: Download and install plugins from list
+  unarchive:
+    src: "{{ item }}"
+    dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}/wp-content/plugins"
+    owner: www-data
+    group: www-data
+    remote_src: yes
+  with_items: "{{ WORDPRESS_INSTALL_PLUGINS }}"
+
+
+# - name: Clone theme
+#   git:
+#     repo: "{{ WORDPRESS_THEME_REPO }}"
+#     dest: "/tmp/wp_theme"
+#     update: no
+#
+# - name: Compile theme
+#   command: "{{ item }}"
+#   with_items:
+#     - composer install
+#     - yarn
+#     - gulp setup

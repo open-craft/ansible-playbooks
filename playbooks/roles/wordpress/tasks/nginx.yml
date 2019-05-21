@@ -1,10 +1,11 @@
 ---
-- name: open HTTPS port on the firewall
+- name: Allow web ports on firewall
   ufw:
     rule: allow
     port: "{{ item }}"
     proto: tcp
   with_items:
+    - 80
     - 443
 
 - name: mount /var/www
