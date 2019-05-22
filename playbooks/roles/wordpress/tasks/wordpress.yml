@@ -1,30 +1,12 @@
 ---
 
-# - name: add apt key for nodejs and yarn
-#   apt_key:
-#     url: "{{ item }}"
-#     state: present
-#   with_items:
-#     - https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-#     - https://dl.yarnpkg.com/debian/pubkey.gpg
-#
-# - name: add repo for nodejs and yarn
-#   apt_repository:
-#     repo: "{{ item }}"
-#     update_cache: yes
-#   with_items:
-#     - "deb https://deb.nodesource.com/node_0.10 {{ ansible_distribution_release }} main"
-#     - "deb https://dl.yarnpkg.com/debian/ stable main"
-#
-# - name: Install dependencies
-#   apt:
-#     name: "{{ item }}"
-#     update_cache: yes
-#   with_items:
-#     - unzip
-#     - composer
-#     - yarn
-#     - nodejs
+- name: Install dependencies
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - unzip
+    - mysql-client
 
 - name: Create server directories
   file:
@@ -64,16 +46,28 @@
     remote_src: yes
   with_items: "{{ WORDPRESS_INSTALL_PLUGINS }}"
 
+- name: Clone compiled theme
+  git:
+    repo: "{{ WORDPRESS_THEME_REPO }}"
+    version: "{{ WORDPRESS_THEME_VERSION }}"
+    dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}/wp-content/themes/opencraftv2"
+    update: no
 
-# - name: Clone theme
-#   git:
-#     repo: "{{ WORDPRESS_THEME_REPO }}"
-#     dest: "/tmp/wp_theme"
-#     update: no
-#
-# - name: Compile theme
-#   command: "{{ item }}"
-#   with_items:
-#     - composer install
-#     - yarn
-#     - gulp setup
+- name: Create database
+  mysql_db:
+    name: "{{ WORDPRESS_DATABASE_NAME }}"
+    login_user: "{{ WORDPRESS_DATABASE_USER }}"
+    login_password: "{{ WORDPRESS_DATABASE_PASSWORD }}"
+    login_host: "{{ WORDPRESS_DATABASE_HOST }}"
+    state: present
+  when: "{{ WORDPRESS_DATABASE_RESTORE_FROM_BACKUP }}"
+
+- name: Restore database backup
+  mysql_db:
+    name: "{{ WORDPRESS_DATABASE_NAME }}"
+    login_user: "{{ WORDPRESS_DATABASE_USER }}"
+    login_password: "{{ WORDPRESS_DATABASE_PASSWORD }}"
+    login_host: "{{ WORDPRESS_DATABASE_HOST }}"
+    state: import
+    target: "{{ WORDPRESS_DATABASE_RESTORE_BACKUP_PATH }}"
+  when: "{{ WORDPRESS_DATABASE_RESTORE_FROM_BACKUP }}"
