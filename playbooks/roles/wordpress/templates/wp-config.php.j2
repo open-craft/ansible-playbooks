@@ -1,23 +1,23 @@
 <?php
 
 // ** Database configuration ** //
-define('DB_NAME', {{ WORDPRESS_DATABASE_NAME }});
-define('DB_USER', {{ WORDPRESS_DATABASE_USER }});
-define('DB_PASSWORD', {{ WORDPRESS_DATABASE_PASSWORD }});
-define('DB_HOST', {{ WORDPRESS_DATABASE_HOST }});
+define('DB_NAME', '{{ WORDPRESS_DATABASE_NAME }}');
+define('DB_USER', '{{ WORDPRESS_DATABASE_USER }}');
+define('DB_PASSWORD', '{{ WORDPRESS_DATABASE_PASSWORD }}');
+define('DB_HOST', '{{ WORDPRESS_DATABASE_HOST }}');
 define('DB_CHARSET', 'utf8mb4');
 define('DB_COLLATE', '');
-$table_prefix  = {{ WORDPRESS_DATABASE_TABLE_PREFIX }};
+$table_prefix  = '{{ WORDPRESS_DATABASE_TABLE_PREFIX }}';
 
 // ** Secrets ** //
-define('AUTH_KEY',         {{ WORDPRESS_SECRET_AUTH_KEY }});
-define('SECURE_AUTH_KEY',  {{ WORDPRESS_SECRET_SECURE_AUTH_KEY }});
-define('LOGGED_IN_KEY',    {{ WORDPRESS_SECRET_LOGGED_IN_KEY }});
-define('NONCE_KEY',        {{ WORDPRESS_SECRET_NONCE_KEY }});
-define('AUTH_SALT',        {{ WORDPRESS_SECRET_AUTH_SALT }});
-define('SECURE_AUTH_SALT', {{ WORDPRESS_SECRET_SECURE_AUTH_SALT }});
-define('LOGGED_IN_SALT',   {{ WORDPRESS_SECRET_LOGGED_IN_SALT }});
-define('NONCE_SALT',       {{ WORDPRESS_SECRET_NONCE_SALT }});
+define('AUTH_KEY',         '{{ WORDPRESS_SECRET_AUTH_KEY }}');
+define('SECURE_AUTH_KEY',  '{{ WORDPRESS_SECRET_SECURE_AUTH_KEY }}');
+define('LOGGED_IN_KEY',    '{{ WORDPRESS_SECRET_LOGGED_IN_KEY }}');
+define('NONCE_KEY',        '{{ WORDPRESS_SECRET_NONCE_KEY }}');
+define('AUTH_SALT',        '{{ WORDPRESS_SECRET_AUTH_SALT }}');
+define('SECURE_AUTH_SALT', '{{ WORDPRESS_SECRET_SECURE_AUTH_SALT }}');
+define('LOGGED_IN_SALT',   '{{ WORDPRESS_SECRET_LOGGED_IN_SALT }}');
+define('NONCE_SALT',       '{{ WORDPRESS_SECRET_NONCE_SALT }}');
 
 
 // ** WordPress Settings ** //
