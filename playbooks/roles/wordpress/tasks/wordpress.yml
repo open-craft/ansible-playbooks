@@ -8,85 +8,14 @@
     - unzip
     - mysql-client
     - build-essential
-    - python-dev
+    - python3-dev
     - libmysqlclient-dev
-    - python-mysqldb
-    - python-pip
+    - python3-mysqldb
+    - python3-pip
 
 - name: Install the Python MySQLB module
   pip:
     name: mysqlclient
-
-- name: Ensure .ssh directory exists for www-data user
-  file:
-    path: "/var/www/.ssh/"
-    state: directory
-    owner: www-data
-    group: www-data
-
-- name: Create key file
-  no_log: True
-  copy:
-    dest: "/var/www/.ssh/id_rsa"
-    content: "{{ WORDPRESS_THEME_DEPLOY_KEY }}"
-    owner: www-data
-    group: www-data
-    mode: '0600'
-
-- name: Evaluating the authentication agent & adding the key...
-  shell: |
-    eval "$(ssh-agent)"
-    ssh-add /var/www/.ssh/id_rsa
-
-- name: Create server directories
-  file:
-    path: "/var/www/{{ item }}"
-    state: directory
-    owner: www-data
-    group: www-data
-    mode: 0775
-  with_items:
-    - "{{ LANDING_SITE_HOSTNAME }}"
-    - "{{ DEFAULT_SITE_HOSTNAME }}"
-    - "{{ MAINTENANCE_SITE_HOSTNAME }}"
-
-- name: Download and extract latest version of wordpress
-  unarchive:
-    src: https://wordpress.org/latest.zip
-    dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}"
-    owner: www-data
-    group: www-data
-    remote_src: yes
-
-- name: Move files to correct directory
-  shell: cp -r /var/www/{{ LANDING_SITE_HOSTNAME }}/wordpress/. /var/www/{{ LANDING_SITE_HOSTNAME }}
-  become_user: www-data
-
-- name: Create configuration file
-  template:
-    src: ../templates/wp-config.php.j2
-    dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}/wp-config.php"
-    owner: www-data
-    group: www-data
-    mode: '0644'
-
-- name: Download and install plugins from list
-  unarchive:
-    src: "{{ item }}"
-    dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}/wp-content/plugins"
-    owner: www-data
-    group: www-data
-    remote_src: yes
-  with_items: "{{ WORDPRESS_INSTALL_PLUGINS }}"
-
-- name: Clone compiled theme
-  git:
-    repo: "{{ WORDPRESS_THEME_REPO }}"
-    version: "{{ WORDPRESS_THEME_VERSION }}"
-    dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}/wp-content/themes/opencraftv2"
-    accept_hostkey: yes
-  become_user: www-data
-  when: WORDPRESS_THEME_DEPLOY
 
 - name: Create database
   mysql_db:
@@ -101,6 +30,7 @@
   copy:
     src: "{{ WORDPRESS_DATABASE_RESTORE_BACKUP_PATH }}"
     dest: /tmp/db_dump.sql
+  when: WORDPRESS_DATABASE_RESTORE
 
 - name: Restore database backup
   mysql_db:
@@ -110,17 +40,14 @@
     login_host: "{{ WORDPRESS_DATABASE_HOST }}"
     state: import
     target: /tmp/db_dump.sql
-  when: WORDPRESS_RESTORE_FROM_BACKUP
+  when: WORDPRESS_DATABASE_RESTORE
 
-- name: Copy uploads backup
-  copy:
-    src: "{{ WORDPRESS_UPLOADS_RESTORE_BACKUP_PATH }}"
-    dest: /tmp/uploads.zip
+- import_tasks: deploy.yml
+  when: WORDPRESS_RESTORE_CONTENT
+  notify:
+    - reload nginx
 
-- name: Download and extract latest version of wordpress
-  unarchive:
-    src: /tmp/uploads.zip
-    dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}/wp-content/"
-    owner: www-data
-    group: www-data
-    remote_src: yes
+- import_tasks: restore.yml
+  when: WORDPRESS_FULL_RESTORE
+  notify:
+    - reload nginx
