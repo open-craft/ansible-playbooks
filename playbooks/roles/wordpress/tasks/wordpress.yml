@@ -13,9 +13,30 @@
     - python3-mysqldb
     - python3-pip
 
-- name: Install the Python MySQLB module
+- name: Install the Python MySQL module
   pip:
     name: mysqlclient
+
+- name: Ensure .ssh directory exists for www-data user
+  file:
+    path: "/var/www/.ssh/"
+    state: directory
+    owner: www-data
+    group: www-data
+
+- name: Create key file
+  no_log: True
+  copy:
+    dest: "/var/www/.ssh/id_rsa"
+    content: "{{ WORDPRESS_THEME_DEPLOY_KEY }}"
+    owner: www-data
+    group: www-data
+    mode: '0600'
+
+- name: Evaluating the authentication agent & adding the key...
+  shell: |
+    eval "$(ssh-agent)"
+    ssh-add /var/www/.ssh/id_rsa
 
 - name: Create database
   mysql_db:
