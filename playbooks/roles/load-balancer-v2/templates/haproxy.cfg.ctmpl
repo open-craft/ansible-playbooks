@@ -52,7 +52,7 @@ frontend fe_http
     use_backend be_acme_challenge if acme_challenge
 
 frontend fe_https
-    bind *:443 ssl crt /etc/haproxy/certs.pem
+    bind *:443 ssl crt /etc/haproxy crt {{ haproxy_ocim_certs_dir }}
 
     # X-Forwarded-For is added by "option forwardfor"
     http-request set-header X-Forwarded-Port %[dst_port]
