@@ -1,16 +1,9 @@
 OPENCRAFT_DOMAIN_NAME: '{{ inventory_hostname }}'
-OPENCRAFT_WEBSOCKET_DOMAIN_NAME: 'websocket.{{ OPENCRAFT_DOMAIN_NAME }}'
 
 # Private key used to access OpenStack servers.  You must upload the
 # corresponding public key to the OpenStack project configured in OPENCRAFT_ENV_TOKENS below and
 # set OPENSTACK_SANDBOX_SSH_KEYNAME to the name of the key.
 OPENCRAFT_OPENSTACK_SSH_KEY: null
-
-# Contents of console ssl certificate
-OPENCRAFT_SSL_CERT: null
-OPENCRAFT_SSL_KEY: null
-OPENCRAFT_WEBSOCKET_SSL_CERT: null
-OPENCRAFT_WEBSOCKET_SSL_KEY: null
 
 # Number of workers to run
 OPENCRAFT_WORKERS: 3
@@ -60,7 +53,6 @@ OPENCRAFT_ENV_TOKENS:
 # this dictionary can be overriden by OPENCRAFT_ENV_TOKENS.
 # This should contain only tokens generated from the rest of ansible config.
 OPENCRAFT_GENERATED_ENV_TOKENS:
-  DRAGON_URL: 'http://{{ OPENCRAFT_WEBSOCKET_DOMAIN_NAME }}/'
   BACKUP_SWIFT_ENABLED: "{{ OPENCRAFT_BACKUP_SWIFT_ENABLED }}"
   BACKUP_SWIFT_TARSNAP_KEY_LOCATION: "{{ OPENCRAFT_BACKUP_SWIFT_TARSNAP_KEY_LOCATION }}"
   BACKUP_SWIFT_TARSNAP_CACHE_LOCATION: "{{ OPENCRAFT_BACKUP_SWIFT_TARSNAP_CACHE_LOCATION }}"

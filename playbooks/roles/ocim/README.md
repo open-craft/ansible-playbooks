@@ -6,9 +6,8 @@ running on Ubuntu 16.04 xenial.  It has been tested with this image:
 
 https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img
 
-You need two DNS names pointing to your server, one for the web server itself and another one for
-web sockets.  The recommended setup is to add the subdomain "websocket" to the web server domain
-name as the web socket domain.
+You need to point the DNS to the web server itself.  If using websockets, there would be another subdomain
+for web sockets (e.g. websockets.ocimdomain.com), but websockets have been disabled as of now.
 
 The databases need to run on external servers.  The server deployed by this role is intended to
 be stateless, and no backups are performed by default.
