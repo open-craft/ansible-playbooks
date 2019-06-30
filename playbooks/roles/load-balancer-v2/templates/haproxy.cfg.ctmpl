@@ -121,3 +121,24 @@ backend be-{{ $domain_slug }}
     server appserver-{{ .id }} {{ .public_ip }}:80 cookie appserver-{{ .id }} {{ if $health_check }}check{{ end }}
     {{- end }}
 {{- end }}
+
+
+{{- /* Print config in the form of a single K/V value. */ -}}
+{{- range ls $prefix }}
+  {{- with $config := .Value | parseJSON }}
+    {{- if $config }}
+    {{ $health_check := $config.health_checks_enabled | parseBool }}
+# Backend configuration for {{ $config.domain }}
+backend be-"{{$config.domain_slug}}"
+    cookie openedx-backend insert postonly indirect
+    acl has-authorization req.hdr(Authorization) -m found
+    http-request set-header Authorization 'Basic "{{ $config.basic_auth }}"' unless has-authorization
+    option httpchk /heartbeat
+    {{- /* Loop over all active appservers for this instance. */ -}}
+    {{- /* Each appserver in this list is a dict of the form {id: int, public_ip: str}. */ -}}
+    {{- range $config.active_app_servers }}
+    server appserver-{{ .id }} {{ .public_ip }}:80 cookie appserver-{{ .id }} {{ if $health_check }}check{{ end }}
+    {{- end }}
+    {{- end}}
+  {{- end }}
+{{- end }}
