@@ -127,7 +127,7 @@ backend be-{{ $domain_slug }}
 {{- range ls $prefix }}
   {{- with $config := .Value | parseJSON }}
     {{- if $config }}
-    {{ $health_check := $config.health_checks_enabled | parseBool }}
+    {{ $health_check := $config.health_checks_enabled }}
 # Backend configuration for {{ $config.domain }}
 backend be-"{{$config.domain_slug}}"
     cookie openedx-backend insert postonly indirect
