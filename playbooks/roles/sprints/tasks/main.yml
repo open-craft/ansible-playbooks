@@ -1,8 +1,19 @@
+- name: Stop Sprints (this is reuqired for `common-sever` role to pass)
+  docker_compose:
+    project_src: "{{ APP_PATH }}"
+    stopped: yes
+    debug: yes
+  become_user: ubuntu
+  tags:
+    - inital
+
 - name: Set authorized key for CircleCI
   authorized_key:
     user: ubuntu
     state: present
     key: "{{ CI_SSH_PUBLIC_KEY }}"
+  tags:
+    - initial
 
 - name: Create the sprints directory
   file:
@@ -11,6 +22,8 @@
     owner: ubuntu
     group: ubuntu
     mode: 0775
+  tags:
+    - initial
 
 - name: Copy the deployment script
   copy:
@@ -18,14 +31,8 @@
     dest: "{{ APP_PATH }}/"
     mode: 0755
   become_user: ubuntu
-
-- name: Install the environment file
-  template:
-    src: env.j2
-    dest: "{{ APP_PATH }}/.env"
-    mode: 0600
-    backup: yes
-  become_user: ubuntu
+  tags:
+    - initial
 
 - name: Install the docker-compose file
   template:
@@ -34,6 +41,27 @@
     mode: 0600
     backup: yes
   become_user: ubuntu
+  tags:
+    - initial
+
+- name: Remove unused nginx config
+  file:
+    path: /etc/nginx/sites-enabled/common-server
+    state: absent
+  notify:
+    - reload nginx
+  tags:
+    - sprints
+
+- name: Install the environment file
+  template:
+    src: env.j2
+    dest: "{{ APP_PATH }}/.env"
+    mode: 0600
+    backup: yes
+  become_user: ubuntu
+  tags:
+    - sprints
 
 - name: Start Sprints with docker-compose
   docker_compose:
@@ -41,3 +69,5 @@
     pull: yes
     debug: yes
   become_user: ubuntu
+  tags:
+    - sprints
