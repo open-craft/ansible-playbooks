@@ -11,3 +11,14 @@
 {{ $load_balanced_domain }} be-{{ $domain_slug }}
 {{- end }}
 {{- end }}
+
+{{- /* Print config in the form of a single K/V value. */ -}}
+{{- range ls $prefix }}
+  {{- with $config := .Value | parseJSON }}
+    {{- if $config }}
+      {{- range $lb_domain := $config.domains }}
+{{ $lb_domain }} be-"{{ $config.domain_slug }}"
+      {{- end }}
+    {{- end}}
+  {{- end }}
+{{- end }}
