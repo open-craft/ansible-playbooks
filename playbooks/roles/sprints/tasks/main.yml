@@ -1,0 +1,43 @@
+- name: Set authorized key for CircleCI
+  authorized_key:
+    user: ubuntu
+    state: present
+    key: "{{ CI_SSH_PUBLIC_KEY }}"
+
+- name: Create the sprints directory
+  file:
+    path: "{{ APP_PATH }}"
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0775
+
+- name: Copy the deployment script
+  copy:
+    src: deploy.sh
+    dest: "{{ APP_PATH }}/"
+    mode: 0755
+  become_user: ubuntu
+
+- name: Install the environment file
+  template:
+    src: env.j2
+    dest: "{{ APP_PATH }}/.env"
+    mode: 0600
+    backup: yes
+  become_user: ubuntu
+
+- name: Install the docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ APP_PATH }}/docker-compose.yml"
+    mode: 0600
+    backup: yes
+  become_user: ubuntu
+
+- name: Start Sprints with docker-compose
+  docker_compose:
+    project_src: "{{ APP_PATH }}"
+    pull: yes
+    debug: yes
+  become_user: ubuntu
