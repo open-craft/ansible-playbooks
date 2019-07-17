@@ -3,6 +3,8 @@ actions:
   1:
     action: delete_indices
     description: "Delete indices older than {{ curator_delete_indices_days }} days."
+    options:
+      ignore_empty_list: True
     filters:
       - filtertype: kibana
         exclude: true
