@@ -35,7 +35,7 @@
       dest: "/usr/local/sbin/consul-template-render.sh"
       mode: "0755"
     - src: "consul-certificates-render.sh"
-      desct: "/usr/local/sbin/consul-certificates-render.sh"
+      dest: "/usr/local/sbin/consul-certificates-render.sh"
       mode: "0755"
     - src: "consul-template-render.service"
       dest: "/lib/systemd/system/consul-template-render.service"
