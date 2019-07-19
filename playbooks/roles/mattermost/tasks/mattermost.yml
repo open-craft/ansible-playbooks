@@ -32,6 +32,10 @@
     group: mattermost
     force: no
 
+# This autolink configuration is NOT used UNLESS you are installing MM from scratch.
+# You must MANUALLY copy it from /var/lib/mattermost/autolink.json to the correct place
+# in /var/lib/mattermost/config.json and restart MM.
+# This is explained in autolink.json.j2 but repeated here to be helpful.
 - name: generate autolink configuration
   template:
     src: autolink.json.j2
