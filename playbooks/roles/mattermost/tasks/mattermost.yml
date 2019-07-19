@@ -35,7 +35,7 @@
 - name: generate autolink configuration
   template:
     src: autolink.json.j2
-    dest: "{{ MATTERMOST_CONFIG_FILE|dirname }}/autolink.json"
+    dest: "{{ MATTERMOST_STATUS_DIR }}/autolink.json"
     owner: mattermost
     group: mattermost
 
