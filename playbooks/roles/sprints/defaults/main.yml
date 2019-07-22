@@ -9,8 +9,8 @@ ENV_TOKENS:
   # ------------------------------------------------------------------------------
   DJANGO_READ_DOT_ENV_FILE: false
   DJANGO_SETTINGS_MODULE: 'config.settings.production'
-  DJANGO_SECRET_KEY: 'vDFGQnjhoPBqGOXNipyttXvIwkJ0iwB9Rcr1u6rub2y64QUSrZKkhiIrveVvsRvm'
-  DJANGO_ADMIN_URL: 'vcoRjAeeeztT3xyzQmXUJAGw5wMcgy7d/'
+  DJANGO_SECRET_KEY: 'set-me-please'
+  DJANGO_ADMIN_URL: 'admin/'
   DJANGO_ALLOWED_HOSTS: '.api.your.domain'
 
   FRONTEND_URL: 'https://your.domain'
@@ -54,8 +54,8 @@ ENV_TOKENS:
   CELERY_BROKER_URL: 'redis://redis:6379/0'
 
   # Flower
-  CELERY_FLOWER_USER: 'kJtrEYByunMyFNPJeALMRoyxcRTInfFw'
-  CELERY_FLOWER_PASSWORD: 'dz3RyDpw47ViMIcAbwdsfwZEPmrAWl5zEa5boiJs3WAN7cFaR60hkNNvxlwqQd2d'
+  CELERY_FLOWER_USER: 'set-me-please'
+  CELERY_FLOWER_PASSWORD: 'set-me-please'
 
   # Jira
   JIRA_SERVER: 'https://jira.server'
@@ -72,9 +72,9 @@ ENV_TOKENS:
   POSTGRES_HOST: 'postgres'
   POSTGRES_PORT: 5432
   POSTGRES_DB: 'sprints'
-  POSTGRES_USER: 'WmBQECsnGEnJEoysAOQIgHDHpxnNIKYt'
-  POSTGRES_PASSWORD: 'RWw3Oc07aYWXou8chyzm61WwVXxrC0Cht0Nkg9VXOjHxtyTHpzDuTw89PxzPR5cv'
+  POSTGRES_USER: 'postgres_user'
+  POSTGRES_PASSWORD: 'postgres_password'
 
-  DATABASE_URL: 'postgres://WmBQECsnGEnJEoysAOQIgHDHpxnNIKYt:RWw3Oc07aYWXou8chyzm61WwVXxrC0Cht0Nkg9VXOjHxtyTHpzDuTw89PxzPR5cv@postgres/sprints'
+  DATABASE_URL: 'postgres://postgres_user:postgres_password@postgres/sprints'
 
 all_env_tokens: "{{ ENV_TOKENS | combine( CUSTOM_ENV_TOKENS ) }}"

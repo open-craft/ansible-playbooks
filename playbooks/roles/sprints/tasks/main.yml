@@ -1,4 +1,5 @@
-- name: Stop Sprints (this is reuqired for `common-sever` role to pass)
+# This is required for `common-sever` role to pass, because Let's Encrypt uses Nginx on port 80, which is being used by this container.
+- name: Stop Sprints
   docker_compose:
     project_src: "{{ APP_PATH }}"
     stopped: yes
@@ -44,6 +45,7 @@
   tags:
     - initial
 
+# This config is created by `common-server` role for Let's Encrypt and is no longer needed here.
 - name: Remove unused nginx config
   file:
     path: /etc/nginx/sites-enabled/common-server
