@@ -45,13 +45,13 @@
 
 - name: Create Certbot deploy hooks directory
   file:
-    path: /etc/letsencrypt/renewal-hooks/deploy
+    path: "{{ certbot_deploy_hooks_dir }}"
     state: directory
 
 - name: Copy the Certbot deploy hook to restart nginx on renewal
   copy:
     src: restart-nginx.sh
-    dest: /etc/letsencrypt/renewal-hooks/deploy/restart-nginx.sh
+    dest: "{{ certbot_deploy_hooks_dir }}/restart-nginx.sh"
     mode: 0755
 
 - name: generate SSL certificate with certbot

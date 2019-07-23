@@ -1,0 +1,23 @@
+#!/bin/sh
+# Ensures that rabbitmq can read the certbot-generated certificate files,
+# and gets restarted when they are updated.
+
+set -e
+
+RESTART_SERVICE?=1
+
+for domain in $RENEWED_DOMAINS; do
+        case $domain in
+        {{ RABBITMQ_HOSTNAME }})
+                chown rabbitmq \
+                    "{{ RABBITMQ_CA_CERTIFICATE_FILE }} \
+                    "{{ RABBITMQ_CERTIFICATE_FILE }} \
+                    "{{ RABBITMQ_KEY_FILE }}
+
+                if [ $RESTART_SERVICE ]
+                then
+                    service rabbitmq restart
+                fi
+                ;;
+        esac
+done

@@ -3,3 +3,5 @@
 CERTBOT_DOMAIN_NAME: "{{ inventory_hostname }}"
 CERTBOT_ADDITIONAL_DOMAINS: []
 CERTBOT_OPS_EMAIL: ops@example.com
+
+certbot_deploy_hooks_dir: /etc/letsencrypt/renewal-hooks/deploy

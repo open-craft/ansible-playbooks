@@ -172,3 +172,19 @@
   rabbitmq_vhost:
     name: /test
     state: present
+
+- name: Ensure that rabbitmq can read the certificates renewed by the certbot
+  template:
+    src: certbot-chown-certs.sh.j2
+    dest: "{{ certbot_deploy_hooks_dir }}/rabbitmq-chown-certs.sh"
+    mode: 0755
+  when: "{{ COMMON_SERVER_INSTALL_CERTBOT }}"
+
+- name: Update the permissions on the initial certbot certificates
+  command: "{{ certbot_deploy_hooks_dir }}/rabbitmq-chown-certs.sh"
+  environment:
+    RENEWED_DOMAINS: "{{ RABBITMQ_HOSTNAME }}"
+    RESTART_SERVICE: 0
+  when: "{{ COMMON_SERVER_INSTALL_CERTBOT }}"
+  notify:
+    - restart rabbitmq
