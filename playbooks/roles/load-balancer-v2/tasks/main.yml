@@ -51,6 +51,19 @@
     state: restarted
     name: "consul-template-render"
 
+- name: Create directory structure used by consul-certificates-render
+  file:
+    path: "/etc/haproxy/certs/ocim"
+    state: directory
+    mode: "0700"
+
+- name: Enable and start the consul-certificates-render service
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+    name: "consul-certificates-render"
+
 - import_tasks: maintenance.yml
 - import_tasks: exporter.yml
   when: haproxy_exporter_enabled

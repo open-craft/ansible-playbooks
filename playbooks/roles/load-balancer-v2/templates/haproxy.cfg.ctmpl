@@ -52,7 +52,7 @@ frontend fe_http
     use_backend be_acme_challenge if acme_challenge
 
 frontend fe_https
-    bind *:443 ssl crt /etc/haproxy crt {{ haproxy_ocim_certs_dir }}
+    bind *:443 ssl crt /etc/haproxy/certs.pem crt {{! haproxy_ocim_certs_dir !}}
 
     # X-Forwarded-For is added by "option forwardfor"
     http-request set-header X-Forwarded-Port %[dst_port]
@@ -129,10 +129,10 @@ backend be-{{ $domain_slug }}
     {{- if $config }}
     {{ $health_check := $config.health_checks_enabled }}
 # Backend configuration for {{ $config.domain }}
-backend be-"{{$config.domain_slug}}"
+backend be-{{$config.domain_slug}}
     cookie openedx-backend insert postonly indirect
     acl has-authorization req.hdr(Authorization) -m found
-    http-request set-header Authorization 'Basic "{{ $config.basic_auth }}"' unless has-authorization
+    http-request set-header Authorization 'Basic {{ $config.basic_auth }}' unless has-authorization
     option httpchk /heartbeat
     {{- /* Loop over all active appservers for this instance. */ -}}
     {{- /* Each appserver in this list is a dict of the form {id: int, public_ip: str}. */ -}}
