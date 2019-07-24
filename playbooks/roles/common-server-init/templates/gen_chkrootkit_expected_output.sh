@@ -7,6 +7,7 @@ LOG_DIR=/var/log/chkrootkit
 
 . $CF
 
+echo "Updating chkrootkit expected output..."
 /usr/sbin/chkrootkit $RUN_DAILY_OPTS > $LOG_DIR/log.today.raw 2>&1
 
 # the sed expression replaces the messages about /sbin/dhclient3 /usr/sbin/dhcpd3
