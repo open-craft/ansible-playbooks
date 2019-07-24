@@ -84,6 +84,10 @@ COMMON_FALLBACK_DNS_SERVERS:
 CHKROOTKIT_DISABLED_TESTS:
   - chkutmp
 
+# Path to copy the expected output generator, that needs to be executed every
+# time security upgrades are installed to avoid useless spam messages
+CHKROOTKIT_EXPECTED_OUTPUT_SCRIPT_LOCATION: "/usr/local/sbin/gen_chkrootkit_expected_output.sh"
+
 SECURITY_UPDATE_SCRIPT_LOCATION: "/usr/local/sbin/security_updates_checker.sh"
 
 # Certbot
