@@ -1,0 +1,80 @@
+APP_PATH: '/sprints'
+USE_POSTGRES: true
+
+CI_SSH_PUBLIC_KEY: 'your-CI-key'
+
+# Settings for Sprints. See sprints/config/settings/ for details.
+ENV_TOKENS:
+  # General
+  # ------------------------------------------------------------------------------
+  DJANGO_READ_DOT_ENV_FILE: false
+  DJANGO_SETTINGS_MODULE: 'config.settings.production'
+  DJANGO_SECRET_KEY: 'set-me-please'
+  DJANGO_ADMIN_URL: 'admin/'
+  DJANGO_ALLOWED_HOSTS: '.api.your.domain'
+
+  FRONTEND_URL: 'https://your.domain'
+
+  # Security
+  # ------------------------------------------------------------------------------
+  # TIP: better off using DNS, however, redirect is OK too
+  DJANGO_SECURE_SSL_REDIRECT: false
+
+  # Email
+  # ------------------------------------------------------------------------------
+  MAILGUN_API_KEY: ''
+  DJANGO_SERVER_EMAIL: ''
+  MAILGUN_DOMAIN: ''
+
+  # AWS
+  # ------------------------------------------------------------------------------
+  DJANGO_AWS_ACCESS_KEY_ID: ''
+  DJANGO_AWS_SECRET_ACCESS_KEY: ''
+  DJANGO_AWS_STORAGE_BUCKET_NAME: ''
+
+  # django-allauth
+  # ------------------------------------------------------------------------------
+  DJANGO_ACCOUNT_ALLOW_REGISTRATION: true
+
+  # Gunicorn
+  # ------------------------------------------------------------------------------
+  WEB_CONCURRENCY: 4
+
+  # Sentry
+  # ------------------------------------------------------------------------------
+  SENTRY_DSN: ''
+
+
+  # Redis
+  # ------------------------------------------------------------------------------
+  REDIS_URL: 'redis://redis:6379/0'
+
+  # Celery
+  # ------------------------------------------------------------------------------
+  CELERY_BROKER_URL: 'redis://redis:6379/0'
+
+  # Flower
+  CELERY_FLOWER_USER: 'set-me-please'
+  CELERY_FLOWER_PASSWORD: 'set-me-please'
+
+  # Jira
+  JIRA_SERVER: 'https://jira.server'
+  JIRA_USERNAME: 'username'
+  JIRA_PASSWORD: 'password'
+
+  # Google
+  GOOGLE_API_PRIVATE_KEY: 'private_key'
+  GOOGLE_API_CLIENT_EMAIL: 'client_email'
+  GOOGLE_SPILLOVER_SPREADSHEET: 'spreadsheet_id'
+
+  # PostgreSQL
+  # ------------------------------------------------------------------------------
+  POSTGRES_HOST: 'postgres'
+  POSTGRES_PORT: 5432
+  POSTGRES_DB: 'sprints'
+  POSTGRES_USER: 'postgres_user'
+  POSTGRES_PASSWORD: 'postgres_password'
+
+  DATABASE_URL: 'postgres://postgres_user:postgres_password@postgres/sprints'
+
+all_env_tokens: "{{ ENV_TOKENS | combine( CUSTOM_ENV_TOKENS ) }}"

@@ -1,0 +1,16 @@
+---
+- name: Set up the Sprints application
+  hosts: sprints
+  become: true
+  roles:
+    - role: docker-compose
+      tags: 'docker'
+
+    - role: sprints
+      tags: 'initial'
+
+    - role: common-server
+      tags: 'common-server'
+
+    - role: sprints
+      tags: 'sprints'

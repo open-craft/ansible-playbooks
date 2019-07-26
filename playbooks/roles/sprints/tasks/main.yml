@@ -1,0 +1,75 @@
+# This is required for `common-sever` role to pass, because Let's Encrypt uses Nginx on port 80, which is being used by this container.
+- name: Stop Sprints
+  docker_compose:
+    project_src: "{{ APP_PATH }}"
+    stopped: yes
+    debug: yes
+  become_user: ubuntu
+  tags:
+    - inital
+
+- name: Set authorized key for CircleCI
+  authorized_key:
+    user: ubuntu
+    state: present
+    key: "{{ CI_SSH_PUBLIC_KEY }}"
+  tags:
+    - initial
+
+- name: Create the sprints directory
+  file:
+    path: "{{ APP_PATH }}"
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0775
+  tags:
+    - initial
+
+- name: Copy the deployment script
+  copy:
+    src: deploy.sh
+    dest: "{{ APP_PATH }}/"
+    mode: 0755
+  become_user: ubuntu
+  tags:
+    - initial
+
+- name: Install the docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ APP_PATH }}/docker-compose.yml"
+    mode: 0600
+    backup: yes
+  become_user: ubuntu
+  tags:
+    - initial
+
+# This config is created by `common-server` role for Let's Encrypt and is no longer needed here.
+- name: Remove unused nginx config
+  file:
+    path: /etc/nginx/sites-enabled/common-server
+    state: absent
+  notify:
+    - reload nginx
+  tags:
+    - sprints
+
+- name: Install the environment file
+  template:
+    src: env.j2
+    dest: "{{ APP_PATH }}/.env"
+    mode: 0600
+    backup: yes
+  become_user: ubuntu
+  tags:
+    - sprints
+
+- name: Start Sprints with docker-compose
+  docker_compose:
+    project_src: "{{ APP_PATH }}"
+    pull: yes
+    debug: yes
+  become_user: ubuntu
+  tags:
+    - sprints
