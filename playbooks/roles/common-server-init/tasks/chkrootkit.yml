@@ -9,5 +9,18 @@
     src: chkrootkit.conf
     dest: /etc/chkrootkit.conf
 
+- name: Copy expected output generator script
+  template:
+    src: gen_chkrootkit_expected_output.sh
+    dest: "{{ CHKROOTKIT_EXPECTED_OUTPUT_SCRIPT_LOCATION }}"
+    owner: root
+    group: root
+    mode: 0500
+
 - name: Generate expected chkrootkit output
-  script: gen_chkrootkit_expected_output.sh
+  command: "{{ CHKROOTKIT_EXPECTED_OUTPUT_SCRIPT_LOCATION }}"
+
+- name: Add apt hook to update chkrootkit expected output after updates
+  template:
+    src: 100chrootkitupdate.j2
+    dest: /etc/apt/apt.conf.d/100chrootkitupdate
