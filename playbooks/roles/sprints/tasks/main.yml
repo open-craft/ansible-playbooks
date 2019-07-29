@@ -1,6 +1,6 @@
 # This is required for `common-sever` role to pass, because Let's Encrypt uses Nginx on port 80, which is being used by this container.
 - name: Stop Sprints
-  docker_compose:
+  docker_service:
     project_src: "{{ APP_PATH }}"
     stopped: yes
     debug: yes
@@ -66,7 +66,7 @@
     - sprints
 
 - name: Start Sprints with docker-compose
-  docker_compose:
+  docker_service:
     project_src: "{{ APP_PATH }}"
     pull: yes
     debug: yes
