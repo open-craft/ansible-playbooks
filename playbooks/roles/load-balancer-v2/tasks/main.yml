@@ -76,7 +76,7 @@
 - name: Open HTTP and HTTPS port on the firewall
   ufw:
     rule: allow
-    port: "{{ item.post }}"
+    port: "{{ item.port }}"
     proto: tcp
   with_items:
     - enabled: true

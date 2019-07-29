@@ -15,7 +15,7 @@ haproxy_ocim_certs_dir: "/etc/haproxy/certs/ocim"
 haproxy_enable_stats_page: false
 haproxy_stats_port: 8404
 haproxy_stats_page_username: "haproxy"
-haproxy_stats_page_password: null
+haproxy_stats_page_password: "set-me-please"
 
 # Configuration for Nginx server serving maintenance pages.
 maintenance_server_port: 8888
