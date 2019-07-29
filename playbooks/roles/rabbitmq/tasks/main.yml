@@ -119,12 +119,10 @@
 
 - name: set letsencrypt directory owner
   file:
-    path: "/etc/letsencrypt/{{ item }}"
+    path: "/etc/letsencrypt"
     owner: rabbitmq
     state: directory
-  with_items:
-    - live
-    - archive
+    recurse: yes
 
 - name: write rabbitmq configuration
   template:
@@ -155,20 +153,31 @@
 # HTTP API, and we need the HTTP API to fetch the rabbitmqadmin tool, so the handlers are flushed here.
 - meta: flush_handlers
 
-- name: fetch the rabbitmqadmin script from the management webserver
-  get_url:
-    url: "https://{{ RABBITMQ_HOSTNAME }}:{{ RABBITMQ_HTTPS_PORT }}/cli/rabbitmqadmin"
-    dest: "{{ RABBITMQ_SCRIPTS_DIR }}/rabbitmqadmin"
-    owner: root
-    group: root
-    mode: 0700
+- name: download rabbitmqadmin executable
+  command: wget -P "{{ RABBITMQ_SCRIPTS_DIR }}" "{{ RABBITMQADMIN_URL }}"
+  args:
+    creates: "{{ RABBITMQ_SCRIPTS_DIR }}/rabbitmqadmin"
 
 - name: remove default guest user
   rabbitmq_user:
     user: guest
     state: absent
 
+- name: add rabbitmq vhost
+  rabbitmq_vhost:
+    name: "{{ RABBITMQ_VHOST }}"
+    node: "rabbit@{{ RABBITMQ_HOSTNAME }}"
+    state: present
+
+- name: create rabbitmq user
+  rabbitmq_user:
+    user: "{{ RABBITMQ_USER }}"
+    password: "{{ RABBITMQ_PASS }}"
+    vhost: "{{ RABBITMQ_VHOST }}"
+    state: present
+
 - name: ensure vhost /test is present
   rabbitmq_vhost:
     name: /test
+    node: "rabbit@{{ RABBITMQ_HOSTNAME }}"
     state: present

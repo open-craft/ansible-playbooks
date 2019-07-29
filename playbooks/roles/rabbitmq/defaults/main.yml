@@ -29,3 +29,10 @@ RABBITMQ_SCRIPTS_DIR: /usr/local/sbin
 
 RABBITMQ_BACKUP_COMMAND: rabbitmq-backup
 RABBITMQ_RESTORE_COMMAND: rabbitmq-restore
+
+RABBITMQ_USER: set-me-please
+RABBITMQ_PASS: set-me-please
+RABBITMQ_VHOST: set-me-please
+
+# Update the version below if RABBITMQ_VERSION is changed
+RABBITMQADMIN_URL: https://raw.githubusercontent.com/rabbitmq/rabbitmq-management/v3.6.x/bin/rabbitmqadmin
