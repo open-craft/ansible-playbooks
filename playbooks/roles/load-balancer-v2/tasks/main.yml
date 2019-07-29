@@ -76,8 +76,13 @@
 - name: Open HTTP and HTTPS port on the firewall
   ufw:
     rule: allow
-    port: "{{ item }}"
+    port: "{{ item.post }}"
     proto: tcp
   with_items:
-    - 80
-    - 443
+    - enabled: true
+      port: 80
+    - enabled: true
+      port: 443
+    - enabled: "{{ haproxy_enable_stats_page }}"
+      port: "{{ haproxy_stats_port }}"
+  when: item.enabled
