@@ -154,7 +154,9 @@
 - meta: flush_handlers
 
 - name: download rabbitmqadmin executable
-  command: wget -P "{{ RABBITMQ_SCRIPTS_DIR }}" "{{ RABBITMQADMIN_URL }}" creates=rabbitmqadmin
+  command: wget -P "{{ RABBITMQ_SCRIPTS_DIR }}" "{{ RABBITMQADMIN_URL }}"
+  args:
+    creates: "{{ RABBITMQ_SCRIPTS_DIR }}/rabbitmqadmin"
 
 - name: remove default guest user
   rabbitmq_user:
