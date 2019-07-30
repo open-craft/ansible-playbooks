@@ -74,6 +74,15 @@ frontend fe_https
     errorloc 503 /error
     errorloc 504 /error
 
+{% if haproxy_enable_stats_page %}
+frontend stats
+    bind *:{{! haproxy_stats_port !}} ssl crt /etc/haproxy/certs.pem
+    stats enable
+    stats uri /stats
+    stats refresh 10s
+    stats auth {{! haproxy_stats_page_username !}}:{{! haproxy_stats_page_password !}}
+{% endif %}
+
 backend be_acme_challenge
     server srv_lets_encrypt {{! cert_manager_server_address !}}
 

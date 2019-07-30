@@ -12,6 +12,11 @@ haproxy_consul_lock_prefix: "lock/ocim/"
 haproxy_consul_certs_prefix: "ocim/certs"
 haproxy_ocim_certs_dir: "/etc/haproxy/certs/ocim"
 
+haproxy_enable_stats_page: false
+haproxy_stats_port: 8404
+haproxy_stats_page_username: "haproxy"
+haproxy_stats_page_password: "set-me-please"
+
 # Configuration for Nginx server serving maintenance pages.
 maintenance_server_port: 8888
 maintenance_scheduled_server_port: "{{ maintenance_server_port + 1 }}"
