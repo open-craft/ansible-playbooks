@@ -74,7 +74,7 @@ frontend fe_https
     errorloc 503 /error
     errorloc 504 /error
 
-{% if haproxy_stats_enable %}
+{% if haproxy_enable_stats_page %}
 frontend stats
     bind *:{{! haproxy_stats_port !}} ssl crt /etc/haproxy/certs.pem
     stats enable
