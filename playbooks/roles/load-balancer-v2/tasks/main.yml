@@ -44,6 +44,13 @@
       dest: "/lib/systemd/system/consul-certificates-render.service"
       mode: "0644"
 
+# Haproxy refuses to start when there are no valid SSL certificates in the
+# /etc/haproxy directory, so we copy a bogus cert there.
+- name: Copy snakeoil certificate
+  copy:
+    src: snakeoil.pem
+    dest: "/etc/haproxy/certs.pem"
+
 - name: Enable and start the consul-template-render service
   systemd:
     daemon_reload: yes

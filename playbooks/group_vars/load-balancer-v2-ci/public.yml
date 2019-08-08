@@ -1,0 +1,48 @@
+---
+
+# GENERAL #####################################################################
+
+LOAD_BALANCER_SERVER_IP: "{{ COMMON_FLOATING_IP or ansible_host }}"
+LETSENCRYPT_USE_STAGING: true
+
+COMMON_SERVER_INSTALL_CERTBOT: false
+COMMON_SERVER_INSTALL_NODE_EXPORTER: false
+COMMON_SERVER_INSTALL_POSTFIX: false
+COMMON_SERVER_INSTALL_FILEBEAT: false
+COMMON_SERVER_INSTALL_SANITY_CHECKER: false
+
+COMMON_SERVER_NO_BACKUPS: true
+
+# MAIL ########################################################################
+
+LOAD_BALANCER_OPS_EMAIL: "{{ OPS_EMAIL }}"
+
+# CONSUL ######################################################################
+
+
+consul_servers:
+  - haproxy-integration.net.opencraft.hosting
+consul_openstack_data_device: "/dev/vdb1"
+consul_server: true
+consul_ui: true
+consul_backup: true
+consul_service_config:
+  services:
+    - id: haproxy-http
+      name: "haproxy"
+      tags: ["haproxy"]
+      port: 80
+      enable_tag_override: true
+      checks:
+        - name: "Connect to HAProxy HTTP"
+          tcp: "{{ LOAD_BALANCER_SERVER_IP }}:80"
+          interval: "10m"
+    - id: haproxy-https
+      name: "haproxy"
+      tags: ["haproxy"]
+      port: 443
+      enable_tag_override: true
+      checks:
+        - name: "Connect to HAProxy HTTPS"
+          tcp: "{{ LOAD_BALANCER_SERVER_IP }}:443"
+          interval: "10m"
