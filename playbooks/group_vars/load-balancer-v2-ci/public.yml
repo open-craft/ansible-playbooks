@@ -3,7 +3,6 @@
 # GENERAL #####################################################################
 
 LOAD_BALANCER_SERVER_IP: "{{ COMMON_FLOATING_IP or ansible_host }}"
-cert_manager_server_address: "51.38.226.128"
 
 LETSENCRYPT_USE_STAGING: true
 
