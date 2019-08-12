@@ -112,26 +112,6 @@ backend provisioning
     server provisioning-page 127.0.0.1:{{! maintenance_provisioning_server_port !}}
 
 {{- $prefix := "/ocim/instances" }}
-{{ range $instance_id, $pairs := tree $prefix | byKey }}
-{{- $http_auth_info_base64 := (index $pairs "basic_auth").Value }}
-{{- $active_app_servers := (index $pairs "active_app_servers").Value | parseJSON }}
-{{- $domain := (index $pairs "domain").Value }}
-{{- $domain_slug := (index $pairs "domain_slug").Value }}
-{{ $health_check := (index $pairs "health_checks_enabled").Value | parseBool }}
-# Backend configuration for {{ $domain }}
-backend be-{{ $domain_slug }}
-    cookie openedx-backend insert postonly indirect
-    acl has-authorization req.hdr(Authorization) -m found
-    http-request set-header Authorization 'Basic {{ $http_auth_info_base64 }}' unless has-authorization
-    option httpchk /heartbeat
-    {{- /* Loop over all active appservers for this instance. */ -}}
-    {{- /* Each appserver in this list is a dict of the form {id: int, public_ip: str}. */ -}}
-    {{- range $active_app_servers }}
-    server appserver-{{ .id }} {{ .public_ip }}:80 cookie appserver-{{ .id }} {{ if $health_check }}check{{ end }}
-    {{- end }}
-{{- end }}
-
-
 {{- /* Print config in the form of a single K/V value. */ -}}
 {{- range ls $prefix }}
   {{- with $config := .Value | parseJSON }}
