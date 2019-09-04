@@ -66,7 +66,7 @@ frontend fe_https
     acl backend_fail status 500:599
     acl error_backend res.hdr(X-Maintenance) yes
     http-response redirect location /error if backend_fail !error_backend
-    use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/backend.map)]
+    use_backend %[req.hdr(host),lower,map_str(/etc/haproxy/backend.map)]
 
     # For errors raised by HAProxy redirect to /error so they will go to the error backend.
     errorloc 500 /error
