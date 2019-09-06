@@ -3,14 +3,11 @@
   hosts: sprints
   become: true
   roles:
-    - role: docker-compose
-      tags: 'docker'
-
-    - role: sprints
-      tags: 'initial'
-
     - role: common-server
       tags: 'common-server'
+
+    - role: docker-compose
+      tags: 'docker'
 
     - role: sprints
       tags: 'sprints'
