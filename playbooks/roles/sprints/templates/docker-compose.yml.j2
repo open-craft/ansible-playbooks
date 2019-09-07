@@ -1,11 +1,10 @@
 version: '3'
 
+{% if USE_POSTGRES %}
 volumes:
-  production_traefik: {}
-  {% if USE_POSTGRES %}
   production_postgres_data: {}
   production_postgres_data_backups: {}
-  {% endif %}
+{% endif %}
 
 services:
   django: &django
@@ -17,10 +16,13 @@ services:
       - redis
     env_file:
       - .env
+    ports:
+      - "127.0.0.1:5000:5000"
     restart: always
     command: /start
+
   {% if USE_POSTGRES %}
-  postgres:
+postgres:
     image: opencraft/sprints_postgres
     volumes:
       - production_postgres_data:/var/lib/postgresql/data
@@ -30,28 +32,19 @@ services:
     restart: always
   {% endif %}
 
-  traefik:
-    image: opencraft/sprints_traefik
-    depends_on:
-      - django
-    volumes:
-      - production_traefik:/etc/traefik/acme
-    ports:
-      - "0.0.0.0:80:80"
-      - "0.0.0.0:443:443"
-    restart: always
-
   redis:
     image: redis:3.2
 
   celeryworker:
     <<: *django
     image: opencraft/sprints_celeryworker
+    ports: []
     command: /start-celeryworker
 
   celerybeat:
     <<: *django
     image: opencraft/sprints_celerybeat
+    ports: []
     command: /start-celerybeat
 
   flower:
@@ -60,8 +53,9 @@ services:
     ports:
       - "5555:5555"
     command: /start-flower
+
   {% if USE_POSTGRES %}
-  awscli:
+awscli:
     image: opencraft/sprints_awscli
     env_file:
       - .env

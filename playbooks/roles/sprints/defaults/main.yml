@@ -1,7 +1,12 @@
+---
 APP_PATH: '/sprints'
 USE_POSTGRES: true
+USE_SSL: true
+SPRINTS_NGINX_CONFIG_PATH: /etc/nginx/sites-available/sprints
 
 CI_SSH_PUBLIC_KEY: 'your-CI-key'
+
+API_HOSTNAME: "backend.server"
 
 # Settings for Sprints. See sprints/config/settings/ for details.
 ENV_TOKENS:
