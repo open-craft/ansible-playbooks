@@ -90,3 +90,6 @@ session_user_group: ubuntu
 # The user and group under which the applicaiton code will run
 www_user: www-data
 www_group: www-data
+
+# Number of months an instance is archived to have it deleted
+OPENCRAFT_DELETE_ARCHIVED_MONTHS: 12
