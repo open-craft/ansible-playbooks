@@ -19,6 +19,9 @@ prometheus_config_global_scrape_timeout: 10s
 
 prometheus_storage__tsdb__retention: 30d
 
+# without this, alertmanger won't start
+prometheus_alert_manager_cluster__advertise_address: "127.0.0.1:9093"
+
 # The defaults weren't working, though they actually should.  We are not using the Prometheus
 # consoles for now, but leaving these settings here ensures that we don't have to debug the
 # problem again once we start using them.
@@ -122,6 +125,31 @@ prometheus_rules:
       annotations:
         summary: "MySQL instance [[ $labels.node ]] ([[ $labels.instance ]]) down."
         description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] is down."
+    - alert: "mysql_replica_down"
+      expr: "mysql_slave_status_slave_io_running == 0 or mysql_slave_status_slave_sql_running == 0"
+      for: "10m"
+      labels:
+        severity: "critical"
+        environment: "[[ $labels.environment ]]"
+      annotations:
+        summary: "MySQL replica [[ $labels.node ]] ([[ $labels.instance ]]) replication is not running"
+        description: "[[ $labels.node ]] ([[ $labels.instance ]]) replication has been down for more than 10 minutes."
+    - alert: "mysql_replication_lag"
+      expr: "(mysql_slave_lag_seconds > 30) and on(instance) (predict_linear(mysql_slave_lag_seconds[5m], 60 * 10) > 0)"
+      for: "30m"
+      labels:
+        severity: "critical"
+      annotations:
+        summary: "MySQL replica [[ $labels.node ]] ([[ $labels.instance ]]) is lagging"
+        description: "[[ $labels.node ]] ([[ $labels.instance ]]) replication has fallen behind for 30 minutes and is not recovering."
+    - alert: "mysql_replication_lag"
+      expr: "(mysql_heartbeat_lag_seconds > 30) and on(instance) (predict_linear(mysql_heartbeat_lag_seconds[5m], 60 * 10) > 0)"
+      for: "30m"
+      labels:
+        severity: "critical"
+      annotations:
+        summary: "MySQL replica [[ $labels.node ]] ([[ $labels.instance ]]) is lagging"
+        description: "[[ $labels.node ]] ([[ $labels.instance ]]) replication has fallen behind for 30 minutes and is not recovering."
   - name: "MongoDBRules"
     rules:
     - alert: "mongodb_down"

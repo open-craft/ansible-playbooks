@@ -10,7 +10,7 @@ MYSQL_PROCESSES_LIMIT: 1024
 # PROMETHEUS ##################################################################
 
 MYSQL_EXPORTER_ENABLED: true
-MYSQL_EXPORTER_VERSION: 0.10.0
+MYSQL_EXPORTER_VERSION: 0.12.1
 MYSQL_EXPORTER_BASENAME: "mysqld_exporter-{{ MYSQL_EXPORTER_VERSION }}.linux-amd64"
 MYSQL_EXPORTER_BINARY: "/opt/{{ MYSQL_EXPORTER_BASENAME }}/mysqld_exporter"
 MYSQL_EXPORTER_ARCHIVE: "{{ MYSQL_EXPORTER_BASENAME }}.tar.gz"
@@ -22,7 +22,7 @@ MYSQL_EXPORTER_PASSWORD: null
 # out through the reverse proxy to actually retrieve these metrics.
 # It is uncertain whether this can actually be fixed in the exporter -- it
 # may just be a limitation of having too many databases in MySQL.
-MYSQL_EXPORTER_EXTRA_OPTS: "-collect.info_schema.tables=false -collect.info_schema.query_response_time=true"
+MYSQL_EXPORTER_EXTRA_OPTS: "--no-collect.info_schema.tables --collect.info_schema.query_response_time"
 
 MYSQL_EXPORTER_MYSQL_PASSWORD: null
 MYSQL_EXPORTER_MYSQL_USERS:
