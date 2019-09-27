@@ -4,7 +4,6 @@ MATTERMOST_HOSTNAME: "{{ inventory_hostname }}"
 MATTERMOST_OPS_EMAIL: ops@exmaple.com
 
 MATTERMOST_VERSION: 5.8.0
-MATTERMOST_UNLINK_VERSION: 0.3.0
 
 # Restrict registration to email addresses in this domain
 MATTERMOST_RESTRICT_TO_EMAIL_DOMAIN: example.com
@@ -55,7 +54,7 @@ MATTERMOST_INSTALL_TAG_FILE: "{{ MATTERMOST_STATUS_DIR }}/installation-complete"
 MATTERMOST_DOWNLOAD_URL: "https://releases.mattermost.com/{{ MATTERMOST_VERSION }}/mattermost-team-{{ MATTERMOST_VERSION }}-linux-amd64.tar.gz"
 MATTERMOST_DOWNLOAD_DEST: "/tmp/{{ MATTERMOST_DOWNLOAD_URL|basename }}"
 
-MATTERMOST_UNLINK_DOWNLOAD_URL: "https://github.com/mattermost/mattermost-plugin-autolink/releases/download/v{{ MATTERMOST_UNLINK_VERSION }}/mattermost-plugin-autolink-linux-amd64.tar.gz"
+MATTERMOST_UNLINK_DOWNLOAD_URL: "https://github.com/mattermost/mattermost-plugin-autolink/releases/download/v{{ MATTERMOST_UNLINK_VERSION }}/mattermost-autolink-{{ MATTERMOST_UNLINK_VERSION }}.tar.gz"
 MATTERMOST_UNLINK_DOWNLOAD_DEST: "/tmp/{{ MATTERMOST_UNLINK_DOWNLOAD_URL|basename }}"
 
 MATTERMOST_CONFIG_FILE: "{{ MATTERMOST_STATUS_DIR }}/config.json"
