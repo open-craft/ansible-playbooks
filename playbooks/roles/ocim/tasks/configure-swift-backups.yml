@@ -1,5 +1,10 @@
 ---
 
+- name: Print SWIFT deprecation warning
+  fail:
+    msg: 'SWIFT Backup module is deprecated and will be removed in a future version.'
+  ignore_errors: yes
+
 - name: upload tarsnap key
   template:
     src: "tarsnap.key.j2"
