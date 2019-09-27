@@ -5,10 +5,6 @@ MATTERMOST_OPS_EMAIL: ops@exmaple.com
 
 MATTERMOST_VERSION: 5.8.0
 
-# UNLINK is the autolink plugin which converts JIRA tickets to clickable URL
-# https://github.com/mattermost/mattermost-plugin-autolink/releases/
-MATTERMOST_UNLINK_VERSION: 0.3.0
-
 # Restrict registration to email addresses in this domain
 MATTERMOST_RESTRICT_TO_EMAIL_DOMAIN: example.com
 
