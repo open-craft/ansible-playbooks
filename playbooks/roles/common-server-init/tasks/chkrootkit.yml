@@ -24,3 +24,11 @@
   template:
     src: 100chrootkitupdate.j2
     dest: /etc/apt/apt.conf.d/100chrootkitupdate
+
+- name: Update expected output daily
+  template:
+    src: update_chkrootkit_log
+    dest: /etc/cron.daily/update-chkrootkit-log
+    owner: root
+    group: root
+    mode: 0755

@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# This script updates the expected log daily so each change is notified only
+# once.
+#
+
+LOG_DIR=/var/log/chkrootkit
+
+cp -a -f $LOG_DIR/log.today $LOG_DIR/log.expected
