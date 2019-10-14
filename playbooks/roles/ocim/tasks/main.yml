@@ -39,8 +39,8 @@
 - import_tasks: common.yml
 
 - name: Install the venv wrapper script
-  copy:
-    src: venv_exec
+  template:
+    src: venv_exec.j2
     dest: "{{ opencraft_virtualenv_dir }}/bin/exec"
     mode: 0755
   become_user: "{{ www_user }}"

@@ -19,4 +19,4 @@ dependencies:
       - "{{ ocim_python_version }}"
     pyenv_virtualenv_environments:
       - python_version: "{{ ocim_python_version }}"
-        virtualenv_name: "opencraft"
+        virtualenv_name: "{{ opencraft_virtualenv_name }}"
