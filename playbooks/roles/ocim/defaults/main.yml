@@ -95,3 +95,7 @@ www_group: www-data
 
 # Number of months an instance is archived to have it deleted
 OPENCRAFT_DELETE_ARCHIVED_MONTHS: 12
+
+ocim_python_version: '3.6.9'
+pyenv_home: "{{ www_data_home_dir }}"
+pyenv_root: "{{ pyenv_home }}/.pyenv"

@@ -18,8 +18,9 @@
 - name: Change directory to ~/opencraft on login
   blockinfile:
     path: ~/.bashrc
-    block:
-      . {{ opencraft_virtualenv_dir }}/bin/activate
+    marker: "# {mark} ANSIBLE MANAGED BLOCK activate_virtualenv"
+    block: |
+      pyenv activate opencraft
       cd ~/opencraft
   become_user: vagrant
 

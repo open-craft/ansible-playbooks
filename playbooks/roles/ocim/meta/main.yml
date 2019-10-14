@@ -12,3 +12,11 @@ dependencies:
     NGINX_PROXY_READ_TIMEOUT: 600s
     NGINX_PROXY_EXTRA_CONFIG: "{{ opencraft_nginx_static_config }}"
     when: www_user != 'vagrant'
+
+  - name: pyenv
+    pyenv_home: "{{ www_data_home_dir }}"
+    pyenv_python_versions:
+      - "{{ ocim_python_version }}"
+    pyenv_virtualenv_environments:
+      - python_version: "{{ ocim_python_version }}"
+        virtualenv_name: "opencraft"
