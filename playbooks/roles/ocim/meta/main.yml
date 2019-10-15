@@ -15,6 +15,9 @@ dependencies:
 
   - name: pyenv
     pyenv_home: "{{ www_data_home_dir }}"
+    pyenv_create_pyenv_home: true
+    pyenv_user: "{{ www_user }}"
+    pyenv_group: "{{ www_group }}"
     pyenv_python_versions:
       - "{{ ocim_python_version }}"
     pyenv_virtualenv_environments:

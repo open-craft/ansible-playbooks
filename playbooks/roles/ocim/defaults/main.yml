@@ -97,8 +97,8 @@ opencraft_nginx_websocket_config: |
   location /ws {
       proxy_pass http://localhost:{{ opencraft_websocket_port }}/ws;
       proxy_http_version 1.1;
-      proxy_buffering off;;
-      proxy_request_buffering off
+      proxy_buffering off;
+      proxy_request_buffering off;
       proxy_send_timeout 600s;
       proxy_read_timeout 600s;
 

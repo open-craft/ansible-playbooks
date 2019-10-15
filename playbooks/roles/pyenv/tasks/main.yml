@@ -4,6 +4,15 @@
     state: present
   with_items: "{{ pyenv_prerequisite_packages }}"
 
+- name: Ensure that the "{{ pyenv_home }}" directory is present and has the right permissions
+  file:
+    path: "{{ pyenv_home }}"
+    owner: "{{ pyenv_user }}"
+    group: "{{ pyenv_group }}"
+    mode: 0750
+    state: directory
+  when: pyenv_create_pyenv_home
+
 - name: Install and setup pyenv and pyenv-virtualenv
   become_user: "{{ www_user }}"
   block:
@@ -31,6 +40,7 @@
           fi
     - name: Add code to load pyenv configuration in ~/.bashrc
       blockinfile:
+        create: yes
         path: "{{ pyenv_home }}/.bashrc"
         marker: "# {mark} ANSIBLE MANAGED BLOCK load_pyenv_configuration"
         block: |

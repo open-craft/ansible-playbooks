@@ -33,3 +33,8 @@ pyenv_prerequisite_packages:
   - liblzma-dev
   - python-openssl
   - git
+
+pyenv_user: 'root'
+pyenv_group: 'root'
+
+pyenv_create_pyenv_home: false
