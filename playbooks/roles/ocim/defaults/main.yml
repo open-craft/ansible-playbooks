@@ -64,9 +64,15 @@ OPENCRAFT_GENERATED_ENV_TOKENS:
 opencraft_all_env_tokens: "{{ OPENCRAFT_GENERATED_ENV_TOKENS | combine( OPENCRAFT_ENV_TOKENS ) }}"
 www_data_home_dir: '/var/www'
 opencraft_root_dir: '/var/www/opencraft'
-opencraft_virtualenv_dir: '/var/www/.virtualenvs/opencraft'
 opencraft_static_files_dir: '{{ opencraft_root_dir }}/build/static'
 opencraft_screenrc_path: '/home/ubuntu/ocim-screenrc'
+
+ocim_python_version: '3.6.9'
+pyenv_home: "{{ www_data_home_dir }}"
+pyenv_root: "{{ pyenv_home }}/.pyenv"
+opencraft_virtualenv_name: "opencraft"
+
+opencraft_websocket_port: 2001
 
 opencraft_nginx_static_config: |
   # serve static files
@@ -112,8 +118,3 @@ www_group: www-data
 
 # Number of months an instance is archived to have it deleted
 OPENCRAFT_DELETE_ARCHIVED_MONTHS: 12
-
-ocim_python_version: '3.6.9'
-pyenv_home: "{{ www_data_home_dir }}"
-pyenv_root: "{{ pyenv_home }}/.pyenv"
-opencraft_virtualenv_name: "opencraft"

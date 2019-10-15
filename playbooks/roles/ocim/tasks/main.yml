@@ -41,7 +41,7 @@
 - name: Install the venv wrapper script
   template:
     src: venv_exec.j2
-    dest: "{{ opencraft_virtualenv_dir }}/bin/exec"
+    dest: "{{ pyenv_root }}/shims/exec"
     mode: 0755
   become_user: "{{ www_user }}"
 
