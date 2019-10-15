@@ -10,7 +10,7 @@ dependencies:
     NGINX_PROXY_SERVER_NAME: "{{ OPENCRAFT_DOMAIN_NAME }}"
     NGINX_PROXY_SEND_TIMEOUT: 600s
     NGINX_PROXY_READ_TIMEOUT: 600s
-    NGINX_PROXY_EXTRA_CONFIG: "{{ opencraft_nginx_static_config }}"
+    NGINX_PROXY_EXTRA_CONFIG: "{{ opencraft_nginx_static_config + opencraft_nginx_websocket_config }}"
     when: www_user != 'vagrant'
 
   - name: pyenv
