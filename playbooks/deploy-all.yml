@@ -15,6 +15,7 @@
 - import_playbook: postgres.yml
 - import_playbook: prometheus.yml
 - import_playbook: rabbitmq.yml
+- import_playbook: memcached.yml
 - import_playbook: relay.yml
 - import_playbook: vault.yml
 - import_playbook: wordpress.yml
