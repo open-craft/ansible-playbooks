@@ -64,9 +64,15 @@ OPENCRAFT_GENERATED_ENV_TOKENS:
 opencraft_all_env_tokens: "{{ OPENCRAFT_GENERATED_ENV_TOKENS | combine( OPENCRAFT_ENV_TOKENS ) }}"
 www_data_home_dir: '/var/www'
 opencraft_root_dir: '/var/www/opencraft'
-opencraft_virtualenv_dir: '/var/www/.virtualenvs/opencraft'
 opencraft_static_files_dir: '{{ opencraft_root_dir }}/build/static'
 opencraft_screenrc_path: '/home/ubuntu/ocim-screenrc'
+
+ocim_python_version: '3.6.9'
+pyenv_home: "{{ www_data_home_dir }}"
+pyenv_root: "{{ pyenv_home }}/.pyenv"
+opencraft_virtualenv_name: "opencraft"
+
+opencraft_websocket_port: 2001
 
 opencraft_nginx_static_config: |
   # serve static files
@@ -83,6 +89,26 @@ opencraft_nginx_static_config: |
           text/javascript
           image/svg+xml
           application/javascript;
+  }
+
+opencraft_nginx_websocket_config: |
+  # proxy the websocket requests to the ASGI server
+  #
+  location /ws {
+      proxy_pass http://localhost:{{ opencraft_websocket_port }}/ws;
+      proxy_http_version 1.1;
+      proxy_buffering off;
+      proxy_request_buffering off;
+      proxy_send_timeout 60s;
+      proxy_read_timeout 60s;
+
+      proxy_set_header Host $http_host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
   }
 
 # The user you will log in as in an SSH session and their primary group

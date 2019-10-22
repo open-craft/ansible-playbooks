@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
-source {{ opencraft_virtualenv_dir }}/bin/activate
+. {{ pyenv_root }}/.pyenvrc
+pyenv activate {{ opencraft_virtualenv_name }}
 cd {{ opencraft_root_dir }}
 honcho run python manage.py delete_archived -y {{ OPENCRAFT_DELETE_ARCHIVED_MONTHS }}

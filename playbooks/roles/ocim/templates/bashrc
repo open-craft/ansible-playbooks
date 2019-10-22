@@ -1,4 +1,5 @@
-. {{ opencraft_virtualenv_dir }}/bin/activate
+. {{ pyenv_root }}/.pyenvrc
+pyenv activate {{ opencraft_virtualenv_name }}
 
 export WORKERS={{ OPENCRAFT_WORKERS }}
 export WORKERS_LOW_PRIORITY={{ OPENCRAFT_WORKERS_LOW_PRIORITY }}
