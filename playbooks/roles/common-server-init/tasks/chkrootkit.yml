@@ -27,7 +27,7 @@
 
 - name: Update expected output daily
   template:
-    src: update_chkrootkit_log
+    src: update-chkrootkit-log
     dest: /etc/cron.daily/update-chkrootkit-log
     owner: root
     group: root
