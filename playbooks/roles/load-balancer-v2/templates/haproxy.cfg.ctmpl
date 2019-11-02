@@ -126,8 +126,16 @@ backend be-{{$config.domain_slug}}
     {{- /* Loop over all active appservers for this instance. */ -}}
     {{- /* Each appserver in this list is a dict of the form {id: int, public_ip: str}. */ -}}
     {{- range $config.active_app_servers }}
+      {{- if .public_ip }}
     server appserver-{{ .id }} {{ .public_ip }}:80 cookie appserver-{{ .id }} {{ if $health_check }}check{{ end }}
+      {{- else}}
+    http-response redirect location / unless { capture.req.uri / }
+    server unscheduled-maintenance-page 127.0.0.1:{{! maintenance_unscheduled_server_port !}}
+      {{- end }}
+    {{- else }}
+    server preliminary-page {{! PRELIMINARY_PAGE_SERVER_IP !}}:80
+    http-request set-header Host 'default.opencraft.com'
     {{- end }}
-    {{- end}}
+    {{- end }}
   {{- end }}
 {{- end }}
