@@ -86,6 +86,15 @@ ENV_TOKENS:
   POSTGRES_USER: 'postgres_user'
   POSTGRES_PASSWORD: 'postgres_password'
 
+  # JWT
+  # JWT_ACCESS_TOKEN_LIFETIME_HOURS: 3
+  # JWT_REFRESH_TOKEN_LIFETIME_DAYS: 30
+
+  # Parallel requests
+  # WEB_CONCURRENCY: 4
+  # MULTIPROCESSING_POOL_SIZE: 4
+  # MULTIPROCESSING_TIMEOUT: 30
+
   DATABASE_URL: 'postgres://postgres_user:postgres_password@postgres/sprints'
 
 all_env_tokens: "{{ ENV_TOKENS | combine( CUSTOM_ENV_TOKENS ) }}"
