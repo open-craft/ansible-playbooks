@@ -10,6 +10,12 @@
     force: no
   become_user: "{{ www_user }}"
 
+- name: Install javascript dependencies
+  shell: DEBIAN_FRONTEND=noninteractive make install_js_dependencies
+  args:
+    chdir: "{{ opencraft_root_dir }}"
+  become_user: "{{ www_user }}"
+
 - name: Install database dependencies
   shell: DEBIAN_FRONTEND=noninteractive make install_system_db_dependencies
   args:
