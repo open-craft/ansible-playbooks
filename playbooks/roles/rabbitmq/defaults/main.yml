@@ -6,6 +6,10 @@ RABBITMQ_HTTPS_PORT: 15671
 
 RABBITMQ_HOSTNAME: "{{ inventory_hostname }}"
 
+# heartbeat is in seconds; negociated with client; set to 0 to disable server
+# side (will still be non zero if client requests.
+RABBITMQ_HEARTBEAT: 0
+
 RABBITMQ_CA_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/chain.pem"
 RABBITMQ_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/cert.pem"
 RABBITMQ_KEY_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/privkey.pem"

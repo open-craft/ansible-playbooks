@@ -2,6 +2,7 @@
  %% Disable SSLv3.0 (POODLE) and TLSv1.0 (BEAST) support.
  {ssl, [{versions, ['tlsv1.2', 'tlsv1.1']}]},
  {rabbit, [
+           {heartbeat, {{ RABBITMQ_HEARTBEAT }}},
            {ssl_listeners, [{{ RABBITMQ_TLS_PORT}}]},
            {ssl_options, [{cacertfile,"{{ RABBITMQ_CA_CERTIFICATE_FILE }}"},
                           {certfile,  "{{ RABBITMQ_CERTIFICATE_FILE }}"},
