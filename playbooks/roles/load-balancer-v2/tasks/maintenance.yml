@@ -1,5 +1,10 @@
 ---
 
+- name: Ensure that the maint map file exists
+  file:
+    path: /etc/haproxy/maint.map
+    state: touch
+
 - name: "Ensure that {{ maintenance_server_static_root }} exists"
   file:
     path: "{{ maintenance_server_static_root }}"
