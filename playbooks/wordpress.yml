@@ -25,8 +25,12 @@
   roles:
     - role: common-server
       tags: 'common-server'
+      vars:
+        # certbot must run after deploying the wordpress role
+        COMMON_SERVER_INSTALL_CERTBOT: false
 
     - geerlingguy.php-versions
     - geerlingguy.php-mysql
     - wordpress
     - tarsnap
+    - certbot
