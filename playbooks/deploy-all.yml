@@ -8,7 +8,7 @@
 - import_playbook: elk.yml
 - import_playbook: hxat-catchpy-loris.yml
 - import_playbook: learner-profile-dashboard.yml
-- import_playbook: load-balancer.yml
+- import_playbook: load-balancer-v2.yml
 - import_playbook: mongodb.yml
 - import_playbook: mysql.yml
 - import_playbook: ocim.yml
