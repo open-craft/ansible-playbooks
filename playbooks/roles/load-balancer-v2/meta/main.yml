@@ -14,3 +14,4 @@ dependencies:
     NGINX_PROXY_CONFIG_PATH: /etc/nginx/sites-available/haproxy-exporter
     NGINX_PROXY_PUBLIC_PORT: 19101
     NGINX_PROXY_INTERNAL_PORT: 9101
+    NGINX_PROXY_RELOAD_NGINX: false

@@ -36,4 +36,4 @@
   service:
     name: nginx
     state: reloaded
-  when: sites_available.changed or sites_enabled.changed
+  when: (sites_available.changed or sites_enabled.changed) and NGINX_PROXY_RELOAD_NGINX
