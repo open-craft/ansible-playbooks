@@ -2,4 +2,5 @@
 
 CERTBOT_DOMAIN_NAME: "{{ inventory_hostname }}"
 CERTBOT_ADDITIONAL_DOMAINS: []
-CERTBOT_OPS_EMAIL: ops@example.com
+CERTBOT_OPS_EMAIL: ops@opencraft.com
+CERTBOT_NGINX_LISTEN: 80

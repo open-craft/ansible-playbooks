@@ -6,11 +6,12 @@ haproxy_domain_regex: "haproxy.*\\.net\\.opencraft\\.hosting"
 
 haproxy_ppa: "ppa:vbernat/haproxy-1.8"
 haproxy_version: "1.8.*"
+haproxy_custom_rules: null
+haproxy_custom_maps: []
 
 haproxy_consul_watch_prefix: "ocim/instances"
 haproxy_consul_lock_prefix: "lock/ocim/"
 haproxy_consul_certs_prefix: "ocim/certs"
-haproxy_ocim_certs_dir: "/etc/haproxy/certs/ocim"
 
 haproxy_enable_stats_page: false
 haproxy_stats_port: 8404
@@ -24,6 +25,12 @@ maintenance_unscheduled_server_port: "{{ maintenance_server_port + 2 }}"
 maintenance_provisioning_server_port: "{{ maintenance_server_port + 3 }}"
 maintenance_server_static_root: /var/www/maintenance
 maintenance_pages_repo: "https://github.com/open-craft/maintenance-pages"
+
+# Default type when site-is-down.yml or site-is-up.yml are run.
+maintenance_type: "unscheduled_maintenance"
+
+# The IP address below should always be IP address which the PRELIMINARY_PAGE_HOSTNAME resolves to.
+preliminary_page_server_ip: '149.202.180.183'
 
 # Certificate manager
 cert_manager_server_address: "127.0.0.1:8080"

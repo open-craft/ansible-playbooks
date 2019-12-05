@@ -114,18 +114,22 @@ If the device identifier your external log volume was assigned is not /dev/vdc (
 
 If you saved the instance's private SSH key to a separate file, rather than into your SSH configuration, you'll need to pass the `--private-key` argument to `ansible-playbook`, specifying the file where the private key can be found.
 
-## How to deploy a load-balancing server
+## How to deploy or redeploy a load-balancing server
 
-### Create an OpenStack instance
+### Create an OpenStack instance if needed
 
-1. Create an OpenStack "vps-ssd-1" instance from a vanilla Ubuntu 16.04 (xenial)
-   image.
+1. Create a SoYouStart dedicated server (for production) or a OVH VM (for staging -- use the infrastructure map to find the correct region and account). This will be a vanilla Ubuntu image 16.04 or greater.
 
-1. Add the IP address and host name of the new instance to the Ansible inventory
-   in the file `hosts` (create it if necessary):
+1. Add the host name of the new instance to the Ansible inventory in the file `hosts`:
 
-        [load-balancer]
+        [load-balancer-v2-prod]
         load-balancer.host.name
+
+1. Update the infrastructure map
+
+1. Bootstrap the server. This means running the `bootstrap-dedicated.yml` playbook:
+
+        ansible-playbook bootstrap-dedicated.yml -u ubuntu -l load-balancer.host.name
 
 ### Generate secrets for the new server
 
@@ -146,12 +150,25 @@ If you saved the instance's private SSH key to a separate file, rather than into
 
 ### Perform the deployment
 
-Run these commands:
+For a new server, run these commands:
 
-    mkvirtualenv ansible
-    pip install -r requirements.txt
-    ansible-galaxy install -r requirements.yml -f
-    ansible-playbook deploy-all.yml -u ubuntu -l load-balancer
+```
+mkvirtualenv ansible
+pip install -r requirements.txt
+ansible-playbook deploy-all.yml -u ubuntu -l load-balancer.host.name
+```
+
+Then you will need to instruct the new server to join the Consul cluster and add the new load balancer to the DNS pool in Gandi. See the [load balancer](https://gitlab.com/opencraft/documentation/private/blob/master/ops/loadbalancing.md) documentation for details.
+
+For an existing server, run these commands:
+
+```
+mkvirtualenv ansible
+pip install -r requirements.txt
+ansible-playbook -v deploy/playbooks/load-balancer-v2.yml -l load-balancer.host.name
+```
+
+**ALWAYS** use `--limit` and test each server after deployment, even if you have to make the same updates to all three. That's the whole point of having 3 highly available load balancers!
 
 ## How to deploy an ElasticSearch server
 

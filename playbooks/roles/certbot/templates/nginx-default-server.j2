@@ -5,7 +5,7 @@
 # We use the webroot plugin for ACME challenges, mostly because it's the easiest way to prevent
 # port collisions.
 server {
-    listen 80 default_server;
+    listen {{ CERTBOT_NGINX_LISTEN }} default_server;
     server_name _;
 
     location ^~ /.well-known/acme-challenge/ {

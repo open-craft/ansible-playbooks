@@ -20,8 +20,8 @@
     group: consul
     mode: 0750
   with_items:
-    - { path: "{{ consul_template_config_dir }}", owner: root }
-    - { path: "{{ consul_template_tmpl_dir }}", owner: root }
+    - { path: "/etc/consul-template/config", owner: root }
+    - { path: "/etc/consul-template/templates", owner: root }
 
 - name: Determine current consul-template version
   shell: consul-template --version 2>&1 >/dev/null | cut -d" " -f 2 - | cut -b 2- -

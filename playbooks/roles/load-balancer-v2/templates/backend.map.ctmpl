@@ -11,3 +11,9 @@
     {{- end}}
   {{- end }}
 {{- end }}
+{{- /* Extra entries from haproxy_custom_maps (Ansible). */ -}}
+{%- for cm in haproxy_custom_maps %}
+  {%- for domain in cm.domains %}
+{{! domain !}} {{! cm.backend !}}
+  {%- endfor %}
+{%- endfor %}

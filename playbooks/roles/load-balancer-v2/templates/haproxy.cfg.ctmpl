@@ -52,7 +52,7 @@ frontend fe_http
     use_backend be_acme_challenge if acme_challenge
 
 frontend fe_https
-    bind *:443 ssl crt /etc/haproxy/certs.pem crt {{! haproxy_ocim_certs_dir !}}
+    bind *:443 ssl crt /etc/haproxy/certs.pem crt /etc/haproxy/certs crt /etc/haproxy/certs/ocim
 
     # X-Forwarded-For is added by "option forwardfor"
     http-request set-header X-Forwarded-Port %[dst_port]
@@ -65,7 +65,9 @@ frontend fe_https
     # If the backend raises a 50x error redirect to /error so the error backend is used.
     acl backend_fail status 500:599
     acl error_backend res.hdr(X-Maintenance) yes
+    acl maint_backend req.hdr(host),lower,map_dom(/etc/haproxy/maint.map) -m found
     http-response redirect location /error if backend_fail !error_backend
+    use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/maint.map)] if maint_backend
     use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/backend.map)]
 
     # For errors raised by HAProxy redirect to /error so they will go to the error backend.
@@ -133,7 +135,7 @@ backend be-{{$config.domain_slug}}
     server unscheduled-maintenance-page 127.0.0.1:{{! maintenance_unscheduled_server_port !}}
       {{- end }}
     {{- else }}
-    server preliminary-page {{! PRELIMINARY_PAGE_SERVER_IP !}}:80
+    server preliminary-page {{! preliminary_page_server_ip !}}:80
     http-request set-header Host 'default.opencraft.com'
     {{- end }}
     {{- end }}

@@ -5,4 +5,4 @@
 
 consul watch -type=keyprefix -prefix={{ haproxy_consul_watch_prefix }} \
     consul lock {{ haproxy_consul_lock_prefix }} \
-        consul-template -once -config {{ consul_template_config_dir }}
+        consul-template -once -config /etc/consul-template/config

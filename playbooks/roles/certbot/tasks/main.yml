@@ -1,7 +1,7 @@
 ---
 
 - name: copy nginx default configuration
-  copy:
+  template:
     src: nginx-default-server.j2
     dest: /etc/nginx/sites-available/common-server
   notify:

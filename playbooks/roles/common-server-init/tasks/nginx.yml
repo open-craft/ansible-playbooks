@@ -18,6 +18,5 @@
   notify:
     - reload nginx
 
-# Release port 80, which is needed by e.g. the load-balancer role.
 - name: reload nginx if required
   meta: flush_handlers
