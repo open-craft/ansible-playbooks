@@ -2,7 +2,7 @@
   apt:
     name: "{{ item }}"
     state: present
-  with_items: "{{ pyenv_prerequisite_packages }}"
+  loop: "{{ pyenv_prerequisite_packages }}"
 
 - name: Ensure that the "{{ pyenv_home }}" directory is present and has the right permissions
   file:
