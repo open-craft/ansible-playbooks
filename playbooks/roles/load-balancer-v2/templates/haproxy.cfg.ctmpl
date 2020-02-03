@@ -78,7 +78,7 @@ frontend fe_https
 
 {% if haproxy_enable_stats_page %}
 frontend stats
-    bind *:{{! haproxy_stats_port !}} ssl crt /etc/haproxy/certs.pem
+    bind *:{{! haproxy_stats_port !}} ssl crt /etc/haproxy/certs.pem crt /etc/haproxy/certs
     stats enable
     stats uri /stats
     stats refresh 10s
