@@ -32,6 +32,12 @@
       dest: "/lib/systemd/system/cert-manager.service"
       mode: "0644"
 
+- name: Copy the deploy_cert.sh script template
+  template:
+    src: "deploy_cert.sh"
+    dest: "/usr/local/sbin/deploy_cert.sh"
+    mode: "0755"
+
 - name: Enable and start the cert-manager service
   systemd:
     daemon_reload: yes
