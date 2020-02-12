@@ -1,6 +1,15 @@
+# HTTP
 server {
 	listen *:80;
         server_name {{ MAINTENANCE_SITE_HOSTNAME }};
+        return 301 https://$host$request_uri;
+}
+
+# HTTPS
+server{
+        listen 443 ssl;
+        ssl_certificate /etc/ssl/certs/{{ MAINTENANCE_SITE_HOSTNAME }}.crt;
+        ssl_certificate_key /etc/ssl/private/{{ MAINTENANCE_SITE_HOSTNAME }}.key;
 
 	root /var/www/{{ MAINTENANCE_SITE_HOSTNAME }};
 	index index.html index.php;
