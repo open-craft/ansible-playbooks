@@ -22,15 +22,21 @@
       - php7.3-imap
       - php7.3-json
     - php_mysql_package: php7.3-mysql
+  pre_tasks:
+
+    - name: mount /var/www
+      mount: name=/var/www src=/dev/vdb1 fstype=ext4 state=mounted
+
+    - name: chown www-data /var/www
+      file: path=/var/www mode=750 owner=www-data group=www-data state=directory
+
+    - name: mkdir /var/www/log
+      file: path=/var/www/log mode=750 state=directory
+
   roles:
     - role: common-server
       tags: 'common-server'
-      vars:
-        # certbot must run after deploying the wordpress role
-        COMMON_SERVER_INSTALL_CERTBOT: false
-
     - geerlingguy.php-versions
     - geerlingguy.php-mysql
     - wordpress
     - tarsnap
-    - certbot
