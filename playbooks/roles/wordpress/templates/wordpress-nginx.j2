@@ -8,8 +8,9 @@ server {
 # HTTPS
 server {
         listen 443 ssl;
-        ssl_certificate /etc/ssl/certs/{{ LANDING_SITE_HOSTNAME }}.crt;
-        ssl_certificate_key /etc/ssl/private/{{ LANDING_SITE_HOSTNAME }}.key;
+        server_name {{ LANDING_SITE_HOSTNAME }} www.{{ LANDING_SITE_HOSTNAME }};
+        ssl_certificate /etc/letsencrypt/live/{{ LANDING_SITE_HOSTNAME }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ LANDING_SITE_HOSTNAME }}/privkey.pem;
 
         {{ NGINX_REWRITES }}
 

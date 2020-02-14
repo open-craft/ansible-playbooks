@@ -8,8 +8,9 @@ server {
 # HTTPS
 server {
         listen 443 ssl;
-        ssl_certificate /etc/ssl/certs/{{ DEFAULT_SITE_HOSTNAME }}.crt;
-        ssl_certificate_key /etc/ssl/private/{{ DEFAULT_SITE_HOSTNAME }}.key;
+        server_name {{ DEFAULT_SITE_HOSTNAME }};
+        ssl_certificate /etc/letsencrypt/live/{{ DEFAULT_SITE_HOSTNAME }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ DEFAULT_SITE_HOSTNAME }}/privkey.pem;
 
 	root /var/www/{{ DEFAULT_SITE_HOSTNAME }};
 	index index.html index.php;
