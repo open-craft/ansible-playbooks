@@ -8,15 +8,6 @@
     - 80
     - 443
 
-- name: mount /var/www
-  mount: name=/var/www src=/dev/vdb1 fstype=ext4 state=mounted
-
-- name: chown www-data /var/www
-  file: path=/var/www mode=750 owner=www-data group=www-data state=directory
-
-- name: mkdir /var/www/log
-  file: path=/var/www/log mode=750 state=directory
-
 - name: Copy nginx global configuration
   synchronize: src="global/" dest=/etc/nginx/global checksum=yes delete=yes owner=no group=no
 
