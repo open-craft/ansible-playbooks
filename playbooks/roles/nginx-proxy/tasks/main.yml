@@ -1,6 +1,6 @@
 ---
 - name: set up basic auth password
-  when: NGINX_PROXY_PASSWORD|bool == True
+  when: NGINX_PROXY_PASSWORD is not none
   block:
 
     - name: install passlib for htpasswd generation
