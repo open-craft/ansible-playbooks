@@ -19,9 +19,41 @@ filter {
   mutate {
     remove_field => [ "[host]" ]
   }
+
   mutate {
     add_field => {
       "host" => "%{[beat][hostname]}"
+    }
+  }
+
+  # Apply special filters if dealing with nginx access logs
+  if [event][dataset] == "nginx.access" {
+
+    # Split out fields from the nginx logs
+    dissect {
+      mapping => {
+        'message' => '%{proxy_ip} - %{remote_ip} - %{remote_user} %{protocol} [%{time_local}]  "%{request}" %{http_status} %{body_bytes_sent} %{request_time} "%{http_referer}" "%{user_agent}"'
+      }
+    }
+
+    # Fingerprint the remote_ip field and remove it
+    fingerprint {
+      method => "SHA256"
+      source => [ "remote_ip" ]
+      remote_field => [ "remote_ip" ]
+    }
+
+    # Truncate the fingerprint field to 16 chars
+    truncate {
+      fields => [ "fingerprint" ]
+      length_bytes => 16
+    }
+
+    # Replace remote ip in log message with fingerprinted id
+    mutate {
+      gsub => [
+          "message", "- \d{1,3}.\d{1,3}.\d{1,3}.\d{1,3} -", "- %{fingerprint} -"
+      ]
     }
   }
 }
