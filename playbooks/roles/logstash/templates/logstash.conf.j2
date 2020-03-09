@@ -27,7 +27,7 @@ filter {
   }
 
   # Apply special filters if dealing with nginx access logs
-  if [event][dataset] == "nginx.access" {
+  if [source] =~ /.*\/nginx\/access.log$/ {
 
     # Split out fields from the nginx logs
     dissect {
@@ -40,7 +40,8 @@ filter {
     fingerprint {
       method => "SHA256"
       source => [ "remote_ip" ]
-      remote_field => [ "remote_ip" ]
+      remove_field => [ "remote_ip" ]
+      key => "{{ LOGSTASH_IP_FINGERPRINT_KEY }}"
     }
 
     # Truncate the fingerprint field to 16 chars
