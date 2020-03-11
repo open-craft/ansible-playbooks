@@ -7,3 +7,4 @@ logstash_ca_cert: ""
 logstash_cert: ""
 logstash_key: ""
 logstash_config_dir: /etc/logstash
+LOGSTASH_IP_FINGERPRINT_KEY: ""
