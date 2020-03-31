@@ -20,3 +20,8 @@
     - import_role:
         name: ocim
         tasks_from: vagrant
+
+  roles:
+    - name: apticron
+      tags:
+        - apticron
