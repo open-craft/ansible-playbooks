@@ -15,7 +15,7 @@
     dest: "{{ cert_manager_path }}"
 
 - name: Install cert-manager requirements
-  shell: pipenv install
+  shell: pipenv install --ignore-pipfile
   args:
     chdir: "{{ cert_manager_path }}"
 
