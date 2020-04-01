@@ -8,6 +8,9 @@ We have several submodules defined in `.gitmodules` -- they're all either 3rd pa
 
 If you need to update a submodule in this repository to point to a new commit hash, `cd` into it and `git checkout` that reference. You can then stage and commit those changes.
 
+Warning: ansible-playbook will silently skip tasks in the roles defined as
+submodules if the submodules haven't been checked out. Be sure to run `git submodule update --init --recursive` to initialize the submodules.
+
 For our own roles that are in this repository as submodules, they should be on the latest `master`. You can update them with `git submodule update --remote`.
 
 ## How to deploy a Dalite NG server
@@ -109,7 +112,6 @@ For our own roles that are in this repository as submodules, they should be on t
 
 If the device identifier your external log volume was assigned is not /dev/vdc (the default we look for), then you'll need to pass it into the command.
 
-    ansible-galaxy install -r requirements.yml -f
     ansible-playbook deploy-all.yml -u ubuntu --extra-vars @private-extra-vars.yml --limit dalite
 
 If you saved the instance's private SSH key to a separate file, rather than into your SSH configuration, you'll need to pass the `--private-key` argument to `ansible-playbook`, specifying the file where the private key can be found.
@@ -196,7 +198,6 @@ Run these commands:
 
     mkvirtualenv ansible
     pip install -r requirements.txt
-    ansible-galaxy install -r requirements.yml -f
     ansible-playbook deploy-all.yml -u ubuntu -l elasticsearch
 
 ## Tarsnapper pruner server
@@ -256,7 +257,7 @@ This ansible repository deploys MySQL server on OpenStack provider.
 
 ### Perform deployment
 
-    ansible-galaxy install -r requirements.yml -f && ansible-playbook deploy-all.yml -u ubuntu --extra-vars @private-extra-vars.yml
+    ansible-playbook deploy-all.yml -u ubuntu --extra-vars @private-extra-vars.yml
 
 ### Post deployment checkups
 
