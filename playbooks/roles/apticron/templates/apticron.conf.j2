@@ -36,7 +36,8 @@ EMAIL="{{ email_to }}"
 # of "hostname -f" for the system name in the mails it generates. This option
 # overrides the ALL_FQDNS above.
 #
-# XXX Consider using the ansible name.
+# XXX If you are having trouble with the system names returned by `hostname -f`,
+# consider using the hostname used by the ansible inventory.
 # SYSTEM="{{ inventory_hostname }}"
 
 #
