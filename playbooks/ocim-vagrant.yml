@@ -25,3 +25,5 @@
     - name: apticron
       tags:
         - apticron
+      email_to: kahlil@opencraft.com
+      email_from: apticron@ocim.vagrant.localdomain
