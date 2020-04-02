@@ -1,4 +1,7 @@
 ---
 
-# Send email alerts here
+# Send email alerts To this address
 email_to: ops@opencraft.com 
+
+# Email alerts are sent From this address
+email_from: "apticron@{{ ansible_hostname }}"
