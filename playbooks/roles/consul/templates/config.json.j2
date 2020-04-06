@@ -18,6 +18,9 @@
     "acl_default_policy": "{{ consul_acl_default_policy }}",
     "acl_master_token": "{{ consul_acl_master_token }}",
 {% endif %}
+{% if consul_acl_token %}
+    "acl_token": "{{ consul_acl_token }}",
+{% endif %}
 {% endif %}
 {% if consul_server %}
     "bootstrap_expect": {{ consul_servers | length }},
