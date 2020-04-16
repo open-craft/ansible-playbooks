@@ -9,6 +9,11 @@ consul_server: false
 consul_ui: false
 consul_backup: false
 
+# Allows automatically generating the consul configuration of an AWS EC2 instance
+# based on its private and public IP addresses. Note that this only works on AWS and
+# a service (re)start is required to apply the configuration changes.
+consul_auto_generate_config: false
+
 consul_bin_dir: "/usr/local/bin"
 consul_config_dir: "/etc/consul"
 consul_data_dir: "/var/lib/consul"
