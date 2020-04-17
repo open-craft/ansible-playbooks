@@ -1,7 +1,7 @@
 pyenv_home: "{{ ansible_env.HOME }}"
 pyenv_root: "{{ pyenv_home }}/.pyenv"
 
-pyenv_version: 'v1.2.13'
+pyenv_version: 'v1.2.16'
 pyenv_virtualenv_version: 'v1.1.5'
 
 
@@ -10,7 +10,7 @@ pyenv_python_versions: []
 
 # Takes a list of key-value pairs of the form
 # pyenv_virtualenv_environments:
-#   - python_version: '3.6.9'
+#   - python_version: '3.6.10'
 #     virtualenv_name: 'venv'
 pyenv_virtualenv_environments: []
 

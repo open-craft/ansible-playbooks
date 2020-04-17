@@ -67,7 +67,7 @@ opencraft_root_dir: '/var/www/opencraft'
 opencraft_static_files_dir: '{{ opencraft_root_dir }}/build/static'
 opencraft_screenrc_path: '/home/ubuntu/ocim-screenrc'
 
-ocim_python_version: '3.6.9'
+ocim_python_version: '3.6.10'
 pyenv_home: "{{ www_data_home_dir }}"
 pyenv_root: "{{ pyenv_home }}/.pyenv"
 opencraft_virtualenv_name: "opencraft"
