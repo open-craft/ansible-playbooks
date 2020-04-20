@@ -10,6 +10,12 @@
     force: no
   become_user: "{{ www_user }}"
 
+- name: Set HUEY_ALWAYS_EAGER to false
+  replace:
+    path: "{{ opencraft_root_dir }}/.env"
+    regexp: "^HUEY_ALWAYS_EAGER=true$"
+    replace: "HUEY_ALWAYS_EAGER=false"
+
 - name: Install javascript dependencies
   shell: DEBIAN_FRONTEND=noninteractive make install_js_dependencies
   args:
