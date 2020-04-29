@@ -65,14 +65,14 @@
   block:
     - name: Copy the wrapper script files
       template:
-        src: "{{ item }}"
+        src: "{{ item }}.j2"
         dest: "/usr/local/sbin/{{ item }}"
         owner: root
         group: root
         mode: '755'
       with_items:
-        - run_consul.sh.j2
-        - update_consul_config.py.j2
+        - run_consul.sh
+        - update_consul_config.py
 
     - name: Ensure that the consul configuration file is group-writeable
       file:

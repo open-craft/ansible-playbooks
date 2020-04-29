@@ -32,7 +32,7 @@ def main():
     Check the current configuration file and generate a new configuration file if needed.
     """
     generate_new_config = False
-    with open('/etc/consul.d/config.json') as consul_config_file:
+    with open('{{ consul_config_dir }}/config.json') as consul_config_file:
         consul_config = json.load(consul_config_file)
         advertise_address = consul_config['advertise_addr']
         node_name = consul_config['node_name']
@@ -59,7 +59,7 @@ def main():
                 'node_name': generated_node_name,
             }
         )
-        with open('/etc/consul.d/config.json', 'w') as new_consul_config_file:
+        with open('{{ consul_config_dir }}/config.json', 'w') as new_consul_config_file:
                     json.dump(consul_config, new_consul_config_file)
 
         node_id_file = os.path.join(data_dir, 'node-id')
