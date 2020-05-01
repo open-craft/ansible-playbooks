@@ -1,7 +1,7 @@
 dependencies:
 
   - name: tarsnap
-    when: OPENCRAFT_BACKUP_SWIFT_ENABLED and www_user != 'vagrant'
+    when: OPENCRAFT_BACKUP_SWIFT_ENABLED and not devstack
 
   - name: nginx-proxy
     NGINX_PROXY_CONFIG_PATH: /etc/nginx/sites-available/ocim
@@ -11,7 +11,7 @@ dependencies:
     NGINX_PROXY_SEND_TIMEOUT: 600s
     NGINX_PROXY_READ_TIMEOUT: 600s
     NGINX_PROXY_EXTRA_CONFIG: "{{ opencraft_nginx_static_config + opencraft_nginx_websocket_config }}"
-    when: www_user != 'vagrant'
+    when: not devstack
 
   - name: pyenv
     pyenv_home: "{{ www_data_home_dir }}"

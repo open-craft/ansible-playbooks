@@ -27,14 +27,14 @@
   args:
     chdir: "{{ opencraft_root_dir }}"
 
-- name: Change directory to ~/opencraft on login
+- name: Change directory to sources on login
   blockinfile:
     path: ~/.bashrc
     marker: "# {mark} ANSIBLE MANAGED BLOCK activate_virtualenv"
     block: |
-      pyenv activate opencraft
-      cd ~/opencraft
-  become_user: vagrant
+      pyenv activate {{ opencraft_virtualenv_name }}
+      cd {{ opencraft_root_dir }}
+  become_user: "{{ www_user }}"
 
 - name: Setup Databases
   block:
@@ -43,7 +43,7 @@
         sudo -H -u root mysql mysql
 
     - name: Create Postgres user
-      shell: createuser -d vagrant
+      shell: createuser -d {{ www_user }}
       become_user: postgres
       ignore_errors: yes
 
@@ -61,4 +61,4 @@
 
     - name: Create postgres database
       command: make create_db chdir={{ opencraft_root_dir }}
-      become_user: vagrant
+      become_user: "{{ www_user }}"
