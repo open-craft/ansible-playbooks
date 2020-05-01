@@ -29,3 +29,8 @@ starts consul.
 
 If the node was already in the cluster before and its IP address or node name has changed, the wrapper script
 also cleans up the stale `node-id` file and allows the node to join the cluster as a new node.
+
+Note that the automatic consul reconfiguration works only at the service startup time. So if an elastic IP address
+was assigned/unassigned to an EC2 instance, the consul configuration will not be automatically updated till the
+service is manually restarted. If the service is not restarted, this will cause the consul cluster to think that
+the node is down as the old public IP address is still registered there and is now unreachable.
