@@ -2,6 +2,10 @@
 
 This role installs and sets up Consul to connect to a Consul cluster.
 
+## License
+
+AGPLv3
+
 ## Role Variables
 
 See `defaults/main.yml`.
