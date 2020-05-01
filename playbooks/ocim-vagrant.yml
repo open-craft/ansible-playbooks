@@ -4,6 +4,7 @@
   hosts: all
   become: true
   vars:
+    devstack: True
     www_user: vagrant
     www_group: users
     # Install the app code and data the Vagrant home directory instead of /var/www
@@ -19,4 +20,4 @@
         autoremove: yes
     - import_role:
         name: ocim
-        tasks_from: vagrant
+        tasks_from: devstack
