@@ -1,27 +1,31 @@
 # Ansible Role for Consul
 
-Description N/A
-
-## Requirements
-
-N/A
+This role installs and sets up Consul to connect to a Consul cluster.
 
 ## Role Variables
 
-N/A
+See `defaults/main.yml`.
 
 ## Dependencies
 
-None.
+This depends on the 'nginx-proxy' role in the same repository.
 
-## Example Playbook
+## Usage
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+This role usually requires the `consul_ip`, `consul_nodename` variables to be set for each host. However, in AWS,
+when EC2 instances are launched from an AMI or stopped and started, or use an elastic IP, their IP addresses will
+likely change. So to allow automatic configuration of the `consul_ip`, `consul_nodename` variables
+while generating the consul configuration, the `consul_auto_generate_config` flag can be set to a
+truthy value.
 
-    - hosts: servers
-      roles:
-        - consul
+When `consul_auto_generate_config` is set to a truthy value, a script which wraps the consul startup command is
+set up in the consul services. It determines the EC2 instance's IP addresses (private and public) and
+automatically generates the consul configuration file with the correct IP address and an appropriate,
+unique node name.
 
-## License
+The unique name is generated as '<value of consul_nodename>-<private IP address>-<public IP address>', where
+the '.' in the IP address values are replaced by '-'. After generating the correct configuration, the wrapper script
+starts consul.
 
-AGPLv3
+If the node was already in the cluster before and its IP address or node name has changed, the wrapper script
+also cleans up the stale `node-id` file and allows the node to join the cluster as a new node.
