@@ -61,6 +61,26 @@
   when: consul_service_config != ""
   notify: restart consul
 
+- name: Set up consul automatic configuration generation
+  block:
+    - name: Copy the wrapper script files
+      template:
+        src: "{{ item }}.j2"
+        dest: "/usr/local/sbin/{{ item }}"
+        owner: root
+        group: root
+        mode: '755'
+      with_items:
+        - run_consul.sh
+        - update_consul_config.py
+
+    - name: Ensure that the consul configuration file is group-writeable
+      file:
+        path: "{{ consul_config_dir }}/config.json"
+        mode: g+w
+
+  when: consul_auto_generate_config
+
 - name: Create Consul systemd service file
   template:
     src: consul.service.j2

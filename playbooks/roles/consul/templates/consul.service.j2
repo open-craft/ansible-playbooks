@@ -7,7 +7,11 @@ After=network-online.target
 User=consul
 Group=consul
 PermissionsStartOnly=true
+{% if consul_auto_generate_config %}
+ExecStart=/usr/local/sbin/run_consul.sh
+{% else %}
 ExecStart={{ consul_bin_dir }}/consul agent -config-dir {{ consul_config_dir }}
+{% endif %}
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGINT
 Restart=always
