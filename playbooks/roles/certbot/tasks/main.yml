@@ -68,3 +68,15 @@
     --agree-tos
   args:
     creates: "/etc/letsencrypt/live/{{ CERTBOT_DOMAIN_NAME }}/fullchain.pem"
+
+- name: link SSL certificate to expected location
+  file:
+    src: "/etc/letsencrypt/live/{{ CERTBOT_DOMAIN_NAME }}/{{ item.name }}.pem"
+    dest: "/etc/ssl/{{ item.dir }}/{{ item.name }}.pem"
+    state: link
+  with_items:
+    - { name: "fullchain", dir: "certs" }
+    - { name: "privkey", dir: "private" }
+  notify:
+    - reload nginx
+  when: CERTBOT_LINK_NGINX is defined and CERTBOT_LINK_NGINX == True

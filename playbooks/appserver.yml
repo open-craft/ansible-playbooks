@@ -14,3 +14,4 @@
       filebeat_elastic_apt_pin: 200
       when: filebeat_logstash_hosts | length > 0
     - role: certbot
+      when: CERTBOT_ENABLE is defined and CERTBOT_ENABLE == True
