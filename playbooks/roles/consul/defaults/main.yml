@@ -29,6 +29,8 @@ consul_acl_datacenter: "{{ consul_datacenter }}"
 consul_acl_master_token: null
 consul_acl_default_policy: allow
 consul_acl_down_policy: extend-cache
+# TODO: Deprecated in Consul 1.4.0: https://www.consul.io/docs/agent/options.html#acl_token_legacy
+consul_acl_token: null
 
 # Example:
 #
