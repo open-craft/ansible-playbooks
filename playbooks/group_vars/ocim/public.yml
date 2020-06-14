@@ -6,8 +6,8 @@ COMMON_SERVER_NO_BACKUPS: true
 
 # CERTBOT #####################################################################
 
-CERTBOT_DOMAIN_NAME: "{{ OPENCRAFT_DOMAIN_NAME }}"
-CERTBOT_ADDITIONAL_DOMAINS: []
+CERTBOT_ADDITIONAL_DOMAINS:
+  - "{{ OPENCRAFT_DOMAIN_NAME }}"
 
 # PROMETHEUS ##################################################################
 
