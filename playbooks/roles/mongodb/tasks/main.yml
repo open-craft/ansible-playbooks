@@ -78,6 +78,10 @@
     - name: Install and Upgrade MongoDB exporter
       when: ansible_local.mongodb_exporter is not defined or ansible_local.mongodb_exporter.version != MONGODB_EXPORTER_VERSION
       block:
+        - name: Create Go Path directory
+          file:
+            path: "{{ GO_PATH }}"
+            state: "directory"
         - name: Download golang
           get_url:
             url: "https://storage.googleapis.com/golang/go1.11.1.linux-amd64.tar.gz"
@@ -140,5 +144,12 @@
       copy:
         content: "{{ MONGODB_EXPORTER_CONSUL_SERVICE | to_nice_json }}"
         dest: /etc/consul/mongodb-exporter.json
-      notify:
-        - reload consul
+      notify: reload consul
+
+
+    - name: Install PIP later needed for greendayonfire.mongodb
+      apt:
+        pkg:
+          - python-dev
+          - python-pip
+          - python3-pip
