@@ -152,6 +152,5 @@
     - name: Install PIP later needed for greendayonfire.mongodb
       apt:
         pkg:
-          - python-dev
           - python-pip
           - python3-pip

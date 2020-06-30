@@ -6,7 +6,6 @@
 # port collisions.
 server {
     listen {{ CERTBOT_NGINX_LISTEN }} default_server;
-    listen [::]:{{ CERTBOT_NGINX_LISTEN }} default_server;
     server_name _;
 
     location ^~ /.well-known/acme-challenge/ {

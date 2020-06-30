@@ -20,7 +20,7 @@
 - name: apt-get update, dist-upgrade and autoremove
   apt:
     update_cache: yes
-    upgrade: yes
+    upgrade: dist
     cache_valid_time: 43200
     autoremove: yes
 
