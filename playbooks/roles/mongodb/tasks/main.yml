@@ -146,10 +146,10 @@
       copy:
         content: "{{ MONGODB_EXPORTER_CONSUL_SERVICE | to_nice_json }}"
         dest: /etc/consul/mongodb-exporter.json
-      notify: reload consul
+      notify:
+        - reload consul
 
-
-    - name: Install PIP later needed for greendayonfire.mongodb
+    - name: Install pip, it is later needed for greendayonfire.mongodb
       apt:
         pkg:
           - python-pip
