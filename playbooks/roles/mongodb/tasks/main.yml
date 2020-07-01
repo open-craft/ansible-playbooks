@@ -148,9 +148,3 @@
         dest: /etc/consul/mongodb-exporter.json
       notify:
         - reload consul
-
-    - name: Install pip, it is later needed for greendayonfire.mongodb
-      apt:
-        pkg:
-          - python-pip
-          - python3-pip
