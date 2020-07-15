@@ -135,7 +135,7 @@ backend be-{{$config.domain_slug}}
     server unscheduled-maintenance-page 127.0.0.1:{{! maintenance_unscheduled_server_port !}}
       {{- end }}
     {{- else }}
-    server preliminary-page {{! preliminary_page_server_ip !}}:80
+    server preliminary-page {{! preliminary_page_server_ip !}}:443 ssl verify required ca-file /etc/ssl/certs/ca-certificates.crt
     http-request set-header Host 'default.opencraft.com'
     {{- end }}
     {{- end }}
