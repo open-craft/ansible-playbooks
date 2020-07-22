@@ -1,0 +1,24 @@
+---
+- name: Deploy a WordPress instance using docker
+  hosts: wordpress-docker
+  become: true
+  pre_tasks:
+      # Required by the consul role.
+    - name: Ensure that unzip is installed
+      apt:
+        name: unzip
+        state: present
+        update_cache: yes
+  roles:
+    - role: docker-compose
+      tags: 'docker'
+    - role: wordpress-docker
+      tags: 'wordpress-docker'
+    - role: consul
+      when: consul_servers | length > 0
+    - role: node-exporter
+      when: NODE_EXPORTER_PASSWORD is not none
+    - role: filebeat
+      # Appservers may have some Elastic stuff already installed on them.
+      filebeat_elastic_apt_pin: 200
+      when: filebeat_logstash_hosts | length > 0
