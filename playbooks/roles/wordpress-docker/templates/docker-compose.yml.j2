@@ -1,0 +1,16 @@
+#jinja2:lstrip_blocks: True
+---
+version: "2"
+services:
+  wordpress:
+    container_name: wordpress
+    image: {{ WORDPRESS_DOCKER_FPM_CONTAINER }}
+    restart: unless-stopped
+    volumes:
+      {% for volume_mapping in WORDPRESS_DOCKER_VOLUMES %}
+      - {{ volume_mapping }}
+      {% endfor %}
+    env_file:
+      - {{ WORDPRESS_DOCKER_COMPOSE_ENV_FILE }}
+    ports:
+      - 9000:9000
