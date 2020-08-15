@@ -18,9 +18,9 @@ dependencies:
     tags: 'tarsnap'
     when: not COMMON_SERVER_NO_BACKUPS
 
-  - name: certbot
-    tags: 'certbot'
-    when: COMMON_SERVER_INSTALL_CERTBOT
+  # - name: certbot
+  #   tags: 'certbot'
+  #   when: COMMON_SERVER_INSTALL_CERTBOT
 
   - name: consul
     tags: 'consul'
@@ -30,10 +30,10 @@ dependencies:
     tags: 'node-exporter'
     when: COMMON_SERVER_INSTALL_NODE_EXPORTER
 
-  - name: forward-server-mail
-    tags: 'forward-server-mail'
-    when: COMMON_SERVER_INSTALL_POSTFIX
+  # - name: forward-server-mail
+  #   tags: 'forward-server-mail'
+  #   when: COMMON_SERVER_INSTALL_POSTFIX
 
-  - name: filebeat
-    tags: 'filebeat'
-    when: COMMON_SERVER_INSTALL_FILEBEAT
+  # - name: filebeat
+  #   tags: 'filebeat'
+  #   when: COMMON_SERVER_INSTALL_FILEBEAT

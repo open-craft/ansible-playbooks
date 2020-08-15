@@ -8,5 +8,5 @@
   copy:
     content: "{{ NODE_EXPORTER_CONSUL_SERVICE | to_nice_json }}"
     dest: /etc/consul/node-exporter.json
-  notify:
-    - reload consul
+  # notify:
+  #   - reload consul

@@ -18,7 +18,7 @@ NGINX_PROXY_LOG_PATH_PREFIX: "/var/log/nginx/{{ NGINX_PROXY_PUBLIC_PORT }}{{ NGI
 NGINX_PROXY_ACCESS_LOG: "{{ NGINX_PROXY_LOG_PATH_PREFIX }}_access.log"
 NGINX_PROXY_ERROR_LOG: "{{ NGINX_PROXY_LOG_PATH_PREFIX }}_error.log"
 
-NGINX_PROXY_USE_SSL: true
+NGINX_PROXY_USE_SSL: false
 NGINX_PROXY_SSL_CERT: "/etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem"
 NGINX_PROXY_SSL_KEY: "/etc/letsencrypt/live/{{ inventory_hostname }}/privkey.pem"
 

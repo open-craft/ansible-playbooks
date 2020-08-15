@@ -8,8 +8,8 @@
     - role: common-server
       tags: 'common-server'
 
-    - role: load-balancer-v2
-      tags: 'load-balancer-v2'
+    # - role: load-balancer-v2
+    #   tags: 'load-balancer-v2'
 
-    - role: node-exporter
-      tags: 'node-exporter'
+    # - role: node-exporter
+    #   tags: 'node-exporter'
