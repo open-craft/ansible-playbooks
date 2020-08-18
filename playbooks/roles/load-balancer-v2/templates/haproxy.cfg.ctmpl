@@ -101,16 +101,16 @@ backend error
 # or unscheduled maintenance. The instructions for how to activate them can be
 # found here: https://gitlab.com/opencraft/documentation/private/blob/master/ops/incidents.md
 backend scheduled-maintenance
-    http-response redirect location / unless { capture.req.uri / }
+    http-response redirect location / code 307 unless { capture.req.uri / }
     server scheduled-maintenance-page 127.0.0.1:{{! maintenance_scheduled_server_port !}}
 
 backend unscheduled-maintenance
-    http-response redirect location / unless { capture.req.uri / }
+    http-response redirect location / code 307 unless { capture.req.uri / }
     server unscheduled-maintenance-page 127.0.0.1:{{! maintenance_unscheduled_server_port !}}
 
 # This backend can be used when an instance is being provisioned
 backend provisioning
-    http-response redirect location / unless { capture.req.uri / }
+    http-response redirect location / code 307 unless { capture.req.uri / }
     server provisioning-page 127.0.0.1:{{! maintenance_provisioning_server_port !}}
 
 {{- $prefix := "/ocim/instances" }}
