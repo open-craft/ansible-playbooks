@@ -191,6 +191,9 @@
     path: "/etc/letsencrypt/live/{{ CERTBOT_DOMAIN_NAME }}/fullchain.pem"
   register: lb_cert_p
 
+- import_tasks: maintenance.yml
+  tags: 'site-is-down'
+
 - name: Bootstrap the local certificate
   block:
     - name: Find config files that will stop nginx from reloading
@@ -219,9 +222,6 @@
   notify:
     - reload nginx
   when: lb_cert_p.stat.exists == False
-
-- import_tasks: maintenance.yml
-  tags: 'site-is-down'
 
 - import_tasks: exporter.yml
   when: haproxy_exporter_enabled
