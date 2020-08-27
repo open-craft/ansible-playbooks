@@ -25,6 +25,18 @@
     - ssl-cert
     - jq
 
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+  with_items:
+    - "/etc/haproxy/certs"
+    - "/etc/haproxy/certs/ocim"
+    - "/etc/haproxy/conf.d"
+    - "/etc/haproxy/backends"
+    - "/etc/letsencrypt/live"
+
 - name: Copy over Go templates for generating HAProxy configuration files
   # The ctmpl files use `{{` and `}}` as Go template start- and end- strings.
   # So for Jinja2 rendering we'll use `!` next to the original delimiters.
@@ -162,18 +174,6 @@
     minute: 42
     cron_file: letsencrypt-renew
     user: root
-
-- name: Create directories
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: "0700"
-  with_items:
-    - "/etc/haproxy/certs"
-    - "/etc/haproxy/certs/ocim"
-    - "/etc/haproxy/conf.d"
-    - "/etc/haproxy/backends"
-    - "/etc/letsencrypt/live"
 
 - name: Enable and start the services
   systemd:
