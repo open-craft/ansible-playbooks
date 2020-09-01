@@ -25,6 +25,18 @@
     - ssl-cert
     - jq
 
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+  with_items:
+    - "/etc/haproxy/certs"
+    - "/etc/haproxy/certs/ocim"
+    - "/etc/haproxy/conf.d"
+    - "/etc/haproxy/backends"
+    - "/etc/letsencrypt/live"
+
 - name: Copy over Go templates for generating HAProxy configuration files
   # The ctmpl files use `{{` and `}}` as Go template start- and end- strings.
   # So for Jinja2 rendering we'll use `!` next to the original delimiters.
@@ -163,18 +175,6 @@
     cron_file: letsencrypt-renew
     user: root
 
-- name: Create directories
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: "0700"
-  with_items:
-    - "/etc/haproxy/certs"
-    - "/etc/haproxy/certs/ocim"
-    - "/etc/haproxy/conf.d"
-    - "/etc/haproxy/backends"
-    - "/etc/letsencrypt/live"
-
 - name: Enable and start the services
   systemd:
     daemon_reload: yes
@@ -190,6 +190,9 @@
   stat:
     path: "/etc/letsencrypt/live/{{ CERTBOT_DOMAIN_NAME }}/fullchain.pem"
   register: lb_cert_p
+
+- import_tasks: maintenance.yml
+  tags: 'site-is-down'
 
 - name: Bootstrap the local certificate
   block:
@@ -219,9 +222,6 @@
   notify:
     - reload nginx
   when: lb_cert_p.stat.exists == False
-
-- import_tasks: maintenance.yml
-  tags: 'site-is-down'
 
 - import_tasks: exporter.yml
   when: haproxy_exporter_enabled
