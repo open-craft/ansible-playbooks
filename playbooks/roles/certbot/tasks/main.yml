@@ -29,14 +29,21 @@
     port: 80
     proto: tcp
 
-- name: add certbot PPA
-  apt_repository:
-    repo: ppa:certbot/certbot
-
-- name: install certbot apt package
+- name: Remove certbot apt package if installed
   apt:
-    update_cache: yes
-    name: python-certbot-nginx
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - python-certbot-nginx
+    - certbot
+
+- name: Install snapd
+  apt:
+    name: snapd
+
+# TODO: We should switch to the snap ansible module after we upgrade to Ansible 2.8 or newer.
+- name: Install certbot snap
+  command: snap install certbot --classic
 
 - name: Create Certbot webroot directory
   file:
