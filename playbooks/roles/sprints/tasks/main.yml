@@ -8,14 +8,6 @@
     - 80
     - 443
 
-# For some reason this service wasn't started after running playbooks.
-- name: Enable and start node-exporter systemd service to start on boot automatically
-  systemd:
-    name: nodeexporter.service
-    enabled: yes
-    state: started
-    daemon_reload: yes
-
 - name: Set authorized key for CircleCI
   authorized_key:
     user: ubuntu
