@@ -10,3 +10,10 @@
     dest: /etc/consul/node-exporter.json
   notify:
     - reload consul
+
+- name: enable nodeexporter
+  systemd:
+    name: nodeexporter.service
+    enabled: yes
+    state: started
+    daemon_reload: yes
