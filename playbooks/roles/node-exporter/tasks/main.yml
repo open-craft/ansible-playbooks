@@ -11,9 +11,6 @@
   notify:
     - reload consul
 
-- name: flush handlers
-  meta: flush_handlers
-
 - name: enable nodeexporter
   systemd:
     name: nodeexporter.service
