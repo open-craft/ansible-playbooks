@@ -19,4 +19,5 @@ consul watch -type=keyprefix -prefix={{ cert_manager_consul_watch_prefix }} \
              --webroot-path {{ cert_manager_webroot_path }} \
              --consul-ocim-prefix {{ cert_manager_consul_ocim_prefix }} \
              --consul-certs-prefix {{ cert_manager_consul_certs_prefix }} \
+             {% if cert_manager_failure_alert_email %}--failure-alert-email {{ cert_manager_failure_alert_email }} \{% endif %}
              --dns-delay {{ cert_manager_dns_delay }}"
