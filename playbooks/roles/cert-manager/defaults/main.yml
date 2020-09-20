@@ -14,5 +14,7 @@ cert_manager_consul_certs_prefix: "ocim/certs"
 cert_manager_consul_watch_prefix: "ocim/instances"
 cert_manager_consul_lock_prefix: "lock/ocim"
 
+cert_manager_failure_alert_email: ''
+
 cert_manager_watch_delay: 120
 cert_manager_dns_delay: 60
