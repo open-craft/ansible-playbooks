@@ -31,3 +31,6 @@
 [submodule "playbooks/roles/geerlingguy.php-versions"]
 	path = playbooks/roles/geerlingguy.php-versions
 	url = https://github.com/geerlingguy/ansible-role-php-versions
+[submodule "playbooks/roles/prometheus_redis_exporter_role"]
+	path = playbooks/roles/prometheus_redis_exporter_role
+	url = https://github.com/idealista/prometheus_redis_exporter_role

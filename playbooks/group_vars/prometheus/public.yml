@@ -35,6 +35,9 @@ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD: 80
 PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD: 1
 PROMETHEUS_ALERT_HTTP_RESPONSE_FRONTEND_ERROR_THRESHOLD: 70
 
+OCIM_QUEUE_REDIS_KEY: null
+PROMETHEUS_ALERT_OCIM_QUEUE_SIZE_THRESHOLD: null
+
 prometheus_rules:
   - name: NodeRules
     rules:
@@ -161,7 +164,17 @@ prometheus_rules:
       annotations:
         summary: "MongoDB instance [[ $labels.node ]] ([[ $labels.instance ]]) down."
         description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] is down."
-
+  - name: "OcimQueueSizeRule"
+    rules:
+    - alert: "ocim_queue_too_big"
+      expr: 'redis_key_size{key="{{ OCIM_QUEUE_REDIS_KEY }}"} > {{ PROMETHEUS_ALERT_OCIM_QUEUE_SIZE_THRESHOLD }}'
+      for: "0s"
+      labels:
+        severity: "critical"
+        environment: "[[ $labels.environment ]]"
+      annotations:
+        summary: "Ocim queue overloaded."
+        description: "Ocim queue overloaded."
 # ALERT MANAGER ################################################################
 
 prometheus_alert_manager_web__listen_address: "127.0.0.1:9093"
