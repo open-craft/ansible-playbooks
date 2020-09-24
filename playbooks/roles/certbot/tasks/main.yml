@@ -29,6 +29,8 @@
     port: 80
     proto: tcp
 
+# Certbot apt packages are outdated and no longer officially supported by certbot.
+# The oficially supported installation method is via snap.
 - name: Remove certbot apt package if installed
   apt:
     name: "{{ item }}"
@@ -84,7 +86,7 @@
   cron:
     name: MAILTO
     env: yes
-    job: '{{ CERTBOT_OPS_EMAIL }}'
+    job: '{{ CERTBOT_RENEW_OPS_EMAIL }}'
     user: root
     cron_file: certbot-renew
 
