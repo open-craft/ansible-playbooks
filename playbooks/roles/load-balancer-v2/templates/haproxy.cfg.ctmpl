@@ -119,6 +119,7 @@ backend provisioning
   {{- with $config := .Value | parseJSON }}
     {{- if $config }}
     {{ $health_check := $config.health_checks_enabled }}
+    {{- if $config.active_app_servers }}
 # Backend configuration for {{ $config.domain }}
 backend be-{{$config.domain_slug}}
     cookie openedx-backend insert postonly indirect
@@ -134,9 +135,7 @@ backend be-{{$config.domain_slug}}
     http-response redirect location / unless { capture.req.uri / }
     server unscheduled-maintenance-page 127.0.0.1:{{! maintenance_unscheduled_server_port !}}
       {{- end }}
-    {{- else }}
-    server preliminary-page {{! preliminary_page_server_ip !}}:443 ssl verify required ca-file /etc/ssl/certs/ca-certificates.crt
-    http-request set-header Host 'default.opencraft.com'
+    {{- end }}
     {{- end }}
     {{- end }}
   {{- end }}
