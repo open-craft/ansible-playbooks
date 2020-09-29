@@ -154,26 +154,11 @@
     - "stage/*.pem"
   when: inventory_hostname in groups['load-balancer-v2-stage']
 
-- name: Ensure HAProxy picks up conf.d rules 
+- name: Ensure HAProxy picks up conf.d rules
   lineinfile:
     path: /etc/default/haproxy
     line: EXTRAOPTS="-f /etc/haproxy/conf.d"
     create: yes
-
-- name: Set up cron job for the load balancer certificate
-  # To renew periodically. Let's Encrypt certs expire every 3 months.
-  # https://certbot.eff.org/docs/using.html#certbot-command-line-options
-  cron:
-    name: "Renew LB certificate using the certbot client"
-    # We shouldn't need to pass any parameters to "certbot renew", since it
-    # reuses the parameters used when a certificate was issued for the last time.
-    # However, not passing in the port results in letsencrypt complaining about
-    # port 443 being in use.  (Seems to be a bug in certbot.)
-    job: certbot renew --preferred-challenges http-01 --http-01-port 8080 -q
-    hour: "*/12"
-    minute: 42
-    cron_file: letsencrypt-renew
-    user: root
 
 - name: Enable and start the services
   systemd:
