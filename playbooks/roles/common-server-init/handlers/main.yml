@@ -2,7 +2,12 @@
 
 - name: restart networking
   service:
-    name: networking
+    name: >-
+      {%- if ansible_distribution == "Ubuntu" and ansible_distribution_release == "bionic" -%}
+      systemd-networkd
+      {%- else -%}
+      networking
+      {%- endif %}
     state: restarted
 
 - name: reload nginx

@@ -6,7 +6,7 @@ COMMON_SERVER_INSTALL_SANITY_CHECKER: false
 
 # ELASTICSEARCH ###############################################################
 
-elasticsearch_repo: "deb https://artifacts.elastic.co/packages/6.x/apt stable main"
+elasticsearch_repo: "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
 elasticsearch_data_dir: /var/lib/elasticsearch
 elasticsearch_cfg_dir: /etc/elasticsearch
 
