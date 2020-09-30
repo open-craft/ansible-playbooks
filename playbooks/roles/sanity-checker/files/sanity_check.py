@@ -100,7 +100,7 @@ def get_dev_mounts():
         mount = Mount(parts[1], parts[0])
         if mount.device.startswith("/dev"):
             # /dev/loopX devices are mounted images that are expected to be 100% full,
-            # so we don't want to monitor those. Snopd uses these extensively.
+            # so we don't want to monitor those. Snapd uses these extensively.
             if not mount.device.startswith("/dev/loop"):
                 results.append(mount)
     return results
