@@ -117,9 +117,8 @@ backend provisioning
 {{- /* Print config in the form of a single K/V value. */ -}}
 {{- range ls $prefix }}
   {{- with $config := .Value | parseJSON }}
-    {{- if $config }}
+    {{- if and $config $config.active_app_servers }}
     {{ $health_check := $config.health_checks_enabled }}
-    {{- if $config.active_app_servers }}
 # Backend configuration for {{ $config.domain }}
 backend be-{{$config.domain_slug}}
     cookie openedx-backend insert postonly indirect
@@ -135,7 +134,6 @@ backend be-{{$config.domain_slug}}
     http-response redirect location / unless { capture.req.uri / }
     server unscheduled-maintenance-page 127.0.0.1:{{! maintenance_unscheduled_server_port !}}
       {{- end }}
-    {{- end }}
     {{- end }}
     {{- end }}
   {{- end }}
