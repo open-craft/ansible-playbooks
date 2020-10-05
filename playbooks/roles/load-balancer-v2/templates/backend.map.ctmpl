@@ -6,7 +6,11 @@
   {{- with $config := .Value | parseJSON }}
     {{- if $config }}
       {{- range $lb_domain := $config.domains }}
+        {{- if $config.active_app_servers }}
 {{ $lb_domain }} be-{{ $config.domain_slug }}
+        {{- else }}
+{{ $lb_domain }} provisioning
+        {{- end }}
       {{- end }}
     {{- end}}
   {{- end }}
