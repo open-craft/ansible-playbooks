@@ -40,19 +40,15 @@ MYSQL_EXPORTER_CONSUL_SERVICE:
     port: 19104
     enable_tag_override: true
 
+# MySQL Binaries for pinning to version 5.6.35 #########################################
 MYSQL_URLS:
   - name: libmysqlclient
     url: http://snapshot.debian.org/archive/debian/20170120T212942Z/pool/main/m/mysql-5.6/libmysqlclient18_5.6.35-1_amd64.deb
-    dest: /tmp/install_mysql/
   - name: MySQL Client Core
     url: http://snapshot.debian.org/archive/debian/20170120T212942Z/pool/main/m/mysql-5.6/mysql-client-core-5.6_5.6.35-1_amd64.deb
-    dest: /tmp/install_mysql/
   - name: MySQL Client
     url: http://snapshot.debian.org/archive/debian/20170120T212942Z/pool/main/m/mysql-5.6/mysql-client-5.6_5.6.35-1_amd64.deb
-    dest: /tmp/install_mysql/
   - name: MySQL Server Core
     url: http://snapshot.debian.org/archive/debian/20170120T212942Z/pool/main/m/mysql-5.6/mysql-server-core-5.6_5.6.35-1_amd64.deb 
-    dest: /tmp/install_mysql/
   - name: MySQL Server
     url: http://snapshot.debian.org/archive/debian/20170120T212942Z/pool/main/m/mysql-5.6/mysql-server-5.6_5.6.35-1_amd64.deb
-    dest: /tmp/install_mysql/

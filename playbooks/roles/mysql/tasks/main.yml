@@ -1,16 +1,4 @@
 ---
-- name: Create a directory for mysql binaries
-  file:
-    path: /tmp/install_mysql
-    state: directory
-
-- name: Download MySQL binaries from debian
-  get_url:
-    url: "{{item.url}}"
-    dest: "{{item.dest}}"
-  with_items:
-    - "{{MYSQL_URLS}}"
-
 # This task can be removed once we move to the latest version of the geerlingguy.mysql role.  The
 # version we are currently using only installs the Python2 version of python-mysqldb.
 - name: Install python3-mysqldb package

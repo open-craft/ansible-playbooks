@@ -11,8 +11,6 @@ mysql_skip_name_resolve: true
 mysql_packages:
   - mysql-server-5.6
   - mysql-client-5.6
-# Incase test has to be done on a small machine
-# mysql_innodb_buffer_pool_size: 20M
 
 MYSQL_EXPORTER_PASSWORD: "{{ NODE_EXPORTER_PASSWORD }}"
 
