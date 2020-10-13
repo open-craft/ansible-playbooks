@@ -9,8 +9,8 @@ mysql_table_open_cache: 200000
 mysql_wait_timeout: 300
 mysql_skip_name_resolve: true
 mysql_packages:
-  - mysql-server-5.5
-  - mysql-client-5.5
+  - mysql-server-5.6
+  - mysql-client-5.6
 
 MYSQL_EXPORTER_PASSWORD: "{{ NODE_EXPORTER_PASSWORD }}"
 
