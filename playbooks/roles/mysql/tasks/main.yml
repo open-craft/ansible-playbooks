@@ -1,10 +1,15 @@
 ---
+- name: Create a directory for mysql binaries
+  file:
+    path: /tmp/install_mysql
+    state: directory
 
-# edX is currently using MySQL 5.6, which is not available on Xenial by default.
-- name: Add PPA for MySQL 5.6
-  apt_repository:
-    repo: "deb http://archive.ubuntu.com/ubuntu trusty universe"
-    update_cache: yes
+- name: Download MySQL binaries from debian
+  get_url:
+    url: "{{item.url}}"
+    dest: "{{item.dest}}"
+  with_items:
+    - "{{MYSQL_URLS}}"
 
 # This task can be removed once we move to the latest version of the geerlingguy.mysql role.  The
 # version we are currently using only installs the Python2 version of python-mysqldb.
@@ -120,3 +125,10 @@
         dest: /etc/consul/mysqld-exporter.json
       notify:
         - reload consul
+
+- name: Install MySQL binaries from debian
+  apt:
+    deb: "{{item.url}}"
+    state: present
+  with_items:
+    - "{{MYSQL_URLS}}"
