@@ -7,3 +7,8 @@ kibana_data_dir: /var/lib/kibana
 
 kibana_basic_auth_username: kibana
 kibana_basic_auth_password: null
+
+kibana_elasticsearch_password: null
+kibana_encryption_key: null
+
+elasticsearch_ca: null

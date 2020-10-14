@@ -19,3 +19,6 @@
 
     - role: curator
       tags: 'curator'
+
+    - role: kibana-email-alert
+      tags: 'kibana-email-alert'
