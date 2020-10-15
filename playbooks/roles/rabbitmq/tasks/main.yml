@@ -163,23 +163,10 @@
     user: guest
     state: absent
 
-- name: add rabbitmq vhost
-  rabbitmq_vhost:
-    name: "{{ RABBITMQ_VHOST }}"
-    node: "rabbit@{{ RABBITMQ_HOSTNAME }}"
-    state: present
-
-- name: create rabbitmq user
-  rabbitmq_user:
-    user: "{{ RABBITMQ_USER }}"
-    password: "{{ RABBITMQ_PASS }}"
-    vhost: "{{ RABBITMQ_VHOST }}"
-    state: present
-
+# TODO: what is this used for?
 - name: ensure vhost /test is present
   rabbitmq_vhost:
     name: /test
-    node: "rabbit@{{ RABBITMQ_HOSTNAME }}"
     state: present
 
 - name: ensure newrelic rabbitmq monitoring is present
