@@ -163,21 +163,32 @@
     user: guest
     state: absent
 
-- name: add rabbitmq vhost
-  rabbitmq_vhost:
-    name: "{{ RABBITMQ_VHOST }}"
-    node: "rabbit@{{ RABBITMQ_HOSTNAME }}"
-    state: present
-
-- name: create rabbitmq user
-  rabbitmq_user:
-    user: "{{ RABBITMQ_USER }}"
-    password: "{{ RABBITMQ_PASS }}"
-    vhost: "{{ RABBITMQ_VHOST }}"
-    state: present
-
+# TODO: what is this used for?
 - name: ensure vhost /test is present
   rabbitmq_vhost:
     name: /test
-    node: "rabbit@{{ RABBITMQ_HOSTNAME }}"
     state: present
+
+- name: ensure newrelic rabbitmq monitoring is present
+  apt:
+    pkg: "nri-rabbitmq"
+    state: present
+  register: rabbit_newrelic
+  tags:
+    - rabbitmq-newrelic
+
+- name: ensure /etc/newrelic-infra/integrations.d/rabbitmq-config.yml is present
+  template:
+    src: rabbitmq-config-newrelic-infra.yml.j2
+    dest: "/etc/newrelic-infra/integrations.d/rabbitmq-config.yml"
+  register: rabbit_newrelic_config
+  tags:
+    - rabbitmq-newrelic
+
+- name: restart newrelic-infra if changed
+  systemd:
+    name: newrelic-infra
+    state: restarted
+  when: rabbit_newrelic.changed or rabbit_newrelic_config.changed
+  tags:
+    - rabbitmq-newrelic
