@@ -11,12 +11,25 @@ The `.env` file, used by docker-compose is generated from `CUSTOM_ENV_TOKENS`.
 Please set variables with `set-me-please` (and others, according to your needs) before performing the deployment.
 The environment variables are described [here][2].
 
-## TODO
-- The way of obtaining Let's encrypt certificate by `common-server` role is handled in a hacky way here.
-  We're stopping the Docker containers that are occupying port 80 and 443 to retrieve the certificate.
-  It might be good to set up server-side proxy pointing to the locally-used Docker ports.
-  We should also remember here that Let's Encrypt is set up in Docker with Traefik at the moment.
-- Set up `traefik-exporter` or find another way of exporting service metrics. 
+### Disk space usage
+If you are planning to deploy this on an instance with its root partition size of total 10GB (or less),
+you should consider moving the Docker data to an external volume, because overlay2 takes a significant amount of space
+in such case. To do this on an existing instance, use the following approach:
+1. Create new volume (e.g. with 40GB).
+1. Add new volume to `/etc/fstab` and mount it.
+1. Copy Docker data to the new volume (we are using `/mnt/volume` in this example):
+   ```bash
+   systemctl stop docker.service
+   
+   echo -e '{\n    "graph": "/mnt/volume/docker\n}' > /etc/docker/daemon.json
+   
+   rsync -a --sparse --progress /var/lib/docker /mnt/volume/
+   mv /var/lib/docker /var/lib/docker_old  # Backup (just in case).
+   
+   systemctl start docker.service  # Ensure that everything works correctly now.
+   
+   rm -r /var/lib/docker  # Remove backup.
+   ```
 
 [1]: https://github.com/open-craft/sprints
 [2]: https://github.com/open-craft/sprints/blob/master/config/settings/base.py
