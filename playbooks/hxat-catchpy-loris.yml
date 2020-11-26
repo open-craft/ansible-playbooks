@@ -4,7 +4,7 @@
 # Apply common configuration to all hosts
 
 - hosts: catchpy:hxat:loris
-  
+  become: true
   roles:
     # The recommended configuration for these tools involved using apache2.
     # Our common-server role includes common-server-init, which installs nginx and can conflict with apache2.
@@ -12,6 +12,8 @@
     # For now, instead of using common-server we manually add the features we need, e.g. tarsnap for backups
     # The common-apache2 role also installs certbot
     - role: common-apache2
+  tags:
+    - common
 
 # Configure and deploy catchpy servers.
 - hosts: catchpy
@@ -45,13 +47,11 @@
 
 # Configure and deploy loris servers.
 - hosts: loris
-
   roles:
     # loris DB/images not backed up with tarsnap since no courses use image annotations yet
 
     - role: loris
       vars:
         ansible_python_interpreter: /usr/bin/python2
-  
   tags:
     - loris
