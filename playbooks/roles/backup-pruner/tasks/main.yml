@@ -6,12 +6,9 @@
 
 - name: create dirs
   file:
-    name: "{{ item }}"
+    name: /etc/tarsnap
     mode: 0700
     state: directory
-  with_items:
-    - /etc/tarsnap
-    - /var/cache
 
 # Note: tarsnapper requires keys to end with a newline
 # which are stripped from ansible variables.
