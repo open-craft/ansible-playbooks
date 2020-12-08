@@ -136,3 +136,17 @@
         state: touch
         owner: mattermost
         group: mattermost
+
+    - name: cleanup old Mattermost installer files from /tmp
+      shell: find /tmp -maxdepth 1 -name 'mattermost-autolink*.tar.gz' | sort | head -n -2
+      register: old_mm_autolink
+      shell: find /tmp -maxdepth 1 -name 'mattermost-team*.tar.gz' | sort | head -n -2
+      register: old_mm_team
+      file:
+        path: "{{ item }}"
+        state: absent
+        with_items:
+          - old_mm_autolink
+          - old_mm_team
+      tags:
+        - cleanup_tmp
