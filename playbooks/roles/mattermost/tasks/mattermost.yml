@@ -137,16 +137,38 @@
         owner: mattermost
         group: mattermost
 
-    - name: cleanup old Mattermost installer files from /tmp
-      shell: find /tmp -maxdepth 1 -name 'mattermost-autolink*.tar.gz' | sort | head -n -2
-      register: old_mm_autolink
-      shell: find /tmp -maxdepth 1 -name 'mattermost-team*.tar.gz' | sort | head -n -2
-      register: old_mm_team
+    - name: find old Mattermost installer files in /tmp
+      find:
+        paths: /tmp
+        patterns: "mattermost-autolink*.tar.gz"
+        recurse: no
+        register: all_mm_autolink
+      find:
+        paths: /tmp
+        patterns: "mattermost-team*.tar.gz"
+        recurse: no
+        register: all_mm_team
+      tags:
+        - cleanup_tmp
+
+    - name: select all but the latest 2 installers for cleanup
+      set_fact:
+        num_autolink_found: "{{ all_mm_autolink.matched }}"
+      set_fact:
+        num_team_found: "{{ all_mm_team.matched }}"
+      set_fact:
+        autolink_delete: "{{ all_mm_autolink | sort(attribute='ctime')[:num_autolink_found-2] }}"
+      set_fact:
+        team_delete: "{{ all_mm_team | sort(attribute='ctime')[:num_team_found-2] }}"
+      tags:
+        - cleanup_tmp
+
+    - name: perform tmp cleanup of old installer files
       file:
         path: "{{ item }}"
         state: absent
         with_items:
-          - old_mm_autolink
-          - old_mm_team
+          - autolink_delete.files
+          - team_delete.files
       tags:
         - cleanup_tmp
