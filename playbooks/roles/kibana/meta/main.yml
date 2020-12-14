@@ -5,5 +5,3 @@ dependencies:
     NGINX_PROXY_CONFIG_PATH: /etc/nginx/sites-available/kibana
     NGINX_PROXY_PUBLIC_PORT: 443
     NGINX_PROXY_INTERNAL_PORT: 5601
-    NGINX_PROXY_USERNAME: "{{ kibana_basic_auth_username }}"
-    NGINX_PROXY_PASSWORD: "{{ kibana_basic_auth_password }}"

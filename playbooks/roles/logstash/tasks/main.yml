@@ -29,6 +29,14 @@
   no_log: true
   notify: restart logstash
 
+- name: Install Elasticsearch Certificates
+  copy:
+    content: "{{ elasticsearch_ca }}"
+    dest: "{{ logstash_config_dir }}/elasticsearch-ca.pem"
+    owner: logstash
+    group: logstash
+    mode: 0640
+
 - name: Configure Logstash
   template:
     src: logstash.conf.j2

@@ -1,7 +1,10 @@
 ---
 
 logstash_elasticsearch_hosts:
-  - http://localhost:9200
+  - https://localhost:9200
+
+logstash_elasticsearch_user: logstash_system
+logstash_elasticsearch_password: null
 
 logstash_ca_cert: ""
 logstash_cert: ""

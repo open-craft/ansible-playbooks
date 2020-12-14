@@ -2,6 +2,22 @@
 
 An Ansible Role that installs Elasticsearch on Debian/Ubuntu.
 
+## Important
+If Elasticsearch is already installed in a server then ``Set bootstrap password`` will do nothing. But this is required to set up passwords for other build-in users like ``kibana_system``.
+
+Therefore you need to create a new superuser in elasticsearch. Run the following command to add a new superuser -
+```
+/usr/share/elasticsearch/bin/elasticsearch-users useradd <USERNAME> -p <PASSWORD> -r superuserr
+```
+
+Then to change the password for ``kibana_system`` user following curl request -
+```
+curl -k -v https://127.0.0.1:9200/_security/user/kibana_system/_password -X POST -d '{"password": "<kibana_elasticsearch_password>"}' -H 'Content-Type: application/json' -u <SUPER-USER>:<SUPER-USER-PASSWORD>
+```
+You will find ``kibana_elasticsearch_password`` in the ansible secrets repository.
+
+Replace ``<SUPER-USER>`` and ``<SUPER-USER-PASSWORD>`` with newly created super user's ``username`` and ``password`` accordingly.
+
 ## Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
