@@ -136,3 +136,42 @@
         state: touch
         owner: mattermost
         group: mattermost
+
+- name: cleanup old Mattermost installer files to save disk space
+  block:
+    - name: find old Mattermost autolink installer files in /tmp
+      find:
+        path: /tmp
+        pattern: 'mattermost-autolink.+\.tar\.gz'
+        recurse: no
+        use_regex: yes
+      register: all_mm_autolink
+      tags:
+        - cleanup_tmp
+      
+    - name: find old Mattermost team installer files in /tmp
+      find:
+        path: /tmp
+        pattern: 'mattermost-team.+\.tar\.gz'
+        recurse: no
+        use_regex: yes
+      register: all_mm_team
+      tags:
+        - cleanup_tmp
+
+    - name: select all but the latest 2 installers for cleanup
+      set_fact:
+        autolink_delete: "{{ (all_mm_autolink.files|sort(attribute='mtime')|map(attribute='path')|list)[:all_mm_autolink.matched-2] }}"
+        team_delete: "{{ (all_mm_team.files|sort(attribute='mtime')|map(attribute='path')|list)[:all_mm_team.matched-2] }}"
+      tags:
+        - cleanup_tmp
+
+    - name: perform tmp cleanup of old installer files
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ autolink_delete }}"
+        - "{{ team_delete }}"
+      tags:
+        - cleanup_tmp
