@@ -2,7 +2,7 @@ version: '3'
 
 services:
   django: &django
-    image: registry.gitlab.com/opencraft/dev/crafty-bot:crafty-django
+    image: registry.gitlab.com/opencraft/dev/crafty-bot:django-latest
     depends_on:
       - redis
     env_file:
@@ -18,19 +18,19 @@ services:
 
   celeryworker:
     <<: *django
-    image: registry.gitlab.com/opencraft/dev/crafty-bot:crafty-celeryworker
+    image: registry.gitlab.com/opencraft/dev/crafty-bot:celeryworker-latest
     ports: []
     command: /start-celeryworker
 
   celerybeat:
     <<: *django
-    image: registry.gitlab.com/opencraft/dev/crafty-bot:crafty-celerybeat
+    image: registry.gitlab.com/opencraft/dev/crafty-bot:celerybeat-latest
     ports: []
     command: /start-celerybeat
 
   flower:
     <<: *django
-    image: registry.gitlab.com/opencraft/dev/crafty-bot:crafty-flower
+    image: registry.gitlab.com/opencraft/dev/crafty-bot:flower-latest
     ports:
       - "5555:5555"
     command: /start-flower
