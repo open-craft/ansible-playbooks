@@ -4,7 +4,6 @@ services:
   django: &django
     image: registry.gitlab.com/opencraft/dev/crafty-bot:crafty-django
     depends_on:
-      - postgres
       - redis
     env_file:
       - .env
