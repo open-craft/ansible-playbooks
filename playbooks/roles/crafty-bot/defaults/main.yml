@@ -1,0 +1,75 @@
+---
+APP_PATH: '/crafty'
+
+USE_SSL: true
+CRAFTY_NGINX_CONFIG_PATH: /etc/nginx/sites-available/crafty
+
+CI_SSH_PUBLIC_KEY: 'your-CI-key'
+
+API_HOSTNAME: "backend.server"
+
+# Settings for Crafty Bot. See crafty_bot/config/settings/ for details.
+ENV_TOKENS:
+  # General
+  # ------------------------------------------------------------------------------
+  # DJANGO_READ_DOT_ENV_FILE: True
+  DJANGO_SETTINGS_MODULE: config.settings.production
+  DJANGO_SECRET_KEY: set-me-please
+  DJANGO_ADMIN_URL: admin/
+  DJANGO_ALLOWED_HOSTS: .crafty.opencraft.com
+
+  # Security
+  # ------------------------------------------------------------------------------
+  # TIP: better off using DNS, however, redirect is OK too
+  DJANGO_SECURE_SSL_REDIRECT: False
+
+  # Email
+  # ------------------------------------------------------------------------------
+  DJANGO_SERVER_EMAIL: 
+
+  # AWS
+  # ------------------------------------------------------------------------------
+  DJANGO_AWS_ACCESS_KEY_ID: 
+  DJANGO_AWS_SECRET_ACCESS_KEY: 
+  DJANGO_AWS_STORAGE_BUCKET_NAME: 
+
+  # django-allauth
+  # ------------------------------------------------------------------------------
+  DJANGO_ACCOUNT_ALLOW_REGISTRATION: False
+
+  # Gunicorn
+  # ------------------------------------------------------------------------------
+  WEB_CONCURRENCY: 4
+
+  # Sentry
+  # ------------------------------------------------------------------------------
+  SENTRY_DSN: set-me-please
+
+  # Static files
+  # ------------------------------------------------------------------------------
+  COMPRESS_ENABLED: False
+
+  # Redis
+  # ------------------------------------------------------------------------------
+  REDIS_URL: 'redis://redis:6379/0'
+
+  # Celery
+  # ------------------------------------------------------------------------------
+
+  # Flower
+  # ------------------------------------------------------------------------------
+  CELERY_FLOWER_USER: set-me-please
+  CELERY_FLOWER_PASSWORD: set-me-please
+
+  # PostgreSQL
+  # ------------------------------------------------------------------------------
+  POSTGRES_HOST: postgres
+  POSTGRES_PORT: 5432
+  POSTGRES_DB: crafty_bot
+  POSTGRES_USER: set-me-please
+  POSTGRES_PASSWORD: set-me-please
+
+  DATABASE_URL: 'postgres://set-me-please:set-me-please@postgres/crafty_bot'
+
+
+all_env_tokens: "{{ ENV_TOKENS | combine( CUSTOM_ENV_TOKENS ) }}"
