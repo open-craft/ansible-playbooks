@@ -40,7 +40,7 @@
 - name: Install docker config file
   template:
     src: config.json.j2
-    dest: "~/docker/config.json"
+    dest: "/home/ubuntu/.docker/config.json"
     mode: 0600
   become_user: ubuntu
 
