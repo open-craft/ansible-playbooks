@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+cd $(dirname $0)
+
 function executeCommand() {
     echo "===== ${1}"
     ${2}
