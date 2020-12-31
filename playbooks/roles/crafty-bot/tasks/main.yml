@@ -37,6 +37,13 @@
     backup: yes
   become_user: ubuntu
 
+- name: Install docker config file
+  template:
+    src: config.json.j2
+    dest: "~/docker/config.json"
+    mode: 0600
+  become_user: ubuntu
+
 - name: Install Docker cleanup cron job
   cron:
     name: "Remove unused Docker data"

@@ -6,6 +6,9 @@ CRAFTY_NGINX_CONFIG_PATH: /etc/nginx/sites-available/crafty
 
 CI_SSH_PUBLIC_KEY: 'your-CI-key'
 
+# Base64 encoded user:password
+docker_registry_token: set-me-please
+
 API_HOSTNAME: "backend.server"
 
 # Settings for Crafty Bot. See crafty_bot/config/settings/ for details.
