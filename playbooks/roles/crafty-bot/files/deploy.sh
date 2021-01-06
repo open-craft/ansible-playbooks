@@ -15,8 +15,8 @@ function executeComposeCommand() {
 
 function main() {
     executeComposeCommand "PULLING IMAGES" "pull";
-    executeComposeCommand "STOPPING CONTAINERS" "stop"
-    executeComposeCommand "STARTING CONTAINERS" "up -d"
+    executeComposeCommand "RESTARTING CONTAINERS" "up -d --no-deps django celeryworker"
+    executeCommand "CLEANING UP DOCKER SYSTEM" "docker system prune -f"
 }
 
 main;
