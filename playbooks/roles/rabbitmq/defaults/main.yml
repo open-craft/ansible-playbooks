@@ -10,7 +10,7 @@ RABBITMQ_HOSTNAME: "{{ inventory_hostname }}"
 # side (will still be non zero if client requests.
 RABBITMQ_HEARTBEAT: 0
 
-RABBITMQ_CA_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/chain.pem"
+RABBITMQ_CA_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/fullchain.pem"
 RABBITMQ_CERTIFICATE_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/cert.pem"
 RABBITMQ_KEY_FILE: "/etc/letsencrypt/live/{{ RABBITMQ_HOSTNAME }}/privkey.pem"
 RABBITMQ_HIGH_MEMORY_ALARM: 0.8
