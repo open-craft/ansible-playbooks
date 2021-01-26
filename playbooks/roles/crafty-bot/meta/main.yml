@@ -6,3 +6,8 @@ dependencies:
     NGINX_PROXY_INTERNAL_PORT: 5000
     NGINX_PROXY_USE_SSL: "{{ USE_SSL }}"
     NGINX_PROXY_SERVER_NAME: "{{ API_HOSTNAME }}"
+    NGINX_PROXY_EXTRA_CONFIG: |
+      # SE-3967 - Prevent Invalid HTTP_HOST headers
+      if ( $host !~* ^{{ all_env_tokens.DJANGO_ALLOWED_HOSTS }}$ ) {
+          return 444;
+      }
