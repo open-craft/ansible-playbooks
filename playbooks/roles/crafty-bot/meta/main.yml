@@ -12,7 +12,8 @@ dependencies:
           return 444;
       }
 
-      location /celery-flower/ {
+      location /flower/ {
+          rewrite ^/flower/(.*)$ /$1 break;
           proxy_pass http://localhost:5555/;
           proxy_http_version 1.1;
           proxy_buffering off;
