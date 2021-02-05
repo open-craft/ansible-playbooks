@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5000:5000"
+      - "127.0.0.1:5000:5000"
     restart: always
     command: /start
 
@@ -32,5 +32,5 @@ services:
     <<: *django
     image: registry.gitlab.com/opencraft/dev/crafty-bot:flower-latest
     ports:
-      - "5555:5555"
+      - "127.0.0.1:5555:5555"
     command: /start-flower

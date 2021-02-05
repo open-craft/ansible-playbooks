@@ -19,7 +19,7 @@ ENV_TOKENS:
   DJANGO_SETTINGS_MODULE: config.settings.production
   DJANGO_SECRET_KEY: set-me-please
   DJANGO_ADMIN_URL: admin/
-  DJANGO_ALLOWED_HOSTS: .your.domain
+  DJANGO_ALLOWED_HOSTS: your.domain
 
   # Security
   # ------------------------------------------------------------------------------
@@ -58,6 +58,7 @@ ENV_TOKENS:
 
   # Celery
   # ------------------------------------------------------------------------------
+  CELERY_BROKER_URL: 'redis://redis:6379/0'
 
   # Flower
   # ------------------------------------------------------------------------------
@@ -73,6 +74,13 @@ ENV_TOKENS:
   POSTGRES_PASSWORD: set-me-please
 
   DATABASE_URL: 'postgres://set-me-please:set-me-please@postgres/crafty_bot'
+
+  # Monday.com
+  # ------------------------------------------------------------------------------
+  MONDAY_API_TOKEN: set-me-please
+  MONDAY_SPRINT_CHECKLIST_TEMPLATE_ID: set-me-please
+  MONDAY_SPRINT_EVALUATION_TEMPLATE_ID: set-me-please
+  MONDAY_SPRINT_RETROSPECTIVE_TEMPLATE_ID: set-me-please
 
 
 all_env_tokens: "{{ ENV_TOKENS | combine( CUSTOM_ENV_TOKENS ) }}"
