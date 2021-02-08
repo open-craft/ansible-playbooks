@@ -75,5 +75,12 @@ ENV_TOKENS:
 
   DATABASE_URL: 'postgres://set-me-please:set-me-please@postgres/crafty_bot'
 
+  # Monday.com
+  # ------------------------------------------------------------------------------
+  MONDAY_API_TOKEN: set-me-please
+  MONDAY_SPRINT_CHECKLIST_TEMPLATE_ID: set-me-please
+  MONDAY_SPRINT_EVALUATION_TEMPLATE_ID: set-me-please
+  MONDAY_SPRINT_RETROSPECTIVE_TEMPLATE_ID: set-me-please
+
 
 all_env_tokens: "{{ ENV_TOKENS | combine( CUSTOM_ENV_TOKENS ) }}"
