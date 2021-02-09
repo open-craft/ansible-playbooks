@@ -1,4 +1,12 @@
 #jinja2:variable_start_string:'{{!', variable_end_string:'!}}'
+{{- /* Custom haproxy maps (written first, to take precedence over automated Ocim entries.). */ -}}
+{%- for cm in haproxy_custom_maps %}
+  {%- for domain in cm.domains %}
+{{! domain !}} {{! cm.backend !}}
+  {%- endfor %}
+{%- endfor %}
+
+{{- /* Ocim backend entries. */ -}}
 {{- $prefix := "/ocim/instances" }}
 
 {{- /* Print config in the form of a single K/V value. */ -}}
@@ -15,9 +23,3 @@
     {{- end}}
   {{- end }}
 {{- end }}
-{{- /* Extra entries from haproxy_custom_maps (Ansible). */ -}}
-{%- for cm in haproxy_custom_maps %}
-  {%- for domain in cm.domains %}
-{{! domain !}} {{! cm.backend !}}
-  {%- endfor %}
-{%- endfor %}
