@@ -1,5 +1,5 @@
-#jinja2:variable_start_string:'{{!', variable_end_string:'!}}'
-{{- /* Custom haproxy maps (written first, to take precedence over automated Ocim entries.). */ -}}
+#jinja2:variable_start_string:'{{!', variable_end_string:'!}}', trim_blocks:False
+{{- /* Custom haproxy maps (written first, to take precedence over automated Ocim entries in case there are same domains used there.). */ -}}
 {%- for cm in haproxy_custom_maps %}
   {%- for domain in cm.domains %}
 {{! domain !}} {{! cm.backend !}}
