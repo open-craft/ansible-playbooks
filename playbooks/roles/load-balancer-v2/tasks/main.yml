@@ -1,7 +1,7 @@
 ---
 # !!!    Important     !!!
 # Run this role only on a single server at a time,
-# using 
+# using
 # `ansible-playbook -v deploy/playbooks/load-balancer-v2.yml \
 # -l haproxy-a-1.net.opencraft.hosting`, etc.
 # Test each server before continuing to the next.
@@ -53,6 +53,7 @@
     - src: "haproxy.cfg.ctmpl"
       dest: "/etc/consul-template/templates/haproxy.cfg.ctmpl"
       mode: "0644"
+  tags: 'haproxy-config'
 
 - name: Copy over Hashicorp Configuration Language files
   # These HCL files instruct consul-watch where to find the templates,
@@ -69,6 +70,7 @@
     - src: "haproxy.cfg.hcl.j2"
       dest: "/etc/consul-template/config/haproxy.cfg.hcl"
       mode: "0644"
+  tags: 'haproxy-config'
 
 - name: Copy over Consul watcher scripts
   # The template watcher watches for appserver configuration
@@ -240,4 +242,3 @@
 
 - import_tasks: site-is-up.yml
   tags: [ 'never', 'site-is-up' ]
-
