@@ -1,0 +1,68 @@
+---
+- name: mkdir /discourse
+  file:
+    path: /discourse
+    state: directory
+
+- name: mount /discourse
+  mount:
+    name: /discourse
+    src: /dev/vdb1
+    fstype: ext4
+    state: mounted
+
+- name: mkdir /discourse/discourse (needed to have /var/discourse as a git repo, which can't use a mounted folder)
+  file:
+    path: /discourse/discourse
+    state: directory
+
+- name: ln -s /discourse/discourse /var/discourse
+  file:
+    src: /discourse/discourse
+    dest: /var/discourse
+    state: link
+
+- name: ln -s /discourse/docker /var/lib/docker
+  file:
+    src: /discourse/docker
+    dest: /var/lib/docker
+    state: link
+
+- name: add discourse user
+  user:
+    name: discourse
+    groups:
+      - sudo
+      - admin
+
+- name: ensure docker is running
+  service:
+    name: docker
+    state: started
+  sudo: yes
+
+- name: check if discourse is running
+  shell: docker ps
+  sudo: yes
+  register: discourse_running
+
+- name: checkout discourse source
+  git:
+    repo: https://github.com/discourse/discourse_docker.git
+    dest: /var/discourse
+    update: no
+    accept_hostkey: yes
+  notify:
+    - stop discourse
+    - rebuild discourse
+
+- name: copy discourse configuration app.yml
+  template:
+    src: app.yml.j2
+    dest: /var/discourse/containers/app.yml
+    owner: discourse
+    group: sudo
+  notify:
+    - rebuild discourse
+
+- meta: flush_handlers
