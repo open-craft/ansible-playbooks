@@ -5,39 +5,39 @@
     chdir: /var/discourse
   ignore_errors: yes
   register: stopped_discourse
-  sudo: yes
+  become: yes
 
 - name: start discourse
   command: ./launcher start app
   args:
     chdir: /var/discourse
   ignore_errors: yes
-  sudo: yes
+  become: yes
 
 - name: restart discourse
   command: ./launcher restart app
   args:
     chdir: /var/discourse
   ignore_errors: yes
-  sudo: yes
+  become: yes
 
 - name: rebuild discourse
   command: ./launcher rebuild app
   args:
     chdir: /var/discourse
   ignore_errors: yes
-  sudo: yes
+  become: yes
 
 - name: bootstrap discourse
   command: ./launcher bootstrap app
   args:
     chdir: /var/discourse
-  sudo: yes
+  become: yes
 
 - name: restart ssh
-  sudo: yes
+  become: yes
   action: service name=ssh state=restarted enabled=yes
 
 - name: reload systemd
-  sudo: yes
+  become: yes
   command: systemctl daemon-reload

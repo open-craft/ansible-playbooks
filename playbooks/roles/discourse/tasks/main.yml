@@ -39,11 +39,11 @@
   service:
     name: docker
     state: started
-  sudo: yes
+  become: yes
 
 - name: check if discourse is running
   shell: docker ps
-  sudo: yes
+  become: yes
   register: discourse_running
 
 - name: checkout discourse source
