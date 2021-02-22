@@ -5,6 +5,9 @@
   roles:
     - role: common-server
       tags: 'common-server'
+      vars:
+        COMMON_SERVER_INSTALL_NGINX: false
+        COMMON_SERVER_INSTALL_CERTBOT: false
 
     - role: docker-compose
       tags: 'docker'

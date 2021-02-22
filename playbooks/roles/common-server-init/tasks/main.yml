@@ -4,6 +4,7 @@
 - import_tasks: misc.yml
 - import_tasks: networking.yml
 - import_tasks: nginx.yml
+  when: COMMON_SERVER_INSTALL_NGINX
 - import_tasks: etckeeper.yml
 - import_tasks: chkrootkit.yml
 
