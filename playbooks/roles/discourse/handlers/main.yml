@@ -38,6 +38,10 @@
   become: yes
   action: service name=ssh state=restarted enabled=yes
 
+- name: restart docker
+  become: yes
+  action: service name=docker state=restarted enabled=yes
+
 - name: reload systemd
   become: yes
   command: systemctl daemon-reload

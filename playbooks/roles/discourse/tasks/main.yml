@@ -22,11 +22,19 @@
     dest: /var/discourse
     state: link
 
-- name: ln -s /discourse/docker /var/lib/docker
+- name: mkdir /discourse/docker
   file:
-    src: /discourse/docker
-    dest: /var/lib/docker
-    state: link
+    path: /discourse/docker
+    state: directory
+
+- name: change docker root directory
+  lineinfile:
+    path: /lib/systemd/system/docker.service
+    regexp: '^ExecStart='
+    line: ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -g /discourse/docker
+  notify:
+    - restart docker
+    - reload systemd
 
 - name: add discourse user
   user:
