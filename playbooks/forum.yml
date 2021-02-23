@@ -5,12 +5,17 @@
   roles:
     - role: common-server
       tags: 'common-server'
-      vars:
-        COMMON_SERVER_INSTALL_NGINX: false
-        COMMON_SERVER_INSTALL_CERTBOT: false
 
     - role: docker-compose
       tags: 'docker'
 
     - role: discourse
       tags: 'discourse'
+
+    - role: nginx-proxy
+      tags: nginx
+      vars:
+        NGINX_PROXY_CONFIG_PATH: /etc/nginx/sites-available/discourse
+        NGINX_PROXY_INTERNAL_SCHEME: http
+        NGINX_PROXY_INTERNAL_DOMAIN: unix
+        NGINX_PROXY_INTERNAL_PORT: "/var/discourse/shared/standalone/nginx.http.sock:"
