@@ -19,3 +19,5 @@
         NGINX_PROXY_INTERNAL_SCHEME: http
         NGINX_PROXY_INTERNAL_DOMAIN: unix
         NGINX_PROXY_INTERNAL_PORT: "/var/discourse/shared/standalone/nginx.http.sock:"
+        NGINX_PROXY_EXTRA_CONFIG: >
+          client_max_body_size 100M;
