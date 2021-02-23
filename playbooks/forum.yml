@@ -6,9 +6,6 @@
     - role: common-server
       tags: 'common-server'
 
-    - role: docker-compose
-      tags: 'docker'
-
     - role: discourse
       tags: 'discourse'
 
