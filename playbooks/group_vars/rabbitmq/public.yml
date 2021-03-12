@@ -1,14 +1,16 @@
 ---
 
+# RabbitMQ ports are available in <all> group
+
 # SANITY ######################################################################
 
 SANITY_CHECK_LIVE_PORTS:
   - host: localhost
-    port: 5671
-    message: "RabbitMQ does not respond on port 5671."
+    port: "{{ RABBITMQ_TLS_PORT }}"
+    message: "RabbitMQ does not respond on port {{ RABBITMQ_TLS_PORT }}."
   - host: localhost
-    port: 15671
-    message: "RabbitMQ management does not respond on port 15671."
+    port: "{{ RABBITMQ_HTTPS_PORT }}"
+    message: "RabbitMQ management does not respond on port {{ RABBITMQ_HTTPS_PORT }}."
 
 SANITY_CHECK_COMMANDS:
   - command: /usr/sbin/rabbitmqctl node_health_check
@@ -26,20 +28,20 @@ consul_service_config:
     - id: rabbitmq
       name: "rabbitmq"
       tags: ["rabbitmq"]
-      port: 5671
+      port: "{{ RABBITMQ_TLS_PORT }}"
       enable_tag_override: true
       checks:
         - name: "Connect to RabbitMQ"
-          tcp: "{{ inventory_hostname }}:5671"
+          tcp: "{{ inventory_hostname }}:{{ RABBITMQ_TLS_PORT }}"
           interval: "10m"
     - id: rabbitmq-management
       name: "rabbitmq"
       tags: ["rabbitmq"]
-      port: 15671
+      port: "{{ RABBITMQ_HTTPS_PORT }}"
       enable_tag_override: true
       checks:
         - name: "Connect to RabbitMQ Management Interface"
-          tcp: "{{ inventory_hostname }}:15671"
+          tcp: "{{ inventory_hostname }}:{{ RABBITMQ_HTTPS_PORT }}"
           interval: "10m"
 
 # FILEBEAT ####################################################################

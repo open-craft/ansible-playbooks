@@ -8,8 +8,8 @@
     port: "{{ item }}"
     proto: tcp
   with_items:
-    - 5671
-    - 15671
+    - "{{ RABBITMQ_TLS_PORT }}"
+    - "{{ RABBITMQ_HTTPS_PORT }}"
 
 - name: add rabbitmq repositories
   apt_repository:
