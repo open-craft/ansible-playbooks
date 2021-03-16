@@ -1,6 +1,9 @@
 [submodule "playbooks/roles/ernestas-poskus.prometheus"]
 	path = playbooks/roles/ernestas-poskus.prometheus
 	url = https://github.com/ernestas-poskus/ansible-prometheus
+[submodule "playbooks/roles/geerlingguy.java"]
+	path = playbooks/roles/geerlingguy.java
+	url = https://github.com/geerlingguy/ansible-role-java.git
 [submodule "playbooks/roles/geerlingguy.security"]
 	path = playbooks/roles/geerlingguy.security
 	url = https://github.com/geerlingguy/ansible-role-security
