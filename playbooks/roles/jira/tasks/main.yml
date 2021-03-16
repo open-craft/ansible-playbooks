@@ -6,12 +6,12 @@
     pkg:
       - mysql-client
 
-- name: Ensure commands can be executed as www-data - set shell
+- name: disable www-data shell
   user:
     name: www-data
     shell: /bin/false
 
-- name: Copy jira init script
+- name: copy jira service file
   copy:
     src: jira.service
     dest: /etc/systemd/system/jira.service
