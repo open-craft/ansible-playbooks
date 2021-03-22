@@ -28,27 +28,31 @@
     - "{{ elasticsearch_log_dir }}"
     - "{{ elasticsearch_cfg_dir }}"
 
-- name: Install Elasticsearch certificates
-  copy:
-    content: "{{ elasticsearch_keystore }}"
+- name: Install Elasticsearch certificates 1
+  template:
+    src: "http.p12.b64.j2"
     dest: "{{ elasticsearch_cfg_dir }}/http.p12.b64"
+  when: elasticsearch_keystore|length > 0
 
-- name: Install Elasticsearch certificates
+- name: Install Elasticsearch certificates 2
   shell: "base64 -d {{ elasticsearch_cfg_dir }}/http.p12.b64 > {{ elasticsearch_cfg_dir }}/http.p12"
   args:
     creates: "{{ elasticsearch_cfg_dir }}/http.p12"
+  when: elasticsearch_keystore|length > 0
 
-- name: Install Elasticsearch certificates
+- name: Install Elasticsearch certificates 3
   file:
     path: "{{ elasticsearch_cfg_dir }}/http.p12"
     owner: elasticsearch
     group: elasticsearch
     mode: 0640
+  when: elasticsearch_keystore|length > 0
 
-- name: Install Elasticsearch certificates
+- name: Install Elasticsearch certificates 4
   file:
     path: "{{ elasticsearch_cfg_dir }}/http.p12.b64"
     state: absent
+  when: elasticsearch_keystore|length > 0
 
 - name: Configure Elasticsearch
   template:
@@ -60,6 +64,7 @@
 
 - name: Set bootstrap password
   shell: echo "{{ elasticsearch_password }}" | {{ elasticsearch_bin_dir }}/elasticsearch-keystore add -f -x 'bootstrap.password'
+  when: elasticsearch_password|length > 0
 
 - name: Start Elasticsearch
   service:
@@ -67,6 +72,7 @@
     state: started
     enabled: yes
 
+# we can only set this up if we also set up the elasticsearch keystore
 - name: Setup password for user kibana_system
   uri:
     url: "{{ es_api_uri }}/_security/user/kibana_system/_password"
@@ -78,6 +84,7 @@
     password: "{{ elasticsearch_password }}"
     force_basic_auth: yes
     validate_certs: no
+  when: elasticsearch_keystore|length > 0
 
 - name: Open Elasticsearch ports on the firewall
   ufw:
