@@ -5,7 +5,7 @@ services:
   matomo:
     container_name: matomo
     # We use the apache image as it allows us to reuse the existing nginx-proxy role as-is.
-    image: matomo:3-apache
+    image: matomo:4.2-apache
     restart: unless-stopped
     volumes:
       {% for volume_mapping in MATOMO_DOCKER_VOLUMES %}
