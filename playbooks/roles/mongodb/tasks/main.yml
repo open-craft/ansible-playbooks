@@ -85,12 +85,12 @@
 
         - name: Download golang
           get_url:
-            url: "https://storage.googleapis.com/golang/go1.11.1.linux-amd64.tar.gz"
+            url: "https://storage.googleapis.com/golang/go1.12.linux-amd64.tar.gz"
             dest: "{{ GO_PATH }}"
 
         - name: Extract go into /tmp/mongo
           unarchive:
-            src: "{{ GO_PATH }}/go1.11.1.linux-amd64.tar.gz"
+            src: "{{ GO_PATH }}/go1.12.linux-amd64.tar.gz"
             dest: "{{ GO_PATH }}"
             remote_src: yes
 
@@ -107,6 +107,7 @@
           environment:
             GOPATH: "{{ GO_PATH }}"
             PATH: '{{ GO_PATH }}/go/bin:{{ ansible_env.PATH }}'
+            GO111MODULE: 'on'
 
         - name: Add MongoDB exporter binary to the path
           copy:

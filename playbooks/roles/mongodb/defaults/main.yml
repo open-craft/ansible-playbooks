@@ -8,7 +8,7 @@ MONGODB_SERVER_BACKUP_DIR: /var/lib/mongodb/backup
 # PROMETHEUS ##################################################################
 
 MONGODB_EXPORTER_ENABLED: true
-MONGODB_EXPORTER_VERSION: "v0.6.2"
+MONGODB_EXPORTER_VERSION: "v0.20.1"
 MONGODB_EXPORTER_REPO: https://github.com/percona/mongodb_exporter.git
 MONGODB_EXPORTER_PASSWORD: null
 MONGODB_EXPORTER_EXTRA_OPTS: ""
