@@ -57,3 +57,36 @@
             proxy_set_header   X-Real-IP        $remote_addr;
             proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
           }
+
+- name: Set up Jira MySQL server
+  hosts: mysql-tasks
+  become: true
+  roles:
+    - role: common-server
+      tags: 'common-server'
+
+    - role: mysql
+      tags: 'mysql'
+      vars:
+        MYSQL_URLS:
+          # Ubuntu 20.04 needs these three first dependencies in order to install mysql-server-core
+          - name: insserv
+            url: http://cz.archive.ubuntu.com/ubuntu/pool/main/i/insserv/insserv_1.14.0-5ubuntu3_amd64.deb
+          - name: sysv-rc
+            url: http://cz.archive.ubuntu.com/ubuntu/pool/main/s/sysvinit/sysv-rc_2.88dsf-59.3ubuntu2_all.deb
+          - name: initscripts
+            url: http://cz.archive.ubuntu.com/ubuntu/pool/main/s/sysvinit/initscripts_2.88dsf-59.3ubuntu2_amd64.deb
+          - name: libmysqlclient
+            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/libmysqlclient18_5.6.35-1_amd64.deb"
+          - name: MySQL Client Core
+            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-client-core-5.6_5.6.35-1_amd64.deb"
+          - name: MySQL Client
+            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-client-5.6_5.6.35-1_amd64.deb"
+          - name: MySQL Server Core
+            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-server-core-5.6_5.6.35-1_amd64.deb"
+          - name: MySQL Server
+            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-server-5.6_5.6.35-1_amd64.deb"
+
+
+    - role: geerlingguy.mysql
+      tags: 'geerlingguy.mysql'
