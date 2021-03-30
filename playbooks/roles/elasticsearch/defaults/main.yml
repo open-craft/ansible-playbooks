@@ -18,3 +18,8 @@ es_api_uri: "https://{{ elasticsearch_network_host }}:{{ elasticsearch_http_port
 elasticsearch_username: elastic
 elasticsearch_password: ""
 elasticsearch_keystore: ""
+
+# This should follow the format described in https://www.elastic.co/guide/en/elasticsearch/reference/current/jvm-options.html
+# It is templated out to 50-extra-jvm.options
+# Note that this is only supported by recent elasticsearch releases.
+elasticsearch_extra_jvm_options: ""
