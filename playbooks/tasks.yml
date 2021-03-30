@@ -87,6 +87,5 @@
           - name: MySQL Server
             url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-server-5.6_5.6.35-1_amd64.deb"
 
-
     - role: geerlingguy.mysql
       tags: 'geerlingguy.mysql'
