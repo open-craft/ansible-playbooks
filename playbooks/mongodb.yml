@@ -13,3 +13,5 @@
 
     - role: greendayonfire.mongodb
       tags: 'greendayonfire.mongodb'
+      vars:
+        mongodb_cloud_monitoring_free_state: 'off'
