@@ -5,7 +5,8 @@
   hosts: pr-watcher-notifier
   become: true
   roles:
-    - role: common-server
-      tags: 'common-server'
+    # No need for the common-server role since this currently runs on vm.opencraft.com.
+    # - role: common-server
+    #   tags: 'common-server'
 
     - role: pr-watcher-notifier
