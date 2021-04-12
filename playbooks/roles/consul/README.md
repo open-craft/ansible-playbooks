@@ -27,8 +27,8 @@ set up in the consul services. It determines the EC2 instance's IP addresses (pr
 automatically generates the consul configuration file with the correct IP address and an appropriate,
 unique node name.
 
-The unique name is generated as '<value of consul_nodename>-<private IP address>-<public IP address>', where
-the '.' in the IP address values are replaced by '-'. After generating the correct configuration, the wrapper script
+The unique name is generated as `<value of consul_nodename>-<private IP address>-<public IP address>`, where
+the `.` in the IP address values are replaced by `-`. After generating the correct configuration, the wrapper script
 starts consul.
 
 If the node was already in the cluster before and its IP address or node name has changed, the wrapper script
