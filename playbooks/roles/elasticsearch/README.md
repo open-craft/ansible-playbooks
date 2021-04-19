@@ -18,6 +18,35 @@ You will find ``kibana_elasticsearch_password`` in the ansible secrets repositor
 
 Replace ``<SUPER-USER>`` and ``<SUPER-USER-PASSWORD>`` with newly created super user's ``username`` and ``password`` accordingly.
 
+## Enabling Encryption
+In order to enable security features and enable encryption, we will need to generate keys outside of these ansible scripts, and include them in configuration variables used here.
+
+We will generally be following [the ElasticSearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/configuring-tls.html#node-certificates) on enabling encryption.
+
+```bash
+sudo /usr/share/elasticsearch/bin/elasticsearch-certutil http
+```
+Then follow through the steps in the wizard. All options can be left at the default, except that the domain name must be specified.
+This script will create a certificate authority, and certificates for the elasticsearch cluster.
+The output will be in `/usr/share/elasticsearch/elasticsearch-ssl-http.zip`, an archive containing all of the keys we'll need.
+
+After unzipping this archive, we'll need to base64 encode the keystore.
+```bash
+sudo unzip /usr/share/elasticsearch/elasticsearch-ssl-http.zip
+base64 < elasticsearch/http.p12
+```
+This output will go into the `elasticsearch_keystore` ansible variable in the host file for the host we are configuring.
+
+We will also need to set `elasticsearch_ca` with the contents of `kibana/elasticsearch-ca.pem`. Since a PEM is just ASCII, we can set this directly as is.
+```bash
+cat kibana/elasticsearch-ca.pem
+```
+
+We will also need to set passwords for 3 separate ansible variables: `logstash_elasticsearch_password`, `kibana_elasticsearch_password`, and `elasticsearch_password`.
+The details of setting these up are discussed in [`playbooks/roles/elasticsearch/README.md`](playbooks/roles/elasticsearch/README.md) and [`playbooks/roles/kibana/README.md`](playbooks/roles/kibana/README.md) respectively.
+The other options necessary will be set by our ansible roles and configuration scripts.
+
+
 ## Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
