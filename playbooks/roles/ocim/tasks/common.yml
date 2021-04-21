@@ -8,6 +8,7 @@
 - name: Install the python requirements
   shell: |
     . "{{ pyenv_root }}/.pyenvrc"
+    [ -n "$VIRTUAL_ENV" ] && pyenv deactivate
     pyenv activate opencraft
     pip install -r "{{ opencraft_root_dir }}/requirements.txt"
   become_user: "{{ www_user }}"
