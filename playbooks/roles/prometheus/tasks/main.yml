@@ -16,4 +16,11 @@
     src: logrotate
     dest: /etc/logrotate.d/prometheus
 
+- name: set the nofile limit for prometheus service to a high number
+  copy:
+    content: |
+      [Service]
+      LimitNOFILE=infinity
+    dest: /etc/systemd/system/prometheus.service.d/override.conf
+
 - import_tasks: grafana.yml
