@@ -24,3 +24,4 @@
 - import_playbook: sprints.yml
 - import_playbook: crafty-bot.yml
 - import_playbook: matomo.yml
+- import_playbook: mailing-list.yml
