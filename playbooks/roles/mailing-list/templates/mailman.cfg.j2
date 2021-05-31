@@ -38,8 +38,8 @@ pid_file: /run/mailman3/master.pid
 lock_file: $lock_dir/master.lck
 
 [database]
-class: {{ MAILMAN_DATABASE_CLASS }}
-url: {{ MAILMAN_DATABASE_URL }}
+class: mailman.database.postgresql.PostgreSQLDatabase
+url: postgres://{{ MAILMAN_POSTGRES_USER }}:{{ MAILMAN_POSTGRES_PASS }}@{{ MAILMAN_POSTGRES_HOST }}:{{ MAILMAN_POSTGRES_PORT }}/{{ MAILMAN_POSTGRES_DB_NAME }}
 debug: no
 
 [logging.debian]
