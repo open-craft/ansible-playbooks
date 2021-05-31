@@ -1,2 +1,3 @@
 ---
 
+MAILMAN_WEB_DOMAIN: "mailman.example.com"

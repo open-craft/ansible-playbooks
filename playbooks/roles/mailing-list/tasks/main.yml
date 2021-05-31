@@ -1,7 +1,28 @@
 ---
-- name: install mailman packages
+- name: install mailman3 packages
   apt:
     name:
-      - mailman3-full
+      - "mailman3-full"
   notify:
     - "Restart mailman3 services"
+
+- name: Allow 443 tcp port for mailman3 web
+  ufw:
+    rule: "allow"
+    port: "443"
+    proto: "tcp"
+
+- name: Mailman3 web nginx proxy config
+  template:
+    src: "mailman3-nginx-proxy.conf.j2"
+    dest: "/etc/nginx/sites-available/mailman3"
+  notify:
+    - "reload nginx"
+
+- name: Mailman3 nginx proxy config sites-enabled
+  file:
+    src: "/etc/nginx/sites-available/mailman3"
+    dest: "/etc/nginx/sites-enabled/mailman3"
+    state: "link"
+  notify:
+    - "reload nginx"
