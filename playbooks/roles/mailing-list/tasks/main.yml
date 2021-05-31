@@ -4,7 +4,7 @@
     name:
       - "mailman3-full"
   notify:
-    - "Restart mailman3 services"
+    - "restart mailman3"
 
 - name: Allow 443 tcp port for mailman3 web
   ufw:
@@ -26,3 +26,24 @@
     state: "link"
   notify:
     - "reload nginx"
+
+- name: Mailman3 mailman.cfg
+  template:
+    src: "mailman.cfg.j2"
+    dest: "/etc/mailman3/mailman.cfg"
+  notify:
+    - "restart mailman3"
+
+- name: Mailman3 mailman-web.py
+  template:
+    src: "mailman-web.py.j2"
+    dest: "/etc/mailman3/mailman-web.py"
+  notify:
+    - "restart mailman3"
+
+- name: Mailman3 mailman-hyperkitty.cfg
+  template:
+    src: "mailman-hyperkitty.cfg.j2"
+    dest: "/etc/mailman3/mailman-hyperkitty.cfg"
+  notify:
+    - "restart mailman3"

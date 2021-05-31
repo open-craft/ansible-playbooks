@@ -1,11 +1,4 @@
-# Please also note that Mailman3 is configured to expect the web interface
-# at URL subdirectory '/mailman3' per default, but this Nginx configuration
-# provides Mailman3 under the root directory of the vhost.
-#
-# For the Nginx vhost configuration (without '/mailman3' subdomain) to
-# work, you will have to edit the URL in 'base-url' at
-# '/etc/mailman3/mailman-hyperkitty.cfg' and in 'MAILMAN_ARCHIVER_FROM'
-# at '/etc/mailman3/mailman-web.py' accordingly.
+# {{ ansible_managed }}
 
 upstream mailman3 {
     server unix:/run/mailman3/web/uwsgi.sock fail_timeout=0;
@@ -40,6 +33,7 @@ server {
     location / {
         uwsgi_pass mailman3;
         include /etc/nginx/uwsgi_params;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 
     location /mailman3/static {

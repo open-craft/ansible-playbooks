@@ -1,3 +1,38 @@
 ---
 
 MAILMAN_WEB_DOMAIN: "mailman.example.com"
+
+# This key is used for the mailman-web.py SECRET_KEY
+# Because of templating, this value should not contain quote characters.
+HYPERKITTY_SECRET_KEY: "SET-ME-PLEASE"
+
+# This key is used for securing the connection between mailman3 core and the hyperkitty archiver plugin.
+# Because of templating, this value should not contain quote characters.
+MAILMAN_ARCHIVER_KEY: "SET-ME-PLEASE"
+
+# This is the password for the `restadmin` rest api admin user.
+# Because of templating, this value should not contain quote characters.
+MAILMAN_REST_API_PASS: "SET-ME-PLEASE"
+
+# This address is the "site owner" address.  Certain messages which must be
+# delivered to a human, but which can't be delivered to a list owner (e.g. a
+# bounce from a list owner), will be sent to this address.  It should point to
+# a human.
+MAILMAN_SITE_OWNER: "changeme@example.com"
+
+# The class implementing the IDatabase for mailman.
+# Must be one of:
+# - mailman.database.sqlite.SQLiteDatabase
+# - mailman.database.mysql.MySQLDatabase
+# - mailman.database.postgresql.PostgreSQLDatabase
+MAILMAN_DATABASE_CLASS: "mailman.database.sqlite.SQLiteDatabase"
+
+# Use this to set the Storm database engine URL.  You generally have one
+# primary database connection for all of Mailman.  List data and most rosters
+# will store their data in this database, although external rosters may access
+# other databases in their own way.  This string supports standard
+# 'configuration' substitutions.
+# other examples:
+# - mysql+pymysql://mailman3:mmpass@localhost/mailman3?charset=utf8&use_unicode=1
+# - postgres://mailman3:mmpass@localhost/mailman3
+MAILMAN_DATABASE_URL: "sqlite:///$DATA_DIR/mailman.db"

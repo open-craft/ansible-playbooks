@@ -1,5 +1,5 @@
 ---
-- name: "Restart mailman3 services"
+- name: "restart mailman3"
   service:
     name: "{{ item }}"
     state: restarted
