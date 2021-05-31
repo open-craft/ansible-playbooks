@@ -1,0 +1,32 @@
+# {{ ansible_managed }}
+# http://www.postfix.org/postconf.5.html
+#
+# See also https://docs.mailman3.org/projects/mailman/en/latest/src/mailman/docs/mta.html#postfix
+
+mydomain = {{ MAILMAN_INCOMING_MAIL_DOMAIN }}
+myhostname = {{ MAILMAN_WEB_DOMAIN }}
+
+# send email as <user>@<mydomain>
+myorigin = $mydomain
+
+# Only accept email destined for the server itself or the configured domain.
+mydestination = $myhostname
+
+# Only relay mail from the local mailman server
+mynetworks_style = host
+
+# Support the default VERP delimiter.
+recipient_delimiter = +
+
+# Don't treat owner- and -request addresses specially
+owner_request_special = no
+
+# Let mailman3 manage the transport and relay
+transport_maps =
+    hash:/var/lib/mailman3/data/postfix_lmtp
+local_recipient_maps =
+    hash:/var/lib/mailman3/data/postfix_lmtp
+relay_domains =
+    hash:/var/lib/mailman3/data/postfix_domains
+
+smtpd_recipient_restrictions = permit_mynetworks,reject_unauth_destination
