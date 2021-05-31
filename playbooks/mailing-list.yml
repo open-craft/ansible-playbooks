@@ -5,3 +5,5 @@
   roles:
     - role: common-server
       tags: 'common-server'
+    - role: 'mailing-list'
+      tags: 'mailing-list'

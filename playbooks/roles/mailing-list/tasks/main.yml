@@ -1,0 +1,7 @@
+---
+- name: install mailman packages
+  apt:
+    name:
+      - mailman3-full
+  notify:
+    - "Restart mailman3 services"

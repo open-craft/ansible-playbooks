@@ -1,0 +1,8 @@
+---
+- name: "Restart mailman3 services"
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - "mailman3"
+    - "mailman3-web"
