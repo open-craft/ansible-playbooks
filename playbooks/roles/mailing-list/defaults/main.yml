@@ -1,5 +1,7 @@
 ---
 
+# The domain that mailman will be served at.
+# This is used to configure the nginx proxy and reading certbot letsencrypt cert paths.
 MAILMAN_WEB_DOMAIN: "mailman.example.com"
 
 # This key is used for the mailman-web.py SECRET_KEY
@@ -19,6 +21,13 @@ MAILMAN_REST_API_PASS: "SET-ME-PLEASE"
 # bounce from a list owner), will be sent to this address.  It should point to
 # a human.
 MAILMAN_SITE_OWNER: "changeme@example.com"
+
+# This address is used to send error reports to.
+MAILMAN_ERROR_REPORTING_EMAIL: "changeme@example.com"
+
+# This address will be used as the FROM email for emails sent from mailman services.
+# (eg. password reset mail, confirmations, etc.)
+MAILMAN_FROM_EMAIL: "changeme@example.com"
 
 # Postgres database config, used by mailman core and web frontend.
 MAILMAN_POSTGRES_HOST: "localhost"
