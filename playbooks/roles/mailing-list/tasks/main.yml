@@ -55,3 +55,13 @@
     state: "link"
   notify:
     - "reload nginx"
+
+- name: Postfix is installed
+  apt:
+    pkg: postfix
+
+- name: Postfix is configured for mailman3
+  template:
+    src: postfix-main.cf
+    dest: /etc/postfix/main.cf
+  notify: reload postfix

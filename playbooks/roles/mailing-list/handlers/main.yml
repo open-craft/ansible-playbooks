@@ -6,3 +6,8 @@
   with_items:
     - "mailman3"
     - "mailman3-web"
+
+- name: reload postfix
+  service:
+    name: postfix
+    state: reloaded

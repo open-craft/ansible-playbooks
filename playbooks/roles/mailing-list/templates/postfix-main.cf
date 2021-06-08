@@ -1,0 +1,29 @@
+# File: main.conf
+
+# Plebia relays incomming email for help@opencraft.com this host
+
+mydomain = opencraft.com
+myhostname = mailinglist.opencraft.com
+
+# send email as <user>@opencraft.com
+myorigin = $mydomain
+
+# Only accept email destined for opencraft.com or mailinglist.opencraft.com
+mydestination = $mydomain, $myhostname
+
+# Only relay mail from the local mailman server
+mynetworks_style = host
+
+# Support the default VERP delimiter.
+recipient_delimiter = +
+
+# Don't treat owner- and -request addresses specially
+owner_request_special = no
+
+# Let mailman3 manage the transport and relay
+transport_maps =
+    hash:/var/lib/mailman3/data/postfix_lmtp
+local_recipient_maps =
+    hash:/var/lib/mailman3/data/postfix_lmtp
+relay_domains =
+    hash:/var/lib/mailmain3/var/data/postfix_domains
