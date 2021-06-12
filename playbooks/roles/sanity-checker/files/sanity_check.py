@@ -98,7 +98,10 @@ def get_dev_mounts():
     for line in proc_mounts.split("\n"):
         parts = line.split()
         mount = Mount(parts[1], parts[0])
-        if mount.device.startswith("/dev"):
+        if (
+                mount.device.startswith("/dev")
+                or mount.mount.startswith("/var/")      # special cases, but also used by the system
+        ):
             # /dev/loopX devices are mounted images that are expected to be 100% full,
             # so we don't want to monitor those. Snapd uses these extensively.
             if not mount.device.startswith("/dev/loop"):
