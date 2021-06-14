@@ -1,0 +1,25 @@
+---
+- name: "restart mailman3"
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - "mailman3"
+    - "mailman3-web"
+
+- name: "reload postfix"
+  service:
+    name: postfix
+    state: reloaded
+
+# https://docs.mailman3.org/projects/mailman/en/latest/src/mailman/docs/mta.html#transport-maps
+# > Mailman will automatically write the correct transport map when its mailman aliases command is run,
+# > or whenever a mailing list is created or removed via other commands.
+#
+# So we have this here as a handler to be called when mailman is installed, updated, config changed, etc. from ansible.
+# In normal operation, mailman will keep it up to date automatically.
+#
+# This generates the maps databases used by postfix in /var/lib/mailman3/data/
+- name: "update mailman3 aliases"
+  command: "mailman aliases"
+  become_user: "list"
