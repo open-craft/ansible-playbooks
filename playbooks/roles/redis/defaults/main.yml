@@ -1,0 +1,18 @@
+REDIS_LOG_DIR: "/var/log/redis"
+REDIS_SCRIPTS_DIR: "/usr/local/sbin"
+REDIS_BACKUP_COMMAND: "redis-backup"
+
+redis_version: 6.2.4
+redis_checksum: "sha256:ba32c406a10fc2c09426e2be2787d74ff204eb3a2e496d87cff76a476b6ae16e"
+redis_verify_checksum: true
+redis_make_tls: true
+redis_timeout: 30
+redis_logfile: "{{ REDIS_LOG_DIR }}/redis.log"
+redis_maxmemory_policy: "allkeys-lru"
+
+# Filename cannot be a path
+redis_db_filename: "snapshot.rdb"
+
+# Additional configuration options
+# Use a block style scalar to add options
+redis_config_additional: ""

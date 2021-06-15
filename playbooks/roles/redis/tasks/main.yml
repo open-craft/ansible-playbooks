@@ -1,0 +1,13 @@
+---
+
+- name: open redis port on the firewall
+  ufw:
+    rule: allow
+    port: "{{ redis_port }}"
+    proto: tcp
+
+- name: add redis backup script
+  copy:
+    src: "{{ REDIS_BACKUP_COMMAND }}"
+    dest: "{{ REDIS_SCRIPTS_DIR }}/{{ REDIS_BACKUP_COMMAND }}"
+    mode: 0700

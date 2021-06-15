@@ -1,0 +1,23 @@
+---
+# Playbook for setting up a Redis cluster.
+
+- name: configure the master redis server
+  hosts: redis-master
+  roles:
+    - role: common-server
+      tags: 'common-server'
+
+    - role: davidwittman.redis
+      tags: 'davidwittman.redis'
+
+- name: configure redis slaves
+  hosts: redis-slave
+  vars:
+    # FIXME: This should come from somewhere else
+    - redis_slaveof: redis.opencraft.hosting 6379
+  roles:
+    - role: common-server
+      tags: 'common-server'
+
+    - role: davidwittman.redis
+      tags: 'davidwittman.redis'
