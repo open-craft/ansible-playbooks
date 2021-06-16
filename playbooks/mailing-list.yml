@@ -1,9 +1,0 @@
----
-- name: Set up the mailing list instance
-  hosts: mailing-list
-  become: true
-  roles:
-    - role: common-server
-      tags: 'common-server'
-    - role: 'mailing-list'
-      tags: 'mailing-list'
