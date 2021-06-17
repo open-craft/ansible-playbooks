@@ -10,7 +10,7 @@ myhostname = {{ MAILMAN_WEB_DOMAIN }}
 myorigin = $mydomain
 
 # Only accept email destined for the server itself or the configured domain.
-mydestination = $myhostname
+mydestination = $myhostname,$mydomain
 
 # Only relay mail from the local mailman server
 mynetworks_style = host
@@ -18,14 +18,24 @@ mynetworks_style = host
 # Support the default VERP delimiter.
 recipient_delimiter = +
 
+# Turn off the local biff service to save resources.
+# This isn't useful for us, because we don't have local users on the server who want new mail notifications.
+biff = no
+
 # Don't treat owner- and -request addresses specially
 owner_request_special = no
 
-# Let mailman3 manage the transport and relay
+alias_maps = hash:/etc/aliases
+
 transport_maps =
-    hash:/var/lib/mailman3/data/postfix_lmtp
+    hash:/var/lib/mailman3/data/postfix_lmtp,
+    hash:/etc/postfix/transport
+
 local_recipient_maps =
-    hash:/var/lib/mailman3/data/postfix_lmtp
+    hash:/var/lib/mailman3/data/postfix_lmtp,
+    $alias_maps
+    hash:/etc/postfix/transport
+
 relay_domains =
     hash:/var/lib/mailman3/data/postfix_domains
 

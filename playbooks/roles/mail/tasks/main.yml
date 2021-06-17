@@ -86,7 +86,22 @@
   notify:
     - "reload nginx"
 
-- name: Postfix is configured for mailman3
+- name: Postfix transport maps
+  template:
+    src: "postfix-transport.j2"
+    dest: "/etc/postfix/transport"
+  notify:
+    - "postmap transport"
+    - "reload postfix"
+
+- name: Postfix aliases
+  template:
+    src: "postfix-aliases.j2"
+    dest: "/etc/aliases"
+  notify:
+    - "newaliases"
+
+- name: Postfix is configured
   template:
     src: "postfix-main.cf.j2"
     dest: "/etc/postfix/main.cf"
