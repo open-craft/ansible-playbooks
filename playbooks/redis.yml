@@ -3,6 +3,7 @@
 
 - name: configure the primary redis server
   hosts: redis-primary
+  become: true
   roles:
     - role: common-server
       tags: 'common-server'
@@ -12,6 +13,7 @@
 
 - name: configure redis secondary replicas
   hosts: redis-replica
+  become: true
   vars:
     # Set in host_vars, e.g. "redis.opencraft.hosting {{ redis_port }}"
     redis_slaveof: !!null
@@ -25,6 +27,7 @@
 
 - name: configure redis sentinel
   hosts: redis-sentinel
+  become: true
   vars:
     redis_sentinel: true
   roles:
