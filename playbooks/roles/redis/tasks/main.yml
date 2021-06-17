@@ -1,5 +1,17 @@
 ---
 
+# To be able to check the package checksum, the redis binary is built from
+# source, therefore we need the build delendencies to be installed. The
+# configuration also allows us to run multiple versions of redis on the same
+# servers, so this make sense.
+- name: install build dependencies
+  apt:
+    name: "{{item}}"
+  with_items:
+    - libssl-dev
+    - libjemalloc-dev
+    - build-essential
+
 - name: open redis port on the firewall
   ufw:
     rule: allow

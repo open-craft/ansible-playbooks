@@ -8,6 +8,9 @@
     - role: common-server
       tags: 'common-server'
 
+    - role: redis
+      tags: 'install-redis'
+
     - role: davidwittman.redis
       tags: 'davidwittman.redis'
 
@@ -22,6 +25,9 @@
     - role: common-server
       tags: 'common-server'
 
+    - role: redis
+      tags: 'install-redis'
+
     - role: davidwittman.redis
       tags: 'davidwittman.redis'
 
@@ -33,6 +39,9 @@
   roles:
     - role: common-server
       tags: 'common-server'
+
+    - role: redis
+      tags: 'install-redis'
 
     - role: davidwittman.redis
       tags: 'davidwittman.redis'
