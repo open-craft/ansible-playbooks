@@ -98,7 +98,12 @@ def get_dev_mounts():
     for line in proc_mounts.split("\n"):
         parts = line.split()
         mount = Mount(parts[1], parts[0])
-        if mount.device.startswith("/dev"):
+        if (
+                mount.device.startswith("/dev")
+                or mount.mount.startswith("/var/")      # special cases, but also used by the system. There was a
+            # problem with a device named `mysql` in some SoYouStart instances, so this is an extra check to also
+            # find some devices with special names but mounted in a folder used by the system (`/var/` in this case)
+        ):
             # /dev/loopX devices are mounted images that are expected to be 100% full,
             # so we don't want to monitor those. Snapd uses these extensively.
             if not mount.device.startswith("/dev/loop"):
