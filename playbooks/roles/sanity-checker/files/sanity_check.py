@@ -15,6 +15,7 @@ SanityCheckResult = collections.namedtuple(
 )
 
 
+# (string, string)
 Mount = collections.namedtuple("Mount", ['mount', 'device'])
 
 
@@ -86,28 +87,36 @@ def send_message(recipient, subject, body):
 
 def get_dev_mounts():
     """
-    :return: List of mounted drives, we assume that drives will have
-             device column starting with "/dev".
+    Return a list of mounted drives.
+    Uses heuristics to only return mounts that we want to check for free space.
     """
-
-    with open("/proc/mounts") as f:
-        proc_mounts = f.read().strip()
 
     results = []
 
-    for line in proc_mounts.split("\n"):
-        parts = line.split()
-        mount = Mount(parts[1], parts[0])
-        if (
-                mount.device.startswith("/dev")
-                or mount.mount.startswith("/var/")      # special cases, but also used by the system. There was a
-            # problem with a device named `mysql` in some SoYouStart instances, so this is an extra check to also
-            # find some devices with special names but mounted in a folder used by the system (`/var/` in this case)
-        ):
+    with open("/proc/mounts") as f:
+        for line in f:
+            if not line.strip():
+                continue
+
+            parts = line.split()
+            mount = Mount(parts[1], parts[0])
+
             # /dev/loopX devices are mounted images that are expected to be 100% full,
             # so we don't want to monitor those. Snapd uses these extensively.
-            if not mount.device.startswith("/dev/loop"):
+            if mount.device.startswith("/dev/loop"):
+                continue
+
+            # Standard /dev/ devices.
+            elif mount.device.startswith("/dev"):
                 results.append(mount)
+
+            # Special cases, but also used by the system. There was a
+            # problem with a device named `mysql` in some SoYouStart instances, so this is an extra check to also
+            # find some devices with special names but mounted in a folder used by the system (`/var/` in this case)
+            # Skip /var/lib/lxcfs, which can exist as a special fuse mount used for lxc.
+            elif mount.mount.startswith("/var/") and mount.mount != "/var/lib/lxcfs":
+                results.append(mount)
+
     return results
 
 
