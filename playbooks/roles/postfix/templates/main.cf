@@ -14,7 +14,7 @@ smtpd_sasl_local_domain = $myhostname
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_auth_enable = yes
 
-# Relay mail to opencraft.com directly to mail.plebia.org
+# Relay mail to internal domains directly to the configured internal mail host
 relay_domains = {{ POSTFIX_INTERNAL_DOMAIN }} $mydestination
 relay_transport = relay:{{ POSTFIX_INTERNAL_MAIL_HOST }}
 
@@ -42,7 +42,7 @@ smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtpd_tls_loglevel = 1
 smtpd_tls_received_header = yes
 
-# Vaurious settings from the Ubuntu default configuration
+# Various settings from the Ubuntu default configuration
 biff = no
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases

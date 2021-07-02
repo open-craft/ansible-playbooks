@@ -40,3 +40,9 @@ relay_domains =
     hash:/var/lib/mailman3/data/postfix_domains
 
 smtpd_recipient_restrictions = permit_mynetworks,reject_unauth_destination
+
+smtpd_tls_cert_file = /etc/letsencrypt/live/{{ MAILMAN_WEB_DOMAIN }}/fullchain.pem
+smtpd_tls_key_file = /etc/letsencrypt/live/{{ MAILMAN_WEB_DOMAIN }}/privkey.pem
+smtpd_tls_security_level = may
+smtpd_tls_session_cache_database = btree:${queue_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${queue_directory}/smtp_scache
