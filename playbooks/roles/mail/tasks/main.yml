@@ -1,5 +1,13 @@
 ---
 
+- name: mount /var/lib/mailman3/
+  mount:
+    name: /var/lib/mailman3
+    src: "{{ MAILMAN_BLOCK_DEVICE }}"
+    fstype: ext4
+    state: mounted
+  when: MAILMAN_BLOCK_DEVICE|string
+
 - name: mailman3 packages
   apt:
     name:
