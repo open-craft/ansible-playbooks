@@ -32,7 +32,6 @@
   apt:
     update_cache: yes
     upgrade: dist
-    cache_valid_time: 43200
     autoremove: yes
 
 - name: Install dependencies
