@@ -18,8 +18,7 @@
   hosts: redis-replica
   become: true
   vars:
-    # Set in host_vars, e.g. "redis.opencraft.hosting {{ redis_port }}"
-    redis_slaveof: !!null
+    # Set redis_slaveof in host_vars, e.g. "redis.opencraft.hosting {{ redis_port }}"
     redis_slave_read_only: "yes"
   roles:
     - role: common-server
