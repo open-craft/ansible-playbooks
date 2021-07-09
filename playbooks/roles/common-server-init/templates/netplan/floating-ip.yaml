@@ -7,6 +7,4 @@ network:
       dhcp6: yes
       addresses:
         # Setting the floating IP address + netmask (255.255.255.255)
-        - "{{ COMMON_FLOATING_IP }}/32":
-            lifetime: 0
-            label: "{{ COMMON_FLOATING_INTERFACE_NAME }}:1"
+        - "{{ COMMON_FLOATING_IP }}/32"
