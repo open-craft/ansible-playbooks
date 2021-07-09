@@ -8,8 +8,6 @@
       template:
         src: network/interfaces.d/floating-ip.cfg
         dest: /etc/network/interfaces.d/floating-ip.cfg
-        src: netplan/floating-ip.yaml
-        dest: /etc/netplan/floating-ip.yaml
         owner: root
         group: root
         mode: 0644
