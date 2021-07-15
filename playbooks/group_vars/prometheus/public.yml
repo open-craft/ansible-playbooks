@@ -115,8 +115,8 @@ prometheus_rules:
         severity: "warning"
         environment: "[[ $labels.environment ]]"
       annotations:
-        summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) http response time high."
-        description: "HTTP response time of [[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD }} for 5 minutes."
+        summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) http errors high."
+        description: "HTTP error ratio on [[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_HTTP_RESPONSE_FRONTEND_ERROR_THRESHOLD }} for 5 minutes."
   - name: "MySQLRules"
     rules:
     - alert: "mysql_down"
