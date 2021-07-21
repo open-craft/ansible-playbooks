@@ -33,7 +33,7 @@ PROMETHEUS_ALERT_MEMORY_THRESHOLD: 90
 PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD: 80
 
 PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD: 1
-PROMETHEUS_ALERT_HTTP_RESPONSE_FRONTEND_ERROR_THRESHOLD: 70
+PROMETHEUS_ALERT_HTTP_RESPONSE_FRONTEND_ERROR_THRESHOLD: 35
 
 OCIM_QUEUE_REDIS_KEY: null
 PROMETHEUS_ALERT_OCIM_QUEUE_SIZE_THRESHOLD: null
@@ -109,7 +109,7 @@ prometheus_rules:
         summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) http response time high."
         description: "HTTP response time of [[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD }} for 5 minutes."
     - alert: "haproxy_frontend_request_errors_high"
-      expr: "(100 * (haproxy_frontend_request_errors_total/haproxy_frontend_http_requests_total)) > {{ PROMETHEUS_ALERT_HTTP_RESPONSE_FRONTEND_ERROR_THRESHOLD }}"
+      expr: "(100 * (rate(haproxy_frontend_request_errors_total{frontend='fe_https'}[5m])/rate(haproxy_frontend_http_requests_total{frontend='fe_https'}[5m]))) > {{ PROMETHEUS_ALERT_HTTP_RESPONSE_FRONTEND_ERROR_THRESHOLD }}"
       for: "5m"
       labels:
         severity: "warning"
