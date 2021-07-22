@@ -50,3 +50,7 @@ POSTFIX_TRANSPORT_CONTENT: ""
 # This is templated out as the contents of the postfix aliases file.
 # See http://www.postfix.org/aliases.5.html for syntax.
 POSTFIX_ALIASES_CONTENT: ""
+
+# This is templated out as the contents of the postfix header_checks file.
+# See http://www.postfix.org/header_checks.5.html for syntax.
+POSTFIX_HEADER_CHECKS_CONTENT: ""

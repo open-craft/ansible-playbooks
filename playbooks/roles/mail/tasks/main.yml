@@ -20,6 +20,7 @@
   apt:
     name:
       - "postfix"
+      - "postfix-pcre"  # required for header_checks = pcre:...
   notify:
     - "reload postfix"
 
@@ -108,6 +109,13 @@
     dest: "/etc/aliases"
   notify:
     - "newaliases"
+
+- name: Postfix header_checks
+  template:
+    src: "postfix-header_checks.j2"
+    dest: "/etc/postfix/header_checks"
+  notify:
+    - "reload postfix"
 
 - name: Postfix is configured
   template:

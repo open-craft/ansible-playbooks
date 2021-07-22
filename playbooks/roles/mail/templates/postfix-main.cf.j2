@@ -41,6 +41,8 @@ relay_domains =
 
 smtpd_recipient_restrictions = permit_mynetworks,reject_unauth_destination
 
+header_checks = pcre:/etc/postfix/header_checks
+
 smtpd_tls_cert_file = /etc/letsencrypt/live/{{ MAILMAN_WEB_DOMAIN }}/fullchain.pem
 smtpd_tls_key_file = /etc/letsencrypt/live/{{ MAILMAN_WEB_DOMAIN }}/privkey.pem
 smtpd_tls_security_level = may
