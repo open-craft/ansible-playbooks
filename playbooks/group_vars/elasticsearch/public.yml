@@ -2,7 +2,7 @@
 
 # ELASTICSEARCH ###############################################################
 
-elasticsearch_repo: "deb http://packages.elastic.co/elasticsearch/1.5/debian stable main"
+elasticsearch_repo: "deb [trusted=yes] http://packages.elastic.co/elasticsearch/1.5/debian stable main"
 elasticsearch_package: "elasticsearch=1.5.2"
 elasticsearch_network_host: 0.0.0.0
 elasticsearch_http_port: 9200

@@ -19,6 +19,8 @@ elasticsearch_username: elastic
 elasticsearch_password: ""
 elasticsearch_keystore: ""
 
+elasticsearch_cfg_extra: ""
+
 # This should follow the format described in https://www.elastic.co/guide/en/elasticsearch/reference/current/jvm-options.html
 # It is templated out to 50-extra-jvm.options
 # Note that this is only supported by recent elasticsearch releases.
