@@ -39,11 +39,10 @@
     name: "{{ COMMON_SERVER_DEPENDENCIES }}"
     state: present
 
-- name: Activate tmpreaper
-  lineinfile:
+- name: tmpreaper is configured
+  template:
+    src: tmpreaper.conf
     dest: /etc/tmpreaper.conf
-    regexp: "^SHOWWARNING=true"
-    state: absent
 
 - name: Copy security update check script
   copy:
