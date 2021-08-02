@@ -62,6 +62,8 @@
     mode: 0640
   notify: restart elasticsearch
 
+# void creating the file if there is no extra jvm options
+# old es versions (v1.5) doesn't use this file
 - name: Elasticsearch extra jvm options
   template:
     src: 50-extra-jvm.options.j2
