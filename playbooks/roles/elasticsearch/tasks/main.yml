@@ -62,8 +62,8 @@
     mode: 0640
   notify: restart elasticsearch
 
-# this doesn't need to be conditionally templated, because old elasticsearch versions don't read from this file,
-# and an empty file is a valid file.
+# void creating the file if there is no extra jvm options
+# old es versions (v1.5) doesn't use this file
 - name: Elasticsearch extra jvm options
   template:
     src: 50-extra-jvm.options.j2
@@ -71,6 +71,7 @@
     group: elasticsearch
     mode: 0640
   notify: restart elasticsearch
+  when: elasticsearch_extra_jvm_options|length > 0
 
 - name: Set bootstrap password
   shell: echo "{{ elasticsearch_password }}" | {{ elasticsearch_bin_dir }}/elasticsearch-keystore add -f -x 'bootstrap.password'
