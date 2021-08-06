@@ -28,6 +28,14 @@
     id: "{{ COMMON_SERVER_OPENCRAFT_REPO_KEY_ID }}"
     state: present
 
+- name: set apt preferences to prioritize the opencraft repo
+  copy:
+    content: |
+            Package: chkrootkit
+            Pin: Origin "debs.opencraft.com"
+            Pin-Priority: 1001
+    dest: /etc/apt/preferences.d/opencraft
+
 - name: apt-get update, dist-upgrade and autoremove
   apt:
     update_cache: yes
