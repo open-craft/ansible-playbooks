@@ -32,7 +32,7 @@
   copy:
     content: |
             Package: chkrootkit
-            Pin: Origin "debs.opencraft.com"
+            Pin: Origin "{{ COMMON_SERVER_OPENCRAFT_REPO_DOMAIN }}"
             Pin-Priority: 1001
     dest: /etc/apt/preferences.d/opencraft
 

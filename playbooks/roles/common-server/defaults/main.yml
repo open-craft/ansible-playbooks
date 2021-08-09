@@ -52,6 +52,7 @@ COMMON_SERVER_NO_BACKUPS: false
 COMMON_SERVER_OPENCRAFT_REPO: "deb http://debs.opencraft.com/ {{ ansible_distribution_release }} main"
 COMMON_SERVER_OPENCRAFT_REPO_KEY_SERVER: "keyserver.ubuntu.com"
 COMMON_SERVER_OPENCRAFT_REPO_KEY_ID: "59BDABBADA918972"
+COMMON_SERVER_OPENCRAFT_REPO_DOMAIN: "debs.opencraft.com"
 
 COMMON_SERVER_DEPENDENCIES:
   - acl
