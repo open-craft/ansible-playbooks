@@ -17,16 +17,24 @@
     state: link
     force: true
 
-- name: add Opencraft repository
-  apt_repository:
-    repo: "{{ COMMON_SERVER_OPENCRAFT_REPO }}"
-    state: present
-
 - name: add Opencraft repository key
   apt_key:
     keyserver: "{{ COMMON_SERVER_OPENCRAFT_REPO_KEY_SERVER }}"
     id: "{{ COMMON_SERVER_OPENCRAFT_REPO_KEY_ID }}"
     state: present
+
+- name: add Opencraft repository
+  apt_repository:
+    repo: "{{ COMMON_SERVER_OPENCRAFT_REPO }}"
+    state: present
+
+- name: set apt preferences to prioritize the opencraft repo
+  copy:
+    content: |
+            Package: chkrootkit
+            Pin: Origin "{{ COMMON_SERVER_OPENCRAFT_REPO_DOMAIN }}"
+            Pin-Priority: 1001
+    dest: /etc/apt/preferences.d/opencraft
 
 - name: apt-get update, dist-upgrade and autoremove
   apt:

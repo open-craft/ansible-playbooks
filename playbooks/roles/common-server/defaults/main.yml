@@ -49,7 +49,8 @@ COMMON_SERVER_ETCKEEPER_COMMIT_EMAIL: "{{ COMMON_SERVER_OPS_EMAIL }}"
 # Please think twice before setting it
 COMMON_SERVER_NO_BACKUPS: false
 
-COMMON_SERVER_OPENCRAFT_REPO: "deb http://debs.opencraft.com/ {{ ansible_distribution_release }} main"
+COMMON_SERVER_OPENCRAFT_REPO_DOMAIN: "debs.opencraft.com"
+COMMON_SERVER_OPENCRAFT_REPO: "deb http://{{ COMMON_SERVER_OPENCRAFT_REPO_DOMAIN }}/ {{ ansible_distribution_release }} main"
 COMMON_SERVER_OPENCRAFT_REPO_KEY_SERVER: "keyserver.ubuntu.com"
 COMMON_SERVER_OPENCRAFT_REPO_KEY_ID: "59BDABBADA918972"
 
