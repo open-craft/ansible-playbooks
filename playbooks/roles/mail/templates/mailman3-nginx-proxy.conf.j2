@@ -5,17 +5,6 @@ upstream mailman3 {
 }
 
 server {
-    listen 80;
-    listen [::]:80;
-    server_name {{ MAILMAN_WEB_DOMAIN }};
-    server_tokens off;
-
-    return 301 https://$server_name$request_uri;
-    access_log /var/log/nginx/mailman3-access.log combined;
-    error_log /var/log/nginx/mailman3-error.log;
-}
-
-server {
     listen 443;
     listen [::]:443;
     server_name {{ MAILMAN_WEB_DOMAIN }};
