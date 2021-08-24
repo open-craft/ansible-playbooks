@@ -18,5 +18,5 @@
 - name: install sanity checks crontab
   cron:
     job: "{{ SANITY_CHECK_SCRIPT_LOCATION }} {{ SANITY_CHECK_CONFIG }} > /dev/null 2>&1"
-    minute: "10,20,30,40,50"
+    minute: "1,11,21,31,41,51"
     name: "sanity checker for: {{ SANITY_CHECK_SUBJECT }}"
