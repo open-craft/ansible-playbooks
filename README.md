@@ -241,8 +241,6 @@ This ansible repository deploys MySQL server on OpenStack provider.
    data will be stored elsewhere.
 1. Attach the data volume that you created earlier to the VM (go to `Volumes` -> data volume -> expand dropdown next to "Edit Volume" ->
    `Edit Attachments`).
-1. Manual step: SSH into the database instance and format `/dev/vdb` using `zfs`.
-    1. Create the zfs pool: `zpool create -m /var/lib/mysql mysql /dev/vdb`
 1. Go to info page and note the instance public key, ssh to the instance and check whether public key matches,
    save public key to your ssh config.
 
