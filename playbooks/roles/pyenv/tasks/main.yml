@@ -1,8 +1,7 @@
 - name: Install prerequisites
   apt:
-    name: "{{ item }}"
+    name: "{{ pyenv_prerequisite_packages }}"
     state: present
-  loop: "{{ pyenv_prerequisite_packages }}"
 
 - name: Ensure that the "{{ pyenv_home }}" directory is present and has the right permissions
   file:
