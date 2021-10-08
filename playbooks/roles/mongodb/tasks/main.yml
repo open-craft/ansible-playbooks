@@ -11,11 +11,16 @@
     home: "{{ MONGODB_HOME }}"
     system: yes
 
+- name: Create a xfs filesystem on MONGODB_OPENSTACK_DB_DEVICE
+  filesystem:
+    fstype: xfs
+    dev: "{{ MONGODB_OPENSTACK_DB_DEVICE }}"
+
 - name: Mount MongoDB home
   mount:
     name: "{{ MONGODB_HOME }}"
     src: "{{ MONGODB_OPENSTACK_DB_DEVICE }}"
-    fstype: ext4
+    fstype: xfs
     state: mounted
 
 - name: Create db and log directories for MongoDB home
