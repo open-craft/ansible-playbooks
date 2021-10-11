@@ -2,7 +2,6 @@
 
 filebeat_elastic_apt_pin: 500
 filebeat_config_dir: /etc/filebeat
-filebeat_registry_file: /var/lib/filebeat/registry
 
 filebeat_ca_cert: ""
 filebeat_cert: ""
