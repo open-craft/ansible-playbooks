@@ -1,6 +1,7 @@
 ---
 # The hostname used to access the Wordpress site
 WORDPRESS_SITE_DOMAIN: 'wordpress.example.com'
+WORDPRESS_MAX_UPLOAD_SIZE: '100M'
 
 # Wordpress database settings
 WORDPRESS_DB_HOST: 'mysql.example.com'
@@ -13,6 +14,7 @@ WORDPRESS_DOCKER_COMPOSE_DIR: '/var/www/wordpress'
 WORDPRESS_DOCUMENT_ROOT: "/var/www/html"
 WORDPRESS_DOCKER_COMPOSE_ENV_FILE: "{{ WORDPRESS_DOCKER_COMPOSE_DIR }}/wordpress.env"
 WORDPRESS_DOCKER_FPM_CONTAINER: "wordpress:fpm"
+WORDPRESS_FPM_UPLOAD_SETTINGS_FILE: "{{ WORDPRESS_DOCKER_COMPOSE_DIR }}/uploads.ini"
 
 # Volume mappings for the Wordpress docker container.
 WORDPRESS_DOCKER_VOLUMES:

@@ -21,6 +21,13 @@
     mode: 0600
     backup: yes
 
+- name: Install FPM's upload configuration file
+  template:
+    src: "uploads.ini.j2"
+    dest: "{{ WORDPRESS_FPM_UPLOAD_SETTINGS_FILE }}"
+    mode: 0600
+    backup: yes
+
 - name: Start the app with docker-compose
   docker_service:
     project_src: "{{ WORDPRESS_DOCKER_COMPOSE_DIR }}"
