@@ -24,6 +24,9 @@ server {
         {% endif %}
         {% endif %}
 
+        # Set max upload size for file uploads
+        client_max_body_size {{ WORDPRESS_MAX_UPLOAD_SIZE }};
+
         location = /favicon.ico {
                 log_not_found off;
                 access_log off;
