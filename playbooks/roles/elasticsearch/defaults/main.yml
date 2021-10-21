@@ -25,3 +25,19 @@ elasticsearch_cfg_extra: ""
 # It is templated out to 50-extra-jvm.options
 # Note that this is only supported by recent elasticsearch releases.
 elasticsearch_extra_jvm_options: ""
+
+# Define these and include tasks/create_user_roles.yml to create users and roles in Elasticsearch.
+# Note that Elasticsearch must be running for this to work.
+create_elasticsearch_users: []
+# - username: example_user
+#   password: example_password
+#   roles: ["viewer"]
+create_elasticsearch_roles: []
+# - name: example_role
+#   # Ref https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html
+#   permissions: |-
+#     {
+#         "cluster": [...],
+#         "indices": [...],
+#         ...
+#     }

@@ -8,8 +8,9 @@ actions:
       continue_if_exception: True
       timeout_override: 300
     filters:
-      - filtertype: kibana
-        exclude: true
+      - filtertype: pattern
+        kind: prefix
+        value: {{ curator_delete_indices_prefix }}
       - filtertype: age
         source: creation_date
         direction: older

@@ -42,7 +42,7 @@ We will also need to set `elasticsearch_ca` with the contents of `kibana/elastic
 cat kibana/elasticsearch-ca.pem
 ```
 
-We will also need to set passwords for 3 separate ansible variables: `logstash_elasticsearch_password`, `kibana_elasticsearch_password`, and `elasticsearch_password`.
+We will also need to set passwords for 4 separate ansible variables: `logstash_elasticsearch_password`, `kibana_elasticsearch_password`, `curator_elasticsearch_password`, and `elasticsearch_password`.
 The details of setting these up are discussed in [`playbooks/roles/elasticsearch/README.md`](playbooks/roles/elasticsearch/README.md) and [`playbooks/roles/kibana/README.md`](playbooks/roles/kibana/README.md) respectively.
 The other options necessary will be set by our ansible roles and configuration scripts.
 
