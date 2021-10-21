@@ -8,8 +8,8 @@ We have several submodules defined in `.gitmodules` -- they're all either 3rd pa
 
 If you need to update a submodule in this repository to point to a new commit hash, `cd` into it and `git checkout` that reference. You can then stage and commit those changes.
 
-Warning: ansible-playbook will silently skip tasks in the roles defined as
-submodules if the submodules haven't been checked out. Be sure to run `git submodule update --init --recursive` to initialize the submodules.
+**WARNING: ansible-playbook will silently skip tasks in the roles defined as submodules if the submodules haven't been checked out!**
+Be sure to run `git submodule update --init --recursive` to initialize the submodules.
 
 For our own roles that are in this repository as submodules, they should be on the latest `master`. You can update them with `git submodule update --remote`.
 
