@@ -29,3 +29,7 @@ MONGODB_EXPORTER_CONSUL_SERVICE:
       - monitor-https
     port: "{{ MONGODB_EXPORTER_PUBLIC_PORT }}"
     enable_tag_override: true
+
+# Used to set mongodb_master on deploying a new replicaSet
+# This must be false to get the primary to connect to the existing replicaSet
+mongodb_fresh_deployment: false
