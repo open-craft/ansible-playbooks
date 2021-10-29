@@ -14,7 +14,7 @@
     state: present
     key: "{{ CI_SSH_PUBLIC_KEY }}"
 
-- name: Create the sprints directory
+- name: Create the app directory
   file:
     path: "{{ APP_PATH }}"
     state: directory
@@ -44,17 +44,27 @@
     special_time: daily
   become_user: ubuntu
 
-- name: Install the environment file
+- name: Generate the environment file
   template:
     src: env.j2
     dest: "{{ APP_PATH }}/.env"
     mode: 0600
     backup: yes
   become_user: ubuntu
+  tags: configuration
 
-- name: Start Sprints with docker-compose
-  docker_service:
+- name: Start SprintCraft with docker-compose
+  docker_compose:
     project_src: "{{ APP_PATH }}"
     pull: yes
-    debug: yes
   become_user: ubuntu
+
+# This will only run when the "configuration" tag is specified.
+- name: Restart SprintCraft services after reconfiguring them
+  docker_compose:
+    project_src: "{{ APP_PATH }}"
+    restarted: true
+    services:
+      - django
+      - celeryworker
+  tags: [never, configuration]

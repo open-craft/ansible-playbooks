@@ -8,7 +8,7 @@ volumes:
 
 services:
   django: &django
-    image: opencraft/sprints_django
+    image: registry.gitlab.com/opencraft/dev/sprintcraft:django-latest
     depends_on:
       {% if USE_POSTGRES %}
       - postgres
@@ -23,7 +23,7 @@ services:
 
   {% if USE_POSTGRES %}
 postgres:
-    image: opencraft/sprints_postgres
+    image: registry.gitlab.com/opencraft/dev/sprintcraft:postgres-latest
     volumes:
       - production_postgres_data:/var/lib/postgresql/data
       - production_postgres_data_backups:/backups
@@ -33,31 +33,31 @@ postgres:
   {% endif %}
 
   redis:
-    image: redis:3.2
+    image: redis:6
     restart: always
 
   celeryworker:
     <<: *django
-    image: opencraft/sprints_celeryworker
+    image: registry.gitlab.com/opencraft/dev/sprintcraft:celeryworker-latest
     ports: []
     command: /start-celeryworker
 
   celerybeat:
     <<: *django
-    image: opencraft/sprints_celerybeat
+    image: registry.gitlab.com/opencraft/dev/sprintcraft:celerybeat-latest
     ports: []
     command: /start-celerybeat
 
   flower:
     <<: *django
-    image: opencraft/sprints_flower
+    image: registry.gitlab.com/opencraft/dev/sprintcraft:flower-latest
     ports:
       - "5555:5555"
     command: /start-flower
 
   {% if USE_POSTGRES %}
 awscli:
-    image: opencraft/sprints_awscli
+    image: registry.gitlab.com/opencraft/dev/sprintcraft:awscli-latest
     env_file:
       - .env
     volumes:
