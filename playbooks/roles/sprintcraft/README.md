@@ -1,4 +1,4 @@
-Ansible role for deploying Sprints
+Ansible role for deploying SprintCraft
 ============================================================
 
 This role deploys [the application for sprint management][1].
@@ -31,5 +31,5 @@ in such case. To do this on an existing instance, use the following approach:
    rm -r /var/lib/docker  # Remove backup.
    ```
 
-[1]: https://github.com/open-craft/sprints
-[2]: https://github.com/open-craft/sprints/blob/master/config/settings/base.py
+[1]: https://gitlab.com/opencraft/dev/sprintcraft
+[2]: https://gitlab.com/opencraft/dev/sprintcraft/-/blob/master/config/settings/base.py
