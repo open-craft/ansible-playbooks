@@ -12,10 +12,10 @@
 	url = https://github.com/kamaln7/ansible-swapfile
 [submodule "playbooks/roles/geerlingguy.mysql"]
 	path = playbooks/roles/geerlingguy.mysql
-	url = https://github.com/open-craft/ansible-role-mysql
+	url = https://github.com/geerlingguy/ansible-role-mysql
 [submodule "playbooks/roles/geerlingguy.postgresql"]
 	path = playbooks/roles/geerlingguy.postgresql
-	url = https://github.com/open-craft/ansible-role-postgresql
+	url = https://github.com/geerlingguy/ansible-role-postgresql
 [submodule "playbooks/roles/geerlingguy.memcached"]
 	path = playbooks/roles/geerlingguy.memcached
 	url = https://github.com/geerlingguy/ansible-role-memcached
