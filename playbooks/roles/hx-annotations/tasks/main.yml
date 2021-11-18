@@ -127,7 +127,7 @@
   django_manage:
     app_path: "{{ service_install_dir }}"
     virtualenv: "{{ service_virtualenv_dir }}"
-    command: "create_consumer_pair --consumer {{ lti_consumer_key }} --secret {{ lti_consumer_secret }}"
+    command: "create_consumer_pair --consumer '{{ annotation_db_key }}' --secret '{{ annotation_db_secret }}' --expire_in_weeks 260"
   when: lti_create_consumer_key_pair is defined and lti_create_consumer_key_pair
 
 - name: Ensure cronjob exists to clear sessions

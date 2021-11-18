@@ -85,3 +85,7 @@ postgresql_users:
     db: "{{ service_db_name }}"
     priv: ALL
     role_attr_flags: CREATEDB
+
+# REDIS #######################################################################
+
+redis_version: "6.2.6"

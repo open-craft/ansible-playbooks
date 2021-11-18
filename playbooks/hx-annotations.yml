@@ -14,6 +14,9 @@
     - role: geerlingguy.postgresql
       tags: "geerlingguy.postgresql"
 
+    - role: davidwittman.redis
+      tags: "davidwittman.redis"
+
     - role: hx-annotations
       tags: "hx-annotations"
 
