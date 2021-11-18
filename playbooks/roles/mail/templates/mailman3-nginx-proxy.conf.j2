@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 upstream mailman3 {
-    server unix:/run/mailman3/web/uwsgi.sock fail_timeout=0;
+    server unix:/run/mailman3-web/uwsgi.sock fail_timeout=0;
 }
 
 server {
