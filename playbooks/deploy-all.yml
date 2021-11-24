@@ -6,7 +6,7 @@
 - import_playbook: dalite.yml
 - import_playbook: elasticsearch.yml
 - import_playbook: elk.yml
-- import_playbook: hxat-catchpy-loris.yml
+- import_playbook: hx-annotations.yml
 - import_playbook: learner-profile-dashboard.yml
 - import_playbook: load-balancer-v2.yml
 - import_playbook: mongodb.yml
