@@ -1,9 +1,5 @@
 ---
 
-# An optional block device to mount at /var/lib/mailman3
-# This device must be manually formatted to ext4 before running the playbook.
-MAILMAN_BLOCK_DEVICE: ""
-
 # The domain of the server.
 # This is used to configure the nginx proxy and reading certbot letsencrypt cert paths.
 MAILMAN_WEB_DOMAIN: "mailman.example.com"
