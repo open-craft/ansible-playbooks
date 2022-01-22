@@ -11,6 +11,23 @@
 - name: Copy nginx global configuration
   synchronize: src="global/" dest=/etc/nginx/global checksum=yes delete=yes owner=no group=no
 
+- name: set up basic auth password
+  when: NGINX_WP_AUTH_PASSWORD is not none
+  block:
+
+    - name: install passlib for htpasswd generation
+      apt:
+        name: python3-passlib
+
+    - name: generate htpasswd file
+      htpasswd:
+        path: "{{ NGINX_WP_AUTH_HTPASSWD_PATH }}"
+        username: "{{ NGINX_WP_AUTH_USERNAME }}"
+        password: "{{ NGINX_WP_AUTH_PASSWORD }}"
+
+    - name: add auth basic credentials to global configuration
+      command: sed -i '/try_files $uri $uri\/ \/index.php?$args;/a auth_basic "Restricted";\nauth_basic_user_file {{ NGINX_WP_AUTH_HTPASSWD_PATH }};' /etc/nginx/global/wordpress.conf
+
 - name: Add site nginx configurations
   template:
     src: ../templates/{{ item.template }}-nginx.j2

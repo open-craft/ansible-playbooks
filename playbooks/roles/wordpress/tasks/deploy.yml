@@ -47,18 +47,6 @@
     version: "{{ WORDPRESS_THEME_VERSION }}"
     dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}/wp-content/themes/opencraftv2"
     accept_hostkey: yes
+    force: yes
   become_user: www-data
   when: WORDPRESS_THEME_DEPLOY
-
-- name: Copy content backup
-  copy:
-    src: "{{ WORDPRESS_UPLOADS_RESTORE_BACKUP_PATH }}"
-    dest: /tmp/uploads.zip
-
-- name: Extract content backup
-  unarchive:
-    src: /tmp/uploads.zip
-    dest: "/var/www/{{ LANDING_SITE_HOSTNAME }}/wp-content/"
-    owner: www-data
-    group: www-data
-    remote_src: yes
