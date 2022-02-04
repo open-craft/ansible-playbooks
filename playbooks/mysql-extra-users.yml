@@ -1,0 +1,15 @@
+---
+# Playbook for added extra users to the MySQL server
+
+- name: Create custom users with specific privileges in MySQL
+  hosts: mysql
+  become: true
+
+  tasks:
+  - name: Create custom users
+    mysql_user:
+      state: present
+      name: "{{ item.user }}"
+      password: "{{ item.password }}"
+      priv: "{{ item.priv }}"
+    loop: "{{ EDXAPP_MYSQL_EXTRA_USERS }}"
