@@ -52,7 +52,7 @@ prometheus_rules:
         summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) down."
         description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] is down."
     - alert: "cpu_usage_high"
-      expr: "(100 * (1 - (rate(node_cpu{mode='idle'}[5m])))) > {{ PROMETHEUS_ALERT_CPU_THRESHOLD }}"
+      expr: "(100 * (1 - (rate(node_cpu_seconds_total{mode='idle'}[5m])))) > {{ PROMETHEUS_ALERT_CPU_THRESHOLD }}"
       for: "5m"
       labels:
         severity: "warning"
@@ -70,7 +70,7 @@ prometheus_rules:
         summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) memory usage high."
         description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] memory usage has been above {{ PROMETHEUS_ALERT_MEMORY_THRESHOLD }}% for 5 minutes."
     - alert: "low_disk_space"
-      expr: "(100 * (1 - (node_filesystem_free{mountpoint!~\"/snap.*\"} / node_filesystem_size{mountpoint!~\"/snap.*\"}))) > {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}"
+      expr: "(100 * (1 - (node_filesystem_free_bytes{mountpoint!~\"/snap.*\"} / node_filesystem_size{mountpoint!~\"/snap.*\"}))) > {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}"
       for: "5m"
       labels:
         severity: "warning"
@@ -80,7 +80,47 @@ prometheus_rules:
         description: "Instance disk is more than {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}% full."
     - alert: "disk_will_fill_in_4_hours"
       # https://www.robustperception.io/reduce-noise-from-disk-space-alerts/
-      expr: "(100 * (1 - (predict_linear(node_filesystem_free{fstype='ext4'}[1h], 4 * 3600)/node_filesystem_size{fstype='ext4'}))) > {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}"
+      expr: "(100 * (1 - (predict_linear(node_filesystem_free_bytes{fstype='ext4'}[1h], 4 * 3600)/node_filesystem_free_bytes{fstype='ext4'}))) > {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}"
+      for: "5m"
+      labels:
+        severity: "warning"
+        environment: "[[ $labels.environment ]]"
+      annotations:
+        summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) disk is filling up."
+        description: "Instance disk may fill up {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}% in 4 hours."
+  - name: NodeRules_v2
+    # We created this to support alerts for nodes that has node exporter version > 0.15 
+    rules:
+    - alert: "cpu_usage_high"
+      expr: "(100 * (1 - (rate(node_cpu_seconds_total{mode='idle'}[5m])))) > {{ PROMETHEUS_ALERT_CPU_THRESHOLD }}"
+      for: "5m"
+      labels:
+        severity: "warning"
+        environment: "[[ $labels.environment ]]"
+      annotations:
+        summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) CPU usage high."
+        description: "CPU usage of [[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_CPU_THRESHOLD }} for 5 minutes."
+    - alert: "low_memory"
+      expr: "(100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))) > {{ PROMETHEUS_ALERT_MEMORY_THRESHOLD }}"
+      for: "5m"
+      labels:
+        severity: "warning"
+        environment: "[[ $labels.environment ]]"
+      annotations:
+        summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) memory usage high."
+        description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] memory usage has been above {{ PROMETHEUS_ALERT_MEMORY_THRESHOLD }}% for 5 minutes."
+    - alert: "low_disk_space"
+      expr: "(100 * (1 - (node_filesystem_free_bytes{mountpoint!~\"/snap.*\"} / node_filesystem_size_bytes{mountpoint!~\"/snap.*\"}))) > {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}"
+      for: "5m"
+      labels:
+        severity: "warning"
+        environment: "[[ $labels.environment ]]"
+      annotations:
+        summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) disk usage high."
+        description: "Instance disk is more than {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}% full."
+    - alert: "disk_will_fill_in_4_hours"
+      # https://www.robustperception.io/reduce-noise-from-disk-space-alerts/
+      expr: "(100 * (1 - (predict_linear(node_filesystem_free_bytes{fstype='ext4'}[1h], 4 * 3600)/node_filesystem_free_bytes{fstype='ext4'}))) > {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}"
       for: "5m"
       labels:
         severity: "warning"
