@@ -39,7 +39,7 @@
     src: "{{ POSTGRES_OPENSTACK_DB_DEVICE }}"
     fstype: ext4
     state: mounted
-  when: POSTGRES_OPENSTACK_DB_DEVICE
+  when: POSTGRES_OPENSTACK_DB_DEVICE != None
 
 - name: chown & chmod /var/lib/postgresql
   file:
