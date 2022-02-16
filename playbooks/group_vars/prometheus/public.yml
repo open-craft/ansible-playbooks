@@ -89,7 +89,7 @@ prometheus_rules:
         summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) disk is filling up."
         description: "Instance disk may fill up {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}% in 4 hours."
   - name: NodeRules_v2
-    # We created this to support alerts for nodes that has node exporter version > 0.15 
+    # We created this to support alerts for nodes that have node exporter version > 0.15 
     rules:
     - alert: "cpu_usage_high"
       expr: "(100 * (1 - (rate(node_cpu_seconds_total{mode='idle'}[5m])))) > {{ PROMETHEUS_ALERT_CPU_THRESHOLD }}"
