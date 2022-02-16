@@ -91,7 +91,7 @@ prometheus_rules:
   - name: NodeRules_v2
     # We created this to support alerts for nodes that have node exporter version > 0.15 
     rules:
-    - alert: "cpu_usage_high"
+    - alert: "cpu_usage_high_v2"
       expr: "(100 * (1 - (rate(node_cpu_seconds_total{mode='idle'}[5m])))) > {{ PROMETHEUS_ALERT_CPU_THRESHOLD }}"
       for: "5m"
       labels:
@@ -100,7 +100,7 @@ prometheus_rules:
       annotations:
         summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) CPU usage high."
         description: "CPU usage of [[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_CPU_THRESHOLD }} for 5 minutes."
-    - alert: "low_memory"
+    - alert: "low_memory_v2"
       expr: "(100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))) > {{ PROMETHEUS_ALERT_MEMORY_THRESHOLD }}"
       for: "5m"
       labels:
@@ -109,7 +109,7 @@ prometheus_rules:
       annotations:
         summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) memory usage high."
         description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] memory usage has been above {{ PROMETHEUS_ALERT_MEMORY_THRESHOLD }}% for 5 minutes."
-    - alert: "low_disk_space"
+    - alert: "low_disk_space_v2"
       expr: "(100 * (1 - (node_filesystem_free_bytes{mountpoint!~\"/snap.*\"} / node_filesystem_size_bytes{mountpoint!~\"/snap.*\"}))) > {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}"
       for: "5m"
       labels:
@@ -118,7 +118,7 @@ prometheus_rules:
       annotations:
         summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) disk usage high."
         description: "Instance disk is more than {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}% full."
-    - alert: "disk_will_fill_in_4_hours"
+    - alert: "disk_will_fill_in_4_hours_v2"
       # https://www.robustperception.io/reduce-noise-from-disk-space-alerts/
       expr: "(100 * (1 - (predict_linear(node_filesystem_free_bytes{fstype='ext4'}[1h], 4 * 3600)/node_filesystem_free_bytes{fstype='ext4'}))) > {{ PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD }}"
       for: "5m"
