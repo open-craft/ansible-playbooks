@@ -14,6 +14,7 @@ MONGODB_EXPORTER_PASSWORD: null
 MONGODB_EXPORTER_EXTRA_OPTS: ""
 MONGODB_EXPORTER_PUBLIC_PORT: 19001
 MONGODB_EXPORTER_INTERNAL_PORT: 9001
+MONGODB_EXPORTER_LIMIT_OPEN_FILES: 64000
 
 # This is not meant to be changed, but to improve the readability and to reduce the repetition
 MONGODB_HOME: /var/lib/mongodb

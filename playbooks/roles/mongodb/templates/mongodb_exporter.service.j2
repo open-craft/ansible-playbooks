@@ -9,6 +9,7 @@ Restart=always
 RestartSec=10
 User=mongodb
 Group=mongodb
+LimitNOFILE={{ MONGODB_EXPORTER_LIMIT_OPEN_FILES }}
 
 [Install]
 WantedBy=multi-user.target
