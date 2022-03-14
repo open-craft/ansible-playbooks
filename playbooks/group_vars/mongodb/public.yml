@@ -6,7 +6,7 @@ ansible_python_interpreter: /usr/bin/python
 
 # MONGODB #####################################################################
 
-mongodb_version: "3.6"
+mongodb_version: "4.0"
 mongodb_daemon_name: "mongodb"
 mongodb_net_bindip: "0.0.0.0"
 mongodb_security_authorization: "enabled"

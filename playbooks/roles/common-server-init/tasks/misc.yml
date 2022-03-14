@@ -47,6 +47,11 @@
     name: "{{ COMMON_SERVER_DEPENDENCIES }}"
     state: present
 
+- name: Default to python3
+  alternatives:
+    name: python
+    path: /usr/bin/python3
+
 - name: tmpreaper is configured
   template:
     src: tmpreaper.conf

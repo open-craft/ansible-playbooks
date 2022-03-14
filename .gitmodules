@@ -21,7 +21,9 @@
 	url = https://github.com/geerlingguy/ansible-role-memcached
 [submodule "playbooks/roles/greendayonfire.mongodb"]
 	path = playbooks/roles/greendayonfire.mongodb
-	url = https://github.com/UnderGreen/ansible-role-mongodb
+	# url = https://github.com/UnderGreen/ansible-role-mongodb
+	# this is temporary until the upgrade to mongodb 4.2
+	url = https://github.com/open-craft/ansible-role-mongodb
 [submodule "playbooks/roles/elastic.elasticsearch"]
 	path = playbooks/roles/elastic.elasticsearch
 	url = https://github.com/elastic/ansible-elasticsearch.git
