@@ -16,6 +16,11 @@
     src: logrotate
     dest: /etc/logrotate.d/prometheus
 
+- name: ensure prometheus service directory exists
+  file:
+    path: /etc/systemd/system/prometheus.service.d
+    state: directory
+
 - name: set the nofile limit for prometheus service to a high number
   copy:
     content: |
