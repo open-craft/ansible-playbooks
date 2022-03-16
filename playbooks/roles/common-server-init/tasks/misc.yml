@@ -47,10 +47,17 @@
     name: "{{ COMMON_SERVER_DEPENDENCIES }}"
     state: present
 
+- name: Check if Python3 exists
+  stat:
+      path: "/usr/bin/python3"
+  register: python3_executable
+
 - name: Default to python3
   alternatives:
     name: python
+    link: /usr/bin/python
     path: /usr/bin/python3
+  when: python3_executable.stat.exists
 
 - name: tmpreaper is configured
   template:
