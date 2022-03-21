@@ -15,10 +15,10 @@ server {
 
     set $expected_origin false;
     if ($http_origin ~ {{ NGINX_PROXY_ORIGIN_REGEX }}) {
-    set $expected_origin true;
+        set $expected_origin true;
     }
 
-    {% for response_code in NGINX_PROXY_CORS_HEADERS_FOR_RESPONSE_CODES %}
+    {% for response_code in NGINX_PROXY_CORS_HEADERS_FOR_RESPONSE_CODES -%}
     location @{{ response_code }}_cors_header {
         if ($expected_origin = true) {
             add_header 'Access-Control-Allow-Origin' $http_origin always;
@@ -29,7 +29,7 @@ server {
 
         return {{ response_code }};
     }
-    {% endfor %}
+    {%- endfor %}
 
     location / {
         proxy_pass {{ NGINX_PROXY_INTERNAL_SCHEME }}://{{ NGINX_PROXY_INTERNAL_DOMAIN }}:{{ NGINX_PROXY_INTERNAL_PORT }}/;
@@ -49,13 +49,14 @@ server {
         auth_basic_user_file {{ NGINX_PROXY_HTPASSWD_PATH }};
         {%- endif %}
 
-        {% if NGINX_PROXY_UPGRADE_CONNECTION %}
+        {% if NGINX_PROXY_UPGRADE_CONNECTION -%}
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
-        {% endif %}
+        {%- endif %}
 
-        {% for response_code in NGINX_PROXY_CORS_HEADERS_FOR_RESPONSE_CODES %}
+        # Add CORS headers for the response code does not have a correct CORS header.
+        {% for response_code in NGINX_PROXY_CORS_HEADERS_FOR_RESPONSE_CODES -%}
         error_page {{ response_code }} = @{{ response_code }}_cors_header;
-        {% endfor %}
+        {%- endfor %}
     }
 }
