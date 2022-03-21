@@ -13,6 +13,24 @@ server {
 
     {{ NGINX_PROXY_EXTRA_CONFIG }}
 
+    set $expected_origin false;
+    if ($http_origin ~ {{ NGINX_PROXY_ORIGIN_REGEX }}) {
+        set $expected_origin true;
+    }
+
+    {% for response_code in NGINX_PROXY_CORS_HEADERS_FOR_RESPONSE_CODES -%}
+    location @{{ response_code }}_cors_header {
+        if ($expected_origin = true) {
+            add_header 'Access-Control-Allow-Origin' $http_origin always;
+            add_header 'Access-Control-Allow-Methods' 'GET,POST,DELETE,OPTIONS' always;
+            add_header 'Access-Control-Allow-Headers' 'Authorization,DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
+            add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range' always;
+        }
+
+        return {{ response_code }};
+    }
+    {%- endfor %}
+
     location / {
         proxy_pass {{ NGINX_PROXY_INTERNAL_SCHEME }}://{{ NGINX_PROXY_INTERNAL_DOMAIN }}:{{ NGINX_PROXY_INTERNAL_PORT }}/;
         proxy_http_version 1.1;
@@ -31,9 +49,14 @@ server {
         auth_basic_user_file {{ NGINX_PROXY_HTPASSWD_PATH }};
         {%- endif %}
 
-        {% if NGINX_PROXY_UPGRADE_CONNECTION %}
+        {% if NGINX_PROXY_UPGRADE_CONNECTION -%}
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
-        {% endif %}
+        {%- endif %}
+
+        # Add CORS headers for the response code does not have a correct CORS header.
+        {% for response_code in NGINX_PROXY_CORS_HEADERS_FOR_RESPONSE_CODES -%}
+        error_page {{ response_code }} = @{{ response_code }}_cors_header;
+        {%- endfor %}
     }
 }
