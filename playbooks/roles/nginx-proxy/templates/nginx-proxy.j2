@@ -14,9 +14,11 @@ server {
     {{ NGINX_PROXY_EXTRA_CONFIG }}
 
     set $expected_origin false;
-    if ($http_origin ~ {{ NGINX_PROXY_ORIGIN_REGEX }}) {
-        set $expected_origin true;
-    }
+    {% if NGINX_PROXY_ORIGIN_REGEX -%}
+        if ($http_origin ~ {{ NGINX_PROXY_ORIGIN_REGEX }}) {
+            set $expected_origin true;
+        }
+    {%- endif %}
 
     {% for response_code in NGINX_PROXY_CORS_HEADERS_FOR_RESPONSE_CODES -%}
     location @{{ response_code }}_cors_header {
