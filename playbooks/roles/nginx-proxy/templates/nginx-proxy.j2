@@ -14,7 +14,7 @@ server {
     {{ NGINX_PROXY_EXTRA_CONFIG }}
 
     set $expected_origin false;
-    if ($http_origin ~ {{ NGINX_PROXY_ORIGIN_REGEX }}) {
+    if (NGINX_PROXY_ORIGIN_REGEX and $http_origin ~ {{ NGINX_PROXY_ORIGIN_REGEX }}) {
         set $expected_origin true;
     }
 
