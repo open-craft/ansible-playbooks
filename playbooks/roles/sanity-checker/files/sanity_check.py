@@ -7,7 +7,13 @@ import socket
 import subprocess
 import sys
 import time
-import urllib2
+
+try:
+    # Python 3
+    from urllib.request import urlopen, URLError, HTTPError
+except ImportError:
+    # Python 2
+    from urllib2 import urlopen, URLError, HTTPError
 
 
 SanityCheckResult = collections.namedtuple(
@@ -196,8 +202,8 @@ def ping_http_endpoint(url, max_retries=DEFAULT_HTTP_RETRIES, delay=DEFAULT_HTTP
     report = []
     for count in range(1, max_retries + 1):
         try:
-            response = urllib2.urlopen(url, timeout=5)
-        except (urllib2.URLError, urllib2.HTTPError) as e:
+            response = urlopen(url, timeout=5)
+        except (URLError, HTTPError) as e:
             report.append(SanityCheckResult(True, "Attempt {} to contact DMS failed due to:"
                                                   "\n{}".format(count, str(e))))
         else:
