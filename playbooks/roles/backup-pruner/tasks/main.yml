@@ -5,9 +5,9 @@
     name: "{{ packages }}"
   vars:
     packages:
-    - python-dev
-    - python-pip
-    - python-setuptools
+    - python3-dev
+    - python3-pip
+    - python3-setuptools
 
 - name: install gnu parallel
   apt:
@@ -38,9 +38,8 @@
   no_log: true
   with_items: "{{ BACKUP_PRUNER_TARSNAPPER_JOBS }}"
 
-# NOTE: Pip doesn't work with tarsnapper
 - name: install tarsnapper
-  command: pip install "{{ BACKUP_PRUNER_TARSNAPPER_VERSION }}"
+  command: pip install tarsnapper
 
 - name: install pruner scripts
   template:
