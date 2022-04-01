@@ -1,5 +1,14 @@
 ---
 
+- name: Install packages for tarsnapper
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - python-dev
+    - python-pip
+    - python-setuptools
+
 - name: install gnu parallel
   apt:
     name: parallel
@@ -31,7 +40,7 @@
 
 # NOTE: Pip doesn't work with tarsnapper
 - name: install tarsnapper
-  command: easy_install "{{ BACKUP_PRUNER_TARSNAPPER_VERSION }}"
+  command: pip install "{{ BACKUP_PRUNER_TARSNAPPER_VERSION }}"
 
 - name: install pruner scripts
   template:
