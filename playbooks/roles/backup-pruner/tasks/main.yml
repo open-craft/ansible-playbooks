@@ -39,7 +39,7 @@
   with_items: "{{ BACKUP_PRUNER_TARSNAPPER_JOBS }}"
 
 - name: install tarsnapper
-  command: pip install tarsnapper
+  command: pip install tarsnapper==0.5.0
 
 - name: install pruner scripts
   template:
