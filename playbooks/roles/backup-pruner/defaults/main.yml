@@ -14,10 +14,6 @@ BACKUP_PRUNER_JOB_RETRIES: 3
 # The Linux nice value to give to processes kicked off by GNU Parallel.
 BACKUP_PRUNER_JOB_NICENESS: -20
 
-# Can be changed to normal tarsnapper once we merge this branch
-# and code winds up on PIP
-BACKUP_PRUNER_TARSNAPPER_VERSION: git+https://github.com/miracle2k/tarsnapper.git@0fedc22bcf8863fecb78c290a42dc28de96363b2
-
 # Example:
 # BACKUP_PRUNER_TARSNAPPER_JOBS:
 #   - name: "mysql-backup"
