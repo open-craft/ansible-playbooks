@@ -24,26 +24,32 @@ server {
                 fastcgi_split_path_info ^(.+?\.php)(/.*)$;
                 if (!-f $document_root$fastcgi_script_name) {
                         return 404;
-                }   
+                }
 
                 fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
                 fastcgi_index index.php;
                 include fastcgi.conf;
-        }   
+        }
 
         # deny access to .htaccess files
         location ~ /\.ht {
                 deny  all;
-        }   
+        }
+
+        # Certbot renewal challenge
+        location ^~ /.well-known/acme-challenge/ {
+                default_type "text/plain";
+                root /var/www/certbot;
+        }
 
         location /files {
                 autoindex off;
                 autoindex_exact_size off;
-                autoindex_localtime on; 
+                autoindex_localtime on;
 
                 #auth_basic "Restricted";
                 #auth_basic_user_file /var/www/.htpasswd_opencraftstaff;
-        }   
+        }
 
         # Wordpress config
         include global/wordpress.conf;
