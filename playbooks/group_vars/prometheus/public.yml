@@ -238,6 +238,7 @@ prometheus_alert_manager_config_receivers:
 
 prometheus_alert_manager_config_route:
   receiver: "default"
+  group_by: ["alertname"]
   group_wait: "30s"
   group_interval: "5m"
   repeat_interval: "4h"
