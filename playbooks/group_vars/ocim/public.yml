@@ -4,6 +4,10 @@
 
 COMMON_SERVER_NO_BACKUPS: true
 
+# Ocim uses many temporary files.
+# Increase tmpreaper runtime since the default often isn't enough.
+TMPREAPER_RUNTIME: '180'
+
 # CERTBOT #####################################################################
 
 CERTBOT_ADDITIONAL_DOMAINS:
