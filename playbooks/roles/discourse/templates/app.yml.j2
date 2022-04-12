@@ -96,6 +96,7 @@ hooks:
           - git clone https://github.com/discourse/docker_manager.git
           - git clone https://github.com/discourse/discourse-voting.git
           - git clone https://github.com/discourse/discourse-spoiler-alert.git
+          - git clone https://github.com/discourse/discourse-reactions.git
 
 ## Any custom commands to run after building
 run:
@@ -103,4 +104,6 @@ run:
   ## If you want to set the 'From' email address for your first registration, uncomment and change:
   ## After getting the first signup email, re-comment the line. It only needs to run once.
   - exec: rails r "SiteSetting.notification_email='contact@opencraft.com'"
+  - exec: rails r "SiteSetting.discourse_reactions_enabled='true'"
+  - exec: rails r "SiteSetting.discourse_reactions_enabled_reactions='laughing|open_mouth|cry|angry|thumbsup|thumbsdown'"
   - exec: echo "End of custom commands"
