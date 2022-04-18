@@ -41,7 +41,7 @@
 - name: configure SMTP client password
   copy:
     dest: "{{ POSTFIX_SASL_CLIENT_PASSWORD_FILE }}"
-    content: "{{ POSTFIX_RELAY_HOST }} {{POSTFIX_RELAY_USER}}:{{POSTFIX_RELAY_PASSWORD}}\n"
+    content: "{{ POSTFIX_RELAY_HOST }} {{POSTFIX_RELAY_USER}}{% if POSTFIX_RELAY_PASSWORD %}:{{POSTFIX_RELAY_PASSWORD}}{% endif %}\n"
     mode: 0600
 
 - name: call postmap on SMTP client password file
