@@ -4,8 +4,8 @@
 
 haproxy_domain_regex: "haproxy.*\\.net\\.opencraft\\.hosting"
 
-haproxy_ppa: "ppa:vbernat/haproxy-1.8"
-haproxy_version: "1.8.*"
+haproxy_ppa: "ppa:vbernat/haproxy-2.4"
+haproxy_version: "2.4.*"
 haproxy_custom_rules: null
 haproxy_custom_maps: []
 
