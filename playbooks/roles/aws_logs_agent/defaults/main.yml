@@ -1,0 +1,7 @@
+---
+
+AWS_LOGS_AGENT_SCRIPT_URL: "https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py"
+CERTBOT_ADDITIONAL_DOMAINS: []
+CERTBOT_OPS_EMAIL: ops@opencraft.com
+CERTBOT_RENEW_OPS_EMAIL: "{{ CERTBOT_OPS_EMAIL }}"
+CERTBOT_NGINX_LISTEN: 80
