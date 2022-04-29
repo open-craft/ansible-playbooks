@@ -2,6 +2,7 @@ compatibility_level = 2
 
 myorigin = /etc/mailname
 myhostname = {{ POSTFIX_HOSTNAME }}
+smtp_helo_name = {{ POSTFIX_HOSTNAME }}
 inet_interfaces = all
 
 # Mail to receive locally. We should not receive local mail, but keep this here to avoid mail loops.
