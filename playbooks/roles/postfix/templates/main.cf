@@ -15,7 +15,7 @@ smtpd_sasl_security_options = noanonymous
 smtpd_sasl_auth_enable = yes
 
 # Relay mail to internal domains directly to the configured internal mail host
-relay_domains = {{ POSTFIX_INTERNAL_DOMAIN }} $mydestination
+relay_domains = $mydestination
 relay_transport = relay:{{ POSTFIX_INTERNAL_MAIL_HOST }}
 
 # Relay mail from authenticated users and mail originating from local machine
