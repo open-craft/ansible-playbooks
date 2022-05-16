@@ -30,6 +30,7 @@
     state: directory
     owner: "{{ item.owner }}"
     group: consul
+    recurse: yes
     mode: 0750
   with_items:
     - { path: "{{ consul_config_dir }}", owner: root }
