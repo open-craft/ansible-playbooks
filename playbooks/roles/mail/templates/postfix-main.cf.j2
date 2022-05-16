@@ -46,3 +46,6 @@ smtpd_tls_key_file = /etc/letsencrypt/live/{{ MAILMAN_WEB_DOMAIN }}/privkey.pem
 smtpd_tls_security_level = may
 smtpd_tls_session_cache_database = btree:${queue_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${queue_directory}/smtp_scache
+{% if OPENCRAFT_HEADER_TOKEN %}
+header_checks = regexp:/etc/postfix/header_checks
+{% endif %}

@@ -94,6 +94,15 @@
     - "postmap transport"
     - "reload postfix"
 
+- name: Postfix header check maps
+  when: OPENCRAFT_HEADER_TOKEN
+  template:
+    src: "postfix-header-checks.j2"
+    dest: "/etc/postfix/header_checks"
+  notify:
+    - "postmap header_checks"
+    - "reload postfix"
+
 - name: Postfix aliases
   template:
     src: "postfix-aliases.j2"
