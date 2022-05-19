@@ -16,6 +16,20 @@
     group: mysql
     system: yes
 
+- name: Create a ext4 filesystem on MYSQL_OPENSTACK_DB_DEVICE
+  when: MYSQL_OPENSTACK_DB_DEVICE is defined and MYSQL_OPENSTACK_DB_DEVICE != ""
+  filesystem:
+    fstype: ext4
+    dev: "{{ MYSQL_OPENSTACK_DB_DEVICE }}"
+
+- name: Mount MySQL home
+  when: MYSQL_OPENSTACK_DB_DEVICE is defined and MYSQL_OPENSTACK_DB_DEVICE != ""
+  mount:
+    name: "/var/lib/mysql"
+    src: "{{ MYSQL_OPENSTACK_DB_DEVICE }}"
+    fstype: ext4
+    state: mounted
+
 - name: chown -R /var/lib/mysql
   file:
     path: /var/lib/mysql
