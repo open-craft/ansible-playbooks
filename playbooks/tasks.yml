@@ -68,6 +68,7 @@
     - role: mysql
       tags: 'mysql'
       vars:
+        MYSQL_DEBIAN_SNAPSHOT_URL: http://snapshot.debian.org/archive/debian/20210214T202741Z/pool/main/m/mysql-5.7/
         MYSQL_URLS:
           # Ubuntu 20.04 needs these three first dependencies in order to install mysql-server-core
           - name: insserv
@@ -77,15 +78,15 @@
           - name: initscripts
             url: http://cz.archive.ubuntu.com/ubuntu/pool/main/s/sysvinit/initscripts_2.88dsf-59.3ubuntu2_amd64.deb
           - name: libmysqlclient
-            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/libmysqlclient18_5.6.35-1_amd64.deb"
+            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/libmysqlclient20_5.7.26-1+b1_amd64.deb"
           - name: MySQL Client Core
-            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-client-core-5.6_5.6.35-1_amd64.deb"
+            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-client-core-5.7_5.7.26-1+b1_amd64.deb"
           - name: MySQL Client
-            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-client-5.6_5.6.35-1_amd64.deb"
+            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-client-5.7_5.7.26-1+b1_amd64.deb"
           - name: MySQL Server Core
-            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-server-core-5.6_5.6.35-1_amd64.deb"
+            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-server-core-5.7_5.7.26-1+b1_amd64.deb"
           - name: MySQL Server
-            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-server-5.6_5.6.35-1_amd64.deb"
+            url: "{{ MYSQL_DEBIAN_SNAPSHOT_URL }}/mysql-server-5.7_5.7.26-1+b1_amd64.deb"
 
     - role: geerlingguy.mysql
       tags: 'geerlingguy.mysql'
