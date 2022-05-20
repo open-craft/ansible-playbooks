@@ -67,6 +67,7 @@
 
     - role: mysql
       tags: 'mysql'
+      # This will fail if the /var/lib/mysql directory is not empty.
       vars:
         MYSQL_DEBIAN_SNAPSHOT_URL: http://snapshot.debian.org/archive/debian/20210214T202741Z/pool/main/m/mysql-5.7/
         MYSQL_URLS:
