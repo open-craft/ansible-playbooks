@@ -33,6 +33,7 @@ PROMETHEUS_ALERT_MEMORY_THRESHOLD: 90
 PROMETHEUS_ALERT_DISK_SPACE_THRESHOLD: 80
 
 PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD: 1
+PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_MIN_RESPONSES: 50
 PROMETHEUS_ALERT_HTTP_RESPONSE_FRONTEND_ERROR_THRESHOLD: 50
 
 OCIM_QUEUE_REDIS_KEY: null
@@ -140,14 +141,14 @@ prometheus_rules:
         summary: "HAProxy [[ $labels.node ]] ([[ $labels.instance ]]) down."
         description: "[[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] is down."
     - alert: "haproxy_backend_response_time_high"
-      expr: "haproxy_backend_http_response_time_average_seconds > {{ PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD }}"
-      for: "5m"
+      expr: "avg(haproxy_backend_http_response_time_average_seconds) by (backend) > {{ PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD }} and sum(increase(haproxy_backend_http_responses_total[10m])) by (backend) > {{ PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_MIN_RESPONSES }}"
+      for: "10m"
       labels:
         severity: "warning"
         environment: "[[ $labels.environment ]]"
       annotations:
-        summary: "Instance [[ $labels.node ]] ([[ $labels.instance ]]) http response time high."
-        description: "HTTP response time of [[ $labels.node ]] ([[ $labels.instance ]]) of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD }} for 5 minutes."
+        summary: "Backend [[ $labels.backend ]] HTTP response time high."
+        description: "HTTP response time of [[ $labels.backend ]] of job [[ $labels.job ]] has been above {{ PROMETHEUS_ALERT_HTTP_RESPONSE_TIME_THRESHOLD }} for 10 minutes."
     - alert: "haproxy_frontend_request_errors_high"
       expr: "(100 * (rate(haproxy_frontend_request_errors_total{frontend='fe_https'}[5m])/rate(haproxy_frontend_http_requests_total{frontend='fe_https'}[5m]))) > {{ PROMETHEUS_ALERT_HTTP_RESPONSE_FRONTEND_ERROR_THRESHOLD }}"
       for: "5m"
