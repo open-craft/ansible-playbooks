@@ -6,6 +6,7 @@ MYSQL_SERVER_BACKUP_DIR: /var/lib/mysql/backup
 MYSQL_OPEN_FILES_LIMIT: 65536
 MYSQL_PROCESSES_LIMIT: 1024
 MYSQL_OPENSTACK_DB_DEVICE: ""
+MYSQL_PINNED_VERSION: ""
 
 # PROMETHEUS ##################################################################
 

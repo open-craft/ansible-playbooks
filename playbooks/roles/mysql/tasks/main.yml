@@ -122,6 +122,7 @@
         enabled: yes
 
     - name: Create Consul service definition file
+      when: COMMON_SERVER_INSTALL_CONSUL is defined and COMMON_SERVER_INSTALL_CONSUL
       copy:
         content: "{{ MYSQL_EXPORTER_CONSUL_SERVICE | to_nice_json }}"
         dest: /etc/consul/mysqld-exporter.json
@@ -134,3 +135,10 @@
     state: present
   with_items:
     - "{{MYSQL_URLS}}"
+
+- name: Created pinned version file
+  when: MYSQL_PINNED_VERSION != ""
+  template:
+    src: pinned_versions.j2
+    dest: /etc/apt/preferences.d/mysql
+    mode: 0500
