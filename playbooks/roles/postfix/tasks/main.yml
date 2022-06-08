@@ -38,14 +38,23 @@
     dest: /etc/aliases
     src: aliases
 
-- name: configure SMTP client password
-  copy:
+- name: configure sasl client passwords
+  template:
+    src: "client-passwd.j2"
     dest: "{{ POSTFIX_SASL_CLIENT_PASSWORD_FILE }}"
-    content: "{{ POSTFIX_RELAY_HOST }} {{POSTFIX_RELAY_USER}}{% if POSTFIX_RELAY_PASSWORD %}:{{POSTFIX_RELAY_PASSWORD}}{% endif %}\n"
     mode: 0600
 
-- name: call postmap on SMTP client password file
+- name: call postmap on sasl client password file
   command: postmap "{{ POSTFIX_SASL_CLIENT_PASSWORD_FILE }}"
+
+- name: configure relay maps
+  template:
+    src: "relay_maps.j2"
+    dest: "{{ POSTFIX_RELAY_MAPS_FILE }}"
+    mode: 0600
+
+- name: call postmap on relay maps file
+  command: postmap "{{ POSTFIX_RELAY_MAPS_FILE }}"
 
 ### Dovecot configuration, used as Postfix SASL authentication backend
 

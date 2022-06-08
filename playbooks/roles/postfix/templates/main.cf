@@ -1,12 +1,10 @@
 compatibility_level = 2
 
+smtp_helo_name = {{ POSTFIX_MAILNAME }}
 myorigin = /etc/mailname
 myhostname = {{ POSTFIX_HOSTNAME }}
-smtp_helo_name = {{ POSTFIX_HOSTNAME }}
 inet_interfaces = all
-
-# Mail to receive locally. We should not receive local mail, but keep this here to avoid mail loops.
-mydestination = $myhostname, localhost.localdomain, localhost
+inet_protocols = ipv4
 
 # Configure SASL authentication via dovecot
 smtpd_sasl_type = dovecot
@@ -15,17 +13,15 @@ smtpd_sasl_local_domain = $myhostname
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_auth_enable = yes
 
-# Relay mail to internal domains directly to the configured internal mail host
-relay_domains = {{ POSTFIX_INTERNAL_DOMAIN }} $mydestination
-relay_transport = relay:{{ POSTFIX_INTERNAL_MAIL_HOST }}
-
 # Relay mail from authenticated users and mail originating from local machine
+relayhost = {{ POSTFIX_RELAY_DEFAULT_HOST }}
 mynetworks_style = host
 smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
-relayhost = {{ POSTFIX_RELAY_HOST }}
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:{{ POSTFIX_SASL_CLIENT_PASSWORD_FILE }}
 smtp_sasl_security_options = noanonymous
+{% if POSTFIX_RELAY_SENDER_MAP %}sender_dependent_relayhost_maps = hash:{{ POSTFIX_RELAY_MAPS_FILE }}
+{% endif %}
 
 # TLS client settings
 smtp_tls_note_starttls_offer = yes
