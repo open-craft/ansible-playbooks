@@ -23,6 +23,5 @@
 - import_playbook: wordpress.yml
 - import_playbook: pr-watcher-notifier.yml
 - import_playbook: sprintcraft.yml
-- import_playbook: crafty-bot.yml
 - import_playbook: matomo.yml
 - import_playbook: mail.yml
