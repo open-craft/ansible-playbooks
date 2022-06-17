@@ -8,7 +8,7 @@ volumes:
 
 services:
   django: &django
-    image: registry.gitlab.com/opencraft/dev/sprintcraft:django-{{ SPRINTCRAFT_VERSION }}
+    image: registry.gitlab.com/opencraft/dev/sprintcraft{{ SPRINTCRAFT_IMAGE }}:{{ SPRINTCRAFT_VERSION }}
     depends_on:
       {% if USE_POSTGRES %}
       - postgres
@@ -38,19 +38,19 @@ postgres:
 
   celeryworker:
     <<: *django
-    image: registry.gitlab.com/opencraft/dev/sprintcraft:celeryworker-{{ SPRINTCRAFT_VERSION }}
+    image: registry.gitlab.com/opencraft/dev/sprintcraft{{ SPRINTCRAFT_IMAGE }}:{{ SPRINTCRAFT_VERSION }}
     ports: []
     command: /start-celeryworker
 
   celerybeat:
     <<: *django
-    image: registry.gitlab.com/opencraft/dev/sprintcraft:celerybeat-{{ SPRINTCRAFT_VERSION }}
+    image: registry.gitlab.com/opencraft/dev/sprintcraft{{ SPRINTCRAFT_IMAGE }}:{{ SPRINTCRAFT_VERSION }}
     ports: []
     command: /start-celerybeat
 
   flower:
     <<: *django
-    image: registry.gitlab.com/opencraft/dev/sprintcraft:flower-{{ SPRINTCRAFT_VERSION }}
+    image: registry.gitlab.com/opencraft/dev/sprintcraft{{ SPRINTCRAFT_IMAGE }}:{{ SPRINTCRAFT_VERSION }}
     ports:
       - "127.0.0.1:5555:5555"
     command: /start-flower
