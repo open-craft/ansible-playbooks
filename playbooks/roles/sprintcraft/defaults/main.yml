@@ -1,4 +1,6 @@
 ---
+SPRINTCRAFT_IMAGE:
+SPRINTCRAFT_VERSION: latest
 APP_PATH: /sprintcraft
 USE_POSTGRES: true
 USE_SSL: true

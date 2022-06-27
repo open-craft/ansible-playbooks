@@ -8,7 +8,7 @@ volumes:
 
 services:
   django: &django
-    image: registry.gitlab.com/opencraft/dev/sprintcraft:django-latest
+    image: registry.gitlab.com/opencraft/dev/sprintcraft{{ SPRINTCRAFT_IMAGE }}:{{ SPRINTCRAFT_VERSION }}
     depends_on:
       {% if USE_POSTGRES %}
       - postgres
@@ -23,7 +23,7 @@ services:
 
   {% if USE_POSTGRES %}
 postgres:
-    image: registry.gitlab.com/opencraft/dev/sprintcraft:postgres-latest
+    image: registry.gitlab.com/opencraft/dev/sprintcraft:postgres-{{ SPRINTCRAFT_VERSION }}
     volumes:
       - production_postgres_data:/var/lib/postgresql/data
       - production_postgres_data_backups:/backups
@@ -33,31 +33,31 @@ postgres:
   {% endif %}
 
   redis:
-    image: redis:6
+    image: redis:7
     restart: always
 
   celeryworker:
     <<: *django
-    image: registry.gitlab.com/opencraft/dev/sprintcraft:celeryworker-latest
+    image: registry.gitlab.com/opencraft/dev/sprintcraft{{ SPRINTCRAFT_IMAGE }}:{{ SPRINTCRAFT_VERSION }}
     ports: []
     command: /start-celeryworker
 
   celerybeat:
     <<: *django
-    image: registry.gitlab.com/opencraft/dev/sprintcraft:celerybeat-latest
+    image: registry.gitlab.com/opencraft/dev/sprintcraft{{ SPRINTCRAFT_IMAGE }}:{{ SPRINTCRAFT_VERSION }}
     ports: []
     command: /start-celerybeat
 
   flower:
     <<: *django
-    image: registry.gitlab.com/opencraft/dev/sprintcraft:flower-latest
+    image: registry.gitlab.com/opencraft/dev/sprintcraft{{ SPRINTCRAFT_IMAGE }}:{{ SPRINTCRAFT_VERSION }}
     ports:
-      - "5555:5555"
+      - "127.0.0.1:5555:5555"
     command: /start-flower
 
   {% if USE_POSTGRES %}
 awscli:
-    image: registry.gitlab.com/opencraft/dev/sprintcraft:awscli-latest
+    image: registry.gitlab.com/opencraft/dev/sprintcraft:awscli-{{ SPRINTCRAFT_VERSION }}
     env_file:
       - .env
     volumes:
