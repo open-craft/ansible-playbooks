@@ -11,11 +11,13 @@
 ### Postfix configuration
 
 - name: copy TLS certificate
+  when: POSTFIX_TLS_CERT_CONTENT != ""
   copy:
     dest: "{{ POSTFIX_TLS_CERT }}"
     content: "{{ POSTFIX_TLS_CERT_CONTENT }}"
 
 - name: copy TLS private key
+  when: POSTFIX_TLS_KEY_CONTENT != ""
   copy:
     dest: "{{ POSTFIX_TLS_KEY }}"
     content: "{{ POSTFIX_TLS_KEY_CONTENT }}"
