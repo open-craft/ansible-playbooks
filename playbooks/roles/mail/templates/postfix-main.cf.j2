@@ -34,7 +34,6 @@ transport_maps =
 local_recipient_maps =
     hash:/var/lib/mailman3/data/postfix_lmtp,
     $alias_maps
-    hash:/etc/postfix/transport
 
 relay_domains =
     hash:/var/lib/mailman3/data/postfix_domains
@@ -46,6 +45,14 @@ smtpd_tls_key_file = /etc/letsencrypt/live/{{ MAILMAN_WEB_DOMAIN }}/privkey.pem
 smtpd_tls_security_level = may
 smtpd_tls_session_cache_database = btree:${queue_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${queue_directory}/smtp_scache
+
+{% if FORWARD_MAIL_SMTP_SERVER %}
+relayhost = [{{ FORWARD_MAIL_SMTP_SERVER }}]:{{ FORWARD_MAIL_SMTP_PORT }}
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+{% endif %}
+
 {% if OPENCRAFT_HEADER_TOKEN %}
 header_checks = regexp:/etc/postfix/header_checks
 {% endif %}

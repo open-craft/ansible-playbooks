@@ -94,6 +94,19 @@
     - "postmap transport"
     - "reload postfix"
 
+- name: template password
+  template:
+    src: sasl_passwd
+    dest: /etc/postfix/sasl_passwd
+    mode: 0400
+  register: postfix_password
+  notify:
+    - restart postfix
+
+- name: run postmap on sasl password
+  command: postmap /etc/postfix/sasl_passwd
+  when: postfix_password.changed
+
 - name: Postfix header check maps
   when: OPENCRAFT_HEADER_TOKEN
   template:

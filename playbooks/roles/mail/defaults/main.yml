@@ -51,3 +51,9 @@ POSTFIX_ALIASES_CONTENT: ""
 # that the email was sent from an OpenCraft Gmail account.
 # Can be configured via: https://admin.google.com/ac/apps/gmail/defaultrouting
 OPENCRAFT_HEADER_TOKEN: null
+
+FORWARD_MAIL_SMTP_SERVER: null
+FORWARD_MAIL_SMTP_PORT: "587"
+FORWARD_MAIL_SMTP_USER: null
+FORWARD_MAIL_SMTP_PASSWORD: null
+
