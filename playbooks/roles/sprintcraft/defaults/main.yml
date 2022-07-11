@@ -101,6 +101,7 @@ ENV_TOKENS:
   # Automation
   # ------------------------------------------------------------------------------
   FEATURE_SPRINT_AUTOMATION: false
+  FEATURE_AUTOMATED_SPRINT_COMPLETION: false
 
   # Mattermost
   MATTERMOST_SERVER:
