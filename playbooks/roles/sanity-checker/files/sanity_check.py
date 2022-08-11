@@ -87,6 +87,8 @@ def send_message(recipient, subject, body):
     While sending mail is not reliable, mail delivery is async, and mail always
     exits successfully.
     """
+    if isinstance(body, str):
+        body = body.encode()
     process = subprocess.Popen(['mail', '-s', subject, recipient], stdin=subprocess.PIPE)
     process.communicate(body)
 
