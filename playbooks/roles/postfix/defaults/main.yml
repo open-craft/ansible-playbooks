@@ -45,4 +45,5 @@ POSTFIX_TLS_CERT: /etc/ssl/certs/postfix-cert.pem
 POSTFIX_TLS_KEY: /etc/ssl/private/postfix.key
 POSTFIX_SASL_CLIENT_PASSWORD_FILE: /etc/postfix/sasl/client-passwd
 POSTFIX_SASL_SERVER_PASSWORD_FILE: /etc/dovecot/private/users
+POSTFIX_SASL_SERVER_PASSWORD_DIRECTORY: /etc/dovecot/private/
 POSTFIX_RELAY_MAPS_FILE: /etc/postfix/relay_maps
