@@ -70,6 +70,13 @@
     dest: /etc/dovecot/conf.d/10-auth.conf
     src: dovecot-auth.conf
 
+- name: write Dovecot password directory
+  file:
+    path: "{{POSTFIX_SASL_SERVER_PASSWORD_DIRECTORY}}"
+    state: directory
+    owner: dovecot
+    group: dovecot
+
 - name: generate Dovecot password hashes
   command: "doveadm pw -s SHA512-CRYPT -p {{ item.password }}"
   register: dovecot_users
