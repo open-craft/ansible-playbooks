@@ -30,8 +30,8 @@ configured in OPENCRAFT_ENV_TOKENS and set OPENSTACK_SANDBOX_SSH_KEYNAME to the 
 See the [`README.md`][1] file and [`opencraft/settings.py`][2] for further details on settings you
 want to include there.
 
-[1]: https://github.com/open-craft/opencraft/blob/master/README.md
-[2]: https://github.com/open-craft/opencraft/blob/master/opencraft/settings.py
+[1]: https://gitlab.com/opencraft/dev/console/blob/master/README.md
+[2]: https://gitlab.com/opencraft/dev/console/blob/master/opencraft/settings.py
 
 ### Deployment of swift backup
 
