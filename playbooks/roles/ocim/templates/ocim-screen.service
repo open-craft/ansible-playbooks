@@ -1,6 +1,6 @@
 [Unit]
 Description=Screen session running the Ocim web server
-Documentation=https://github.com/open-craft/opencraft/tree/master/deploy/README.md
+Documentation=https://gitlab.com/opencraft/dev/console/tree/master/deploy/README.md
 After=nginx.service
 
 [Service]

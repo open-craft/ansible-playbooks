@@ -22,7 +22,7 @@
 
 - name: Clone the opencraft repository
   git:
-    repo: https://github.com/open-craft/opencraft.git
+    repo: https://gitlab.com/opencraft/dev/console.git
     dest: "{{ opencraft_root_dir }}"
     update: no
   become_user: "{{ www_user }}"
