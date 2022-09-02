@@ -50,4 +50,4 @@ POSTFIX_ALIASES_CONTENT: ""
 # This is used for the X-opencraft header to confirm
 # that the email was sent from an OpenCraft Gmail account.
 # Can be configured via: https://admin.google.com/ac/apps/gmail/defaultrouting
-OPENCRAFT_HEADER_TOKEN: null
+OPENCRAFT_HEADER_TOKEN: ""
