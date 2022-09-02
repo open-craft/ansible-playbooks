@@ -36,3 +36,8 @@
   service:
     name: postfix
     state: reloaded
+
+# Update the postfix header checks db
+# This should be run whenever /etc/postfix/header_checks is changed.
+- name: postmap header_checks
+  command: "postmap /etc/postfix/header_checks"
