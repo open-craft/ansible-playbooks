@@ -77,7 +77,6 @@ COMMON_SERVER_DEPENDENCIES:
   - unzip
   - chkrootkit
   - etckeeper
-  - tmpreaper
   - ufw
   - apt-show-versions
 

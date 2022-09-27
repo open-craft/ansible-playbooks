@@ -59,11 +59,6 @@
     path: /usr/bin/python3
   when: python3_executable.stat.exists
 
-- name: tmpreaper is configured
-  template:
-    src: tmpreaper.conf
-    dest: /etc/tmpreaper.conf
-
 - name: Copy security update check script
   copy:
     src: security_updates_checker.sh
