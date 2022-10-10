@@ -47,6 +47,7 @@ frontend fe_http
     bind *:80
     acl lb_domain hdr_reg(host) -i {{! haproxy_domain_regex !}}
     acl acme_challenge path_beg /.well-known/acme-challenge/
+    http-response set-header Strict-Transport-Security "max-age={{! hsts_timeout_seconds !}}; preload;" if !acme_challenge
     redirect scheme https code 301 unless acme_challenge
     use_backend be_acme_challenge_local if lb_domain
     use_backend be_acme_challenge if acme_challenge
@@ -75,7 +76,8 @@ frontend fe_https
     use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/backend.map)]
     {% if haproxy_enable_stats_page %}
     use_backend proxy_stats if lb_domain { path_beg /stats }
-    {% endif
+    {% endif %}
+    http-response set-header Strict-Transport-Security "max-age={{! hsts_timeout_seconds !}}; preload;"
 
     # For errors raised by HAProxy redirect to /error so they will go to the error backend.
     errorloc 500 /error
@@ -93,15 +95,29 @@ backend proxy_stats
 
 {% if vault_domain_regex %}
 frontend fe_vault
-    bind *:8200
-    option tcplog
+    bind *:{{! external_vault_port !}}
+    bind *:{{! external_vault_cluster_port !}}
     mode tcp
-    acl vault_domain hdr_reg(host) -i {{! vault_domain_regex !}}
-    use_backend be_vault if vault_domain
+    option tcplog
+    tcp-request inspect-delay 5s
+    tcp-request content accept if { req_ssl_hello_type 1 }
+
+    acl is_vault_domain req.ssl_sni -m reg -i {{! vault_domain_regex !}}
+    acl is_vault_port dst_port {{! external_vault_port !}}
+    acl is_vault_cluster_port dst_port {{! external_vault_cluster_port !}}
+
+    use_backend be_vault if is_vault_domain is_vault_port
+    use_backend be_vault_cluster if is_vault_domain is_vault_cluster_port
+    default_backend error
 
 backend be_vault
     mode tcp
-    server vault-local 127.0.0.1:{{vault_port}}
+    server vault-local 127.0.0.1:{{! internal_vault_port !}}
+
+backend be_vault_cluster
+    mode tcp
+    server vault-local 127.0.0.1:{{! internal_vault_cluster_port !}}
+
 {% endif %}
 
 backend be_acme_challenge

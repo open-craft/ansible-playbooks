@@ -4,7 +4,13 @@
 
 haproxy_domain_regex: "haproxy.*\\.net\\.opencraft\\.hosting"
 vault_domain_regex: "vault.*\\.net\\.opencraft\\.hosting"
-vault_port: "8199"
+internal_vault_port: "8198"
+external_vault_port: "8200"
+
+internal_vault_cluster_port: "8199"
+external_vault_cluster_port: "8201"
+
+hsts_timeout_seconds: 16000000
 
 haproxy_ppa: "ppa:vbernat/haproxy-2.4"
 haproxy_version: "2.4.*"

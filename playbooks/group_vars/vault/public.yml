@@ -11,8 +11,8 @@ vault_tls_dir: "{{ vault_config_dir }}/tls"
 vault_server_scheme: "https"
 
 # Listener stanza
-vault_tcp_address: "127.0.0.1:8199"
-vault_tcp_cluster_address: "0.0.0.0:8201"
+vault_tcp_address: "0.0.0.0:8198"
+vault_tcp_cluster_address: "0.0.0.0:8199"
 vault_tcp_tls_cert_file: "{{ vault_tls_dir }}/cert.pem"
 vault_tcp_tls_key_file: "{{ vault_tls_dir }}/key.pem"
 vault_tcp_tls_client_ca_file: "{{ vault_tls_dir }}/ca.pem"
@@ -20,7 +20,7 @@ vault_tcp_tls_client_ca_file: "{{ vault_tls_dir }}/ca.pem"
 # Env
 vault_env_base:
   VAULT_LOG_LEVEL: debug
-  VAULT_ADDR: "{{ vault_server_scheme }}://127.0.0.1:8200"
+  VAULT_ADDR: "{{ vault_server_scheme }}://127.0.0.1:8198"
   VAULT_CACERT: "{{ vault_tcp_tls_client_ca_file }}"
   VAULT_CLIENT_CERT: "{{ vault_tcp_tls_cert_file }}"
   VAULT_CLIENT_KEY: "{{ vault_tcp_tls_key_file }}"
