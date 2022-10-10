@@ -11,7 +11,7 @@ vault_tls_dir: "{{ vault_config_dir }}/tls"
 vault_server_scheme: "https"
 
 # Listener stanza
-vault_tcp_address: "0.0.0.0:8200"
+vault_tcp_address: "127.0.0.1:8199"
 vault_tcp_cluster_address: "0.0.0.0:8201"
 vault_tcp_tls_cert_file: "{{ vault_tls_dir }}/cert.pem"
 vault_tcp_tls_key_file: "{{ vault_tls_dir }}/key.pem"

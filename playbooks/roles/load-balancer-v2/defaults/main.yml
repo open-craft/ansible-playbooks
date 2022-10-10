@@ -3,6 +3,8 @@
 # HAPROXY #####################################################################
 
 haproxy_domain_regex: "haproxy.*\\.net\\.opencraft\\.hosting"
+vault_domain_regex: "vault.*\\.net\\.opencraft\\.hosting"
+vault_port: "8199"
 
 haproxy_ppa: "ppa:vbernat/haproxy-2.4"
 haproxy_version: "2.4.*"
