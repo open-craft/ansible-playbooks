@@ -66,9 +66,16 @@ frontend fe_https
     acl backend_fail status 500:599
     acl error_backend res.hdr(X-Maintenance) yes
     acl maint_backend req.hdr(host),lower,map_dom(/etc/haproxy/maint.map) -m found
+    {% if haproxy_enable_stats_page %}
+    acl lb_domain hdr_reg(host) -i {{! haproxy_domain_regex !}}
+    {% endif %}
+
     http-response redirect location /error if backend_fail !error_backend
     use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/maint.map)] if maint_backend
     use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/backend.map)]
+    {% if haproxy_enable_stats_page %}
+    use_backend proxy_stats if lb_domain { path_beg /stats }
+    {% endif
 
     # For errors raised by HAProxy redirect to /error so they will go to the error backend.
     errorloc 500 /error
@@ -77,8 +84,7 @@ frontend fe_https
     errorloc 504 /error
 
 {% if haproxy_enable_stats_page %}
-frontend stats
-    bind *:{{! haproxy_stats_port !}} ssl crt /etc/haproxy/certs.pem crt /etc/haproxy/certs
+backend proxy_stats
     stats enable
     stats uri /stats
     stats refresh 10s
