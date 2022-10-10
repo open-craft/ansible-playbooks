@@ -91,6 +91,19 @@ backend proxy_stats
     stats auth {{! haproxy_stats_page_username !}}:{{! haproxy_stats_page_password !}}
 {% endif %}
 
+{% if vault_domain_regex %}
+frontend fe_vault
+    bind *:8200
+    option tcplog
+    mode tcp
+    acl vault_domain hdr_reg(host) -i {{! vault_domain_regex !}}
+    use_backend be_vault if vault_domain
+
+backend be_vault
+    mode tcp
+    server vault-local 127.0.0.1:{{vault_port}}
+{% endif %}
+
 backend be_acme_challenge
     server srv_lets_encrypt {{! cert_manager_server_address !}}
 
