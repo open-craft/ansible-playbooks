@@ -72,11 +72,11 @@ frontend fe_https
     {% endif %}
 
     http-response redirect location /error if backend_fail !error_backend
-    use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/maint.map)] if maint_backend
-    use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/backend.map)]
     {% if haproxy_enable_stats_page %}
     use_backend proxy_stats if lb_domain { path_beg /stats }
     {% endif %}
+    use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/maint.map)] if maint_backend
+    use_backend %[req.hdr(host),lower,map_dom(/etc/haproxy/backend.map)]
     http-response set-header Strict-Transport-Security "max-age={{! hsts_timeout_seconds !}}; preload;"
 
     # For errors raised by HAProxy redirect to /error so they will go to the error backend.
