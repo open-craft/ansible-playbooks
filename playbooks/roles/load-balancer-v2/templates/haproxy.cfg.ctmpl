@@ -96,28 +96,27 @@ backend proxy_stats
 {% if vault_domain_regex %}
 frontend fe_vault
     bind *:{{! external_vault_port !}}
-    bind *:{{! external_vault_cluster_port !}}
     mode tcp
     option tcplog
     tcp-request inspect-delay 5s
     tcp-request content accept if { req_ssl_hello_type 1 }
-
     acl is_vault_domain req.ssl_sni -m reg -i {{! vault_domain_regex !}}
-    acl is_vault_port dst_port {{! external_vault_port !}}
-    acl is_vault_cluster_port dst_port {{! external_vault_cluster_port !}}
-
-    use_backend be_vault if is_vault_domain is_vault_port
-    use_backend be_vault_cluster if is_vault_domain is_vault_cluster_port
+    use_backend be_vault if is_vault_domain
     default_backend error
 
 backend be_vault
     mode tcp
     server vault-local 127.0.0.1:{{! internal_vault_port !}}
 
+frontend fe_vault_cluster
+    bind *:{{! external_vault_cluster_port !}}
+    mode tcp
+    option tcplog
+    use_backend be_vault_cluster
+
 backend be_vault_cluster
     mode tcp
-    server vault-local 127.0.0.1:{{! internal_vault_cluster_port !}}
-
+    server vault-local-cluster 127.0.0.1:{{! internal_vault_cluster_port !}}
 {% endif %}
 
 backend be_acme_challenge
