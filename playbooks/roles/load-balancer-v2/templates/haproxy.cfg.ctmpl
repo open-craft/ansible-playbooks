@@ -47,6 +47,12 @@ frontend fe_http
     bind *:80
     acl lb_domain hdr_reg(host) -i {{! haproxy_domain_regex !}}
     acl acme_challenge path_beg /.well-known/acme-challenge/
+    
+    {% if haproxy_blocked_ips %}
+    acl is-blocked-ip src -f /etc/haproxy/blacklisted-ips
+    http-request deny deny_status 429 if is-blocked-ip
+    {% endif %}
+    
     http-response set-header Strict-Transport-Security "max-age={{! hsts_timeout_seconds !}}; preload;" if !acme_challenge
     redirect scheme https code 301 unless acme_challenge
     use_backend be_acme_challenge_local if lb_domain
@@ -54,6 +60,11 @@ frontend fe_http
 
 frontend fe_https
     bind *:443 ssl crt /etc/haproxy/certs.pem crt /etc/haproxy/certs crt /etc/haproxy/certs/ocim
+
+    {% if haproxy_blocked_ips %}
+    acl is-blocked-ip src -f /etc/haproxy/blacklisted-ips
+    http-request deny deny_status 429 if is-blocked-ip
+    {% endif %}
 
     # X-Forwarded-For is added by "option forwardfor"
     http-request set-header X-Forwarded-Port %[dst_port]
