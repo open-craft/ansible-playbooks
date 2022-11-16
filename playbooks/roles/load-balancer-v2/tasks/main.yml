@@ -131,6 +131,15 @@
   with_items: "{{ haproxy_custom_rules }}"
   when: haproxy_custom_rules
 
+- name: Copy over the blocklist if defined
+  template:
+    src: "blacklisted-ips.j2"
+    dest: "/etc/haproxy/blacklisted-ips"
+    mode: "0644"
+  when:
+    haproxy_blocked_ips is iterable and haproxy_blocked_ips|length > 0
+  tags: 'haproxy-config'  
+
 - name: Copy over extra certs for prod
   # HAProxy will serve, for any given domain, the first matching cert it finds.
   # If it finds no matching cert, it will serve the first cert it finds, period.
