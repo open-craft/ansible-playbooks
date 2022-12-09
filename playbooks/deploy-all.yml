@@ -13,7 +13,6 @@
 - import_playbook: ocim.yml
 - import_playbook: postgres.yml
 - import_playbook: prometheus.yml
-- import_playbook: rabbitmq.yml
 - import_playbook: redis.yml
 - import_playbook: memcached.yml
 - import_playbook: custom-nginx-proxy.yml
