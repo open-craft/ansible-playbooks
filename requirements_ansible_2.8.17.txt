@@ -1,4 +1,7 @@
-ansible==2.8.17
+# NOTE: We patched ansible with the commit bd4fdb1ca23fb043789042074f3f9fa4fb07fbf1 to support
+#       a new column in systemctl list-unit-files output. The original version was 2.8.17
+-e git+https://github.com/open-craft/ansible@gabor/patch-systemd-service-facts#egg=ansible
+
 netaddr==0.7.19
 cryptography
 jinja2==2.11.3

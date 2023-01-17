@@ -42,3 +42,6 @@
 [submodule "playbooks/roles/davidwittman.redis"]
 	path = playbooks/roles/davidwittman.redis
 	url = https://github.com/DavidWittman/ansible-redis.git
+[submodule "playbooks/roles/bimdata.fluent-bit"]
+	path = playbooks/roles/bimdata.fluent-bit
+	url = https://github.com/bimdata/ansible_role_fluentbit.git
