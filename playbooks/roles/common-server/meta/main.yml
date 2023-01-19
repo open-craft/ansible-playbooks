@@ -37,3 +37,7 @@ dependencies:
   - name: filebeat
     tags: 'filebeat'
     when: COMMON_SERVER_INSTALL_FILEBEAT
+
+  - name: 'bimdata.fluent-bit'
+    tags: 'fluent-bit'
+    when: COMMON_SERVER_INSTALL_FLUENT_BIT

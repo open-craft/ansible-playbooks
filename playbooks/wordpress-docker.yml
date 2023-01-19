@@ -15,3 +15,5 @@
       # Appservers may have some Elastic stuff already installed on them.
       filebeat_elastic_apt_pin: 200
       when: filebeat_logstash_hosts | length > 0
+    - role: 'bimdata.fluent-bit'
+      when: fluentbit_host | length > 0
