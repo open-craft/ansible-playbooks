@@ -31,3 +31,13 @@ filebeat_prospectors:
       type: "elasticsearch"
     paths:
       - "{{ elasticsearch_log_dir }}/*.log"
+
+# FLUENT-BIT ##################################################################
+
+fluentbit_log_input:
+  - Name: tail
+    Path_Key: _path
+    Inotify_Watcher: On
+    Exclude_Path: "{{ fluentbit_logfile }}"
+    DB: "{{ fluentbit_log_input_db_path }}"
+    Path: "{{ elasticsearch_log_dir }}/*.log"

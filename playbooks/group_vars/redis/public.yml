@@ -10,3 +10,13 @@ filebeat_prospectors:
       type: "redis"
     paths:
       - "{{ REDIS_LOG_DIR }}/*.log"
+
+# FLUENT-BIT ##################################################################
+
+fluentbit_log_input:
+  - Name: tail
+    Path_Key: _path
+    Inotify_Watcher: On
+    Exclude_Path: "{{ fluentbit_logfile }}"
+    DB: "{{ fluentbit_log_input_db_path }}"
+    Path: "{{ REDIS_LOG_DIR }}/*.log"

@@ -1,0 +1,6 @@
+---
+dependencies:
+  - name: bimdata.fluent-bit
+    vars:
+      fluentbit_pkg_version: "{{ fluentbit_version }}"
+      fluentbit_svc_logfile: "{{ fluentbit_logfile }}"

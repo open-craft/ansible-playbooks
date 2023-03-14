@@ -66,3 +66,13 @@ filebeat_prospectors:
       type: "mongodb"
     paths:
       - "{{ mongodb_systemlog_path | dirname }}/*.log"
+
+# FLUENT-BIT  #################################################################
+
+fluentbit_log_input:
+  - Name: tail
+    Path_Key: _path
+    Inotify_Watcher: On
+    Exclude_Path: "{{ fluentbit_logfile }}"
+    DB: "{{ fluentbit_log_input_db_path }}"
+    Path: "{{ mongodb_systemlog_path | dirname }}/*.log"
