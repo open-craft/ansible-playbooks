@@ -4,14 +4,6 @@
 
 COMMON_SERVER_NO_BACKUPS: true
 
-# FILEBEAT ####################################################################
-
-filebeat_prospectors:
-  - fields:
-      type: "backup-pruner"
-    paths:
-      - "{{ BACKUP_PRUNER_LOG_DIR }}/*.log"
-
 # FLUENT-BIT  ##################################################################
 
 fluentbit_log_input:

@@ -27,14 +27,6 @@ consul_service_config:
         tcp: "{{ OPENCRAFT_DOMAIN_NAME }}:443"
         interval: "10m"
 
-# FILEBEAT ####################################################################
-
-filebeat_prospectors:
-  - fields:
-      type: "ocim"
-    paths:
-      - "{{ opencraft_root_dir }}/log/im.*.log"
-
 # FLUENT-BIT ##################################################################
 
 fluentbit_log_input:

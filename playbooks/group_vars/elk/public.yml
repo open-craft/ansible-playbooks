@@ -32,18 +32,6 @@ consul_service_config:
       port: 443
       enable_tag_override: true
 
-# FILEBEAT ####################################################################
-
-filebeat_prospectors:
-  - fields:
-      type: elasticsearch
-    paths:
-      - "{{ elasticsearch_log_dir }}/*.log"
-  - fields:
-      type: logstash
-    paths:
-      - "/var/log/logstash/*.log"
-
 # FLUENT-BIT ##################################################################
 
 fluentbit_log_input:

@@ -261,14 +261,6 @@ consul_service_config:
     port: 9090
     enable_tag_override: true
 
-# FILEBEAT ####################################################################
-
-filebeat_prospectors:
-  - fields:
-      type: prometheus
-    paths:
-      - /var/log/prometheus.log*
-
 # FLUENT-BIT ##################################################################
 
 fluentbit_log_input:

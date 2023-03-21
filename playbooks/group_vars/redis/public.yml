@@ -3,14 +3,6 @@
 TARSNAP_BACKUP_FOLDERS: "{{ REDIS_BASE_DIR }} /etc/letsencrypt"
 TARSNAP_BACKUP_PRE_SCRIPT: "{{ REDIS_SCRIPTS_DIR }}/{{ REDIS_BACKUP_COMMAND }}"
 
-# FILEBEAT ####################################################################
-
-filebeat_prospectors:
-  - fields:
-      type: "redis"
-    paths:
-      - "{{ REDIS_LOG_DIR }}/*.log"
-
 # FLUENT-BIT ##################################################################
 
 fluentbit_log_input:
