@@ -1,0 +1,6 @@
+---
+- name: configure log rotation for the fluent-bit service log
+  template:
+    src: logrotate.conf.j2
+    dest: /etc/logrotate.d/fluent-bit.conf
+    mode: 0644

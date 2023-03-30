@@ -1,0 +1,32 @@
+---
+fluentbit_host: ""
+fluentbit_port: 443
+fluentbit_user: ""
+fluentbit_password: ""
+
+fluentbit_version: "2.0.8"
+fluentbit_logfile: /var/log/fluent-bit.log
+fluentbit_log_input_db_path: /etc/fluent-bit/fluentbit_log_input.db
+
+fluentbit_log_input: []
+
+fluentbit_opensearch_output:
+  - Name: opensearch
+    Match: '*'
+    Host: "{{ fluentbit_host }}"
+    Port: "{{ fluentbit_port }}"
+    HTTP_Passwd: "{{ fluentbit_password }}"
+    HTTP_User: "{{ fluentbit_user }}"
+    Logstash_Format: Off
+    Replace_Dots: On
+    Retry_Limit: False
+    Suppress_Type_Name: On
+    Trace_Error: On
+    Type: _doc
+    tls: On
+    tls.verify: Off
+
+fluentbit_add_context_filter:
+  - Name: record_modifier
+    Match: '*'
+    Record: hostname ${HOSTNAME}

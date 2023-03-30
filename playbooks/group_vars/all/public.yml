@@ -32,36 +32,3 @@ consul_ip: "{{ COMMON_FLOATING_IP if (COMMON_FLOATING_IP is defined and COMMON_F
 # PROMETHEUS ##################################################################
 
 prometheus_install_dir: /opt
-
-# FLUENT-BIT ##################################################################
-
-fluentbit_host: "opensearch.prod.do.opencraft.com"
-fluentbit_port: 443
-fluentbit_logfile: /var/log/fluent-bit.log
-
-fluentbit_pkg_version: "2.0.8"
-fluentbit_svc_logfile: "{{ fluentbit_logfile }}"
-
-fluentbit_log_input:
-  - Name: tail
-    Path: /var/log/*.log,/var/log/**/*.log
-    Path_Key: _path
-    Inotify_Watcher: On
-    Exclude_Path: "{{ fluentbit_logfile }}"
-    DB: /etc/fluent-bit/fluentbit_log_input.db
-
-fluentbit_opensearch_output:
-  - Name: opensearch
-    Match: '*'
-    Host: "{{ fluentbit_host }}"
-    Port: "{{ fluentbit_port }}"
-    HTTP_Passwd: "{{ fluentbit_password }}"
-    HTTP_User: "{{ fluentbit_user }}"
-    Logstash_Format: Off
-    Replace_Dots: On
-    Retry_Limit: False
-    Suppress_Type_Name: On
-    Trace_Error: On
-    Type: _doc
-    tls: On
-    tls.verify: Off

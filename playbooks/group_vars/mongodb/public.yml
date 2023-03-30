@@ -59,10 +59,12 @@ consul_service_config:
         tcp: "{{ MONGODB_SERVER_DOMAIN }}:27017"
         interval: "10m"
 
-# FILEBEAT ####################################################################
+# FLUENT-BIT  #################################################################
 
-filebeat_prospectors:
-  - fields:
-      type: "mongodb"
-    paths:
-      - "{{ mongodb_systemlog_path | dirname }}/*.log"
+fluentbit_log_input:
+  - Name: tail
+    Path_Key: _path
+    Inotify_Watcher: On
+    Exclude_Path: "{{ fluentbit_logfile }}"
+    DB: "{{ fluentbit_log_input_db_path }}"
+    Path: "{{ mongodb_systemlog_path | dirname }}/*.log"

@@ -1,0 +1,9 @@
+{{ fluentbit_logfile }} {
+	daily
+	missingok
+	copytruncate
+	notifempty
+	compress
+	delaycompress
+	rotate 7
+}

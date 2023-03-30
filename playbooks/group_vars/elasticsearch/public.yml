@@ -26,8 +26,13 @@ consul_service_config:
 
 # We don't want to accidentally upgrade Elasticsearch.
 filebeat_elastic_apt_pin: 200
-filebeat_prospectors:
-  - fields:
-      type: "elasticsearch"
-    paths:
-      - "{{ elasticsearch_log_dir }}/*.log"
+
+# FLUENT-BIT ##################################################################
+
+fluentbit_log_input:
+  - Name: tail
+    Path_Key: _path
+    Inotify_Watcher: On
+    Exclude_Path: "{{ fluentbit_logfile }}"
+    DB: "{{ fluentbit_log_input_db_path }}"
+    Path: "{{ elasticsearch_log_dir }}/*.log"

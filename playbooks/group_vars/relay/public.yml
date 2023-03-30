@@ -4,7 +4,6 @@
 
 COMMON_SERVER_NO_BACKUPS: true
 COMMON_SERVER_INSTALL_POSTFIX: false
-COMMON_SERVER_INSTALL_FILEBEAT: false
 
 # SANITY ######################################################################
 

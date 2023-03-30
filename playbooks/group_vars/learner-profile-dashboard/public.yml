@@ -38,10 +38,12 @@ SANITY_CHECK_LIVE_PORTS:
 
 SANITY_CHECK_SUBJECT: '[LPD] Sanity check problems'
 
-# FILEBEAT ####################################################################
+# FLUENT-BIT ##################################################################
 
-filebeat_prospectors:
-  - fields:
-      type: "lpd"
-    paths:
-      - "{{ LPD_LOG_DIR }}/*.log"
+fluentbit_log_input:
+  - Name: tail
+    Path_Key: _path
+    Inotify_Watcher: On
+    Exclude_Path: "{{ fluentbit_logfile }}"
+    DB: "{{ fluentbit_log_input_db_path }}"
+    Path: "{{ LPD_LOG_DIR }}/*.log"

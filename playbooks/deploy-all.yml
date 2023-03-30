@@ -2,7 +2,6 @@
 
 - import_playbook: accounting.yml
 - import_playbook: backup-pruner.yml
-- import_playbook: chat.yml
 - import_playbook: elasticsearch.yml
 - import_playbook: elk.yml
 - import_playbook: hx-annotations.yml
