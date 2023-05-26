@@ -17,6 +17,7 @@ fluentbit_opensearch_output:
     Port: "{{ fluentbit_port }}"
     HTTP_Passwd: "{{ fluentbit_password }}"
     HTTP_User: "{{ fluentbit_user }}"
+    Index: fluent-bit-logs
     Logstash_Format: Off
     Replace_Dots: On
     Retry_Limit: False
