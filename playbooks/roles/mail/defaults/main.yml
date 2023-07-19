@@ -11,6 +11,11 @@ MAILMAN_INCOMING_MAIL_DOMAIN: "example.com"
 # Because of templating, this value should not contain quote characters.
 HYPERKITTY_SECRET_KEY: "SET-ME-PLEASE"
 
+# The monthly index job can run for a long time and we don't want hourly
+# jobs that might get spawned in the meantime to interfere with it.
+# See: https://tasks.opencraft.com/browse/SE-6002
+HYPERKITTY_JOBS_UPDATE_INDEX_LOCK_LIFE: 10800
+
 # This key is used for securing the connection between mailman3 core and the hyperkitty archiver plugin.
 # Because of templating, this value should not contain quote characters.
 MAILMAN_ARCHIVER_KEY: "SET-ME-PLEASE"
