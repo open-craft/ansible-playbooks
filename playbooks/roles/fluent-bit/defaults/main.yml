@@ -4,7 +4,7 @@ fluentbit_port: 443
 fluentbit_user: ""
 fluentbit_password: ""
 
-fluentbit_version: "2.0.8"
+fluentbit_version: "3.0.7"
 fluentbit_logfile: /var/log/fluent-bit.log
 fluentbit_log_input_db_path: /etc/fluent-bit/fluentbit_log_input.db
 

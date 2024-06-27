@@ -1,10 +1,8 @@
 ---
 
-- include: install.yml
+- import_tasks: install.yml
   tags: tarsnap
 
-- include: configure.yml
-  tarsnap_cache: "{{ TARSNAP_CACHE }}"
-  tarsnap_keyfile: "{{ TARSNAP_KEY_REMOTE_LOCATION }}"
+- import_tasks: configure.yml
   when: "TARSNAP_KEY is defined and TARSNAP_KEY != ''"
   tags: tarsnap

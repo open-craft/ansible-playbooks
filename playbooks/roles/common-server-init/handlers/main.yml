@@ -3,7 +3,7 @@
 - name: restart networking
   service:
     name: >-
-      {%- if ansible_distribution == "Ubuntu" and ansible_distribution_release in ["bionic", "focal"] -%}
+      {%- if ansible_distribution == "Ubuntu" and ansible_distribution_release in ["bionic", "focal", "nobel"] -%}
       systemd-networkd
       {%- else -%}
       networking

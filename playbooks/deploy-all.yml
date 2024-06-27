@@ -21,3 +21,4 @@
 - import_playbook: pr-watcher-notifier.yml
 - import_playbook: matomo.yml
 - import_playbook: mail.yml
+- import_playbook: wazuh-manager.yml

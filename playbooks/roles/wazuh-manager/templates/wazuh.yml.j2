@@ -1,0 +1,10 @@
+# The password must match the following regex:
+# ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$
+
+hosts:
+  - 1513629884013:
+      url: "https://wazuh.manager"
+      port: 55000
+      username: "{{ WAZUH_DASHBOARD_USER }}"
+      password: "{{ WAZUH_DASHBOARD_USER_PASSWORD }}"
+      run_as: false
