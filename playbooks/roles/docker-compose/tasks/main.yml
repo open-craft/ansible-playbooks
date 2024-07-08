@@ -56,7 +56,6 @@
   tags:
     - docker
 
-# pip3 install docke
 - name: Install Docker Python dependencies
   pip:
     name:
