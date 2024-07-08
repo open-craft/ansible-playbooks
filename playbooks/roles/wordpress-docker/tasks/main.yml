@@ -29,7 +29,7 @@
     backup: yes
 
 - name: Start the app with docker-compose
-  docker_service:
+  docker_compose:
     project_src: "{{ WORDPRESS_DOCKER_COMPOSE_DIR }}"
     pull: yes
     debug: yes

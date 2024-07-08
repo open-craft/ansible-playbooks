@@ -1,0 +1,86 @@
+---
+- name: Allow web ports on firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - 80
+    - 443
+
+- name: Check if install path exists
+  stat:
+    path: "{{ WAZUH_DEPLOYMENT_PATH }}"
+  register: install_path
+
+- name: Check if certificate exists
+  stat:
+    path: "{{ WAZUH_DEPLOYMENT_PATH }}/single-node/config/certs.yml"
+  register: certs
+
+- name: Set max_map_count
+  shell: |
+    sysctl -w vm.max_map_count=262144
+    echo 'vm.max_map_count=262144' >> /etc/sysctl.conf
+
+- name: Install Docker cleanup cron job
+  cron:
+    name: "Remove unused Docker data"
+    job: "docker system prune -f"
+    special_time: daily
+
+- name: Create Wazuh installation path
+  file:
+    recurse: true
+    state: directory
+    path: "{{ WAZUH_DEPLOYMENT_PATH }}"
+
+- name: Clone deployment repository and checkout correct version
+  git:
+    repo: "{{ WAZUH_DEPLOYMENT_REPO }}"
+    version: "v{{ WAZUH_DEPLOYMENT_VERSION }}"
+    dest: "{{ WAZUH_DEPLOYMENT_PATH }}"
+  when: not install_path.stat.exists
+
+- name: Install the docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ WAZUH_DEPLOYMENT_PATH }}/single-node/docker-compose.yml"
+    mode: 0600
+    backup: yes
+
+- name: Install the cert generator docker-compose file
+  template:
+    src: generate-indexer-certs.yml.j2
+    dest: "{{ WAZUH_DEPLOYMENT_PATH }}/single-node/generate-indexer-certs.yml"
+    mode: 0600
+    backup: yes
+
+- name: Generate certificates
+  shell: |
+    mkdir -p {{ WAZUH_DEPLOYMENT_PATH }}/single-node/config/wazuh_indexer_ssl_certs/
+    docker compose -f generate-indexer-certs.yml run --rm generator
+  args:
+    chdir: "{{ WAZUH_DEPLOYMENT_PATH }}/single-node"
+  when: not certs.stat.exists
+
+- name: Render internal users
+  template:
+    src: internal_users.yml.j2
+    dest: "{{ WAZUH_DEPLOYMENT_PATH }}/single-node/config/wazuh_indexer/internal_users.yml"
+    mode: 0644
+    backup: yes
+
+- name: Render wazuh dashboard users
+  template:
+    src: wazuh.yml.j2
+    dest: "{{ WAZUH_DEPLOYMENT_PATH }}/single-node/config/wazuh_dashboard/wazuh.yml"
+    mode: 0644
+    backup: yes
+
+- name: Start Wazuh with docker-compose
+  docker_compose:
+    project_src: "{{ WAZUH_DEPLOYMENT_PATH }}/single-node"
+    restarted: true
+    state: present
+    pull: true

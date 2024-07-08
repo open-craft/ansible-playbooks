@@ -1,0 +1,14 @@
+---
+- name: Download and install the Wazuh agent
+  shell: |
+    wget https://packages.wazuh.com/{{ WAZUH_AGENT_SERIES }}/apt/pool/main/w/wazuh-agent/wazuh-agent_{{ WAZUH_AGENT_VERSION }}_amd64.deb
+    sudo WAZUH_MANAGER='{{ WAZUH_MANAGER_URL }}' dpkg -i ./wazuh-agent_{{ WAZUH_AGENT_VERSION }}_amd64.deb
+  args:
+    chdir: /tmp/
+
+- name: Enable and reload the Wazuh agent
+  systemd:
+    name: "wazuh-agent"
+    daemon_reload: true
+    enabled: yes
+    state: restarted

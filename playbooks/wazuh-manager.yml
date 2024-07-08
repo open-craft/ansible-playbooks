@@ -1,0 +1,16 @@
+---
+# Playbook for setting up a Wazuh server.
+# 
+
+- name: Set up Wazuh servers
+  hosts: wazuh-manager
+  become: true
+  roles:
+    - role: common-server
+      tags: 'common-server'
+
+    - role: docker-compose
+      tags: docker
+
+    - role: wazuh-manager
+      tags: wazuh-manager

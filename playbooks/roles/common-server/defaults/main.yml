@@ -49,36 +49,31 @@ COMMON_SERVER_ETCKEEPER_COMMIT_EMAIL: "{{ COMMON_SERVER_OPS_EMAIL }}"
 # Please think twice before setting it
 COMMON_SERVER_NO_BACKUPS: false
 
-COMMON_SERVER_OPENCRAFT_REPO_DOMAIN: "debs.opencraft.com"
-COMMON_SERVER_OPENCRAFT_REPO: "deb http://{{ COMMON_SERVER_OPENCRAFT_REPO_DOMAIN }}/ {{ ansible_distribution_release }} main"
-COMMON_SERVER_OPENCRAFT_REPO_KEY_SERVER: "keyserver.ubuntu.com"
-COMMON_SERVER_OPENCRAFT_REPO_KEY_ID: "59BDABBADA918972"
-
 COMMON_SERVER_DEPENDENCIES:
   - acl
-  - htop
-  - ntp
-  - sudo
-  - vim
-  - iftop
-  - iotop
-  - mosh
-  - git
-  - screen
-  - build-essential
   - apt-file
-  - links
-  - tree
-  - pwgen
-  - libxml2-dev
-  - libxslt1-dev
-  - python-dev
-  - python3-dev
-  - unzip
+  - apt-show-versions
+  - build-essential
   - chkrootkit
   - etckeeper
+  - git
+  - htop
+  - iftop
+  - iotop
+  - isc-dhcp-client
+  - libxml2-dev
+  - libxslt1-dev
+  - links
+  - mosh
+  - ntp
+  - pwgen
+  - python3-dev
+  - screen
+  - sudo
+  - tree
   - ufw
-  - apt-show-versions
+  - unzip
+  - vim
 
 # Use Google public DNS servers as fallback
 COMMON_FALLBACK_DNS_SERVERS:
@@ -109,6 +104,9 @@ COMMON_SERVER_INSTALL_POSTFIX: true
 
 # Fluent-bit
 COMMON_SERVER_INSTALL_FLUENT_BIT: true
+
+# Wazuh agent
+COMMON_SERVER_INSTALL_WAZUH_AGENT: true
 
 # SFTP
 COMMON_SERVER_INSTALL_SFTP: false
