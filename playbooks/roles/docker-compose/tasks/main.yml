@@ -43,7 +43,7 @@
 # sudo apt-get install *
 - name: Remove python3-yaml
   apt:
-    name: ['python3-yaml', 'jsonschema']
+    name: ['python3-yaml', 'python3-jsonschema']
     state: absent
   tags:
     - docker
@@ -62,7 +62,7 @@
     - docker==6.1.3
     - docker-compose==1.29.2
     - requests==2.31.0
-    extra_args: --break-system-packages
+    extra_args: --break-system-packages --no-build-isolation
   tags:
     - docker
 
