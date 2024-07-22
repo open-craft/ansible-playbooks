@@ -22,11 +22,6 @@ consul_service_config:
         tcp: "{{ inventory_hostname }}:9200"
         interval: "10m"
 
-# FILEBEAT ####################################################################
-
-# We don't want to accidentally upgrade Elasticsearch.
-filebeat_elastic_apt_pin: 200
-
 # FLUENT-BIT ##################################################################
 
 fluentbit_log_input:
