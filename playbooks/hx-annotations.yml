@@ -8,6 +8,9 @@
     - role: common-server
       tags: "common-server"
 
+    - role: vault-ssh
+      tags: 'vault-ssh'
+
     - role: postgres
       tags: "postgres"
 
