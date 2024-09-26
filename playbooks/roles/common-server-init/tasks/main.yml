@@ -7,8 +7,6 @@
 - import_tasks: etckeeper.yml
 - import_tasks: chkrootkit.yml
 - import_tasks: ssh.yml
-  tags: 
-    - ssh
 
 - import_tasks: sftp.yml
   when: COMMON_SERVER_INSTALL_SFTP
