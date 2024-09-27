@@ -8,6 +8,9 @@
       vars:
         NGINX_PROXY_EXTRA_CONFIG: ""
 
+    - role: vault-ssh
+      tags: 'vault-ssh'
+
     - role: geerlingguy.java
       tags: 'geerlingguy.java'
 

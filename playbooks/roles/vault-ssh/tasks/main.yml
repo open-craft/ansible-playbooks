@@ -1,0 +1,26 @@
+---
+
+- name: Set Xavier's keys taken from GitHub
+  authorized_key:
+    user: "{{ ansible_ssh_user }}"
+    state: present
+    key: https://github.com/antoviaque.keys
+
+- name: Set Braden's keys taken from GitHub
+  authorized_key:
+    user: "{{ ansible_ssh_user }}"
+    state: present
+    key: https://github.com/bradenmacdonald.keys
+
+- name: Copy the Vault CA
+  copy:
+    src: vault-ca.pem
+    dest: /etc/ssh/trusted-user-ca-keys.pem
+
+- name: Ensure the Vault CA is set up
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^TrustedUserCAKeys'
+    line: "TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem"
+    state: present
+  notify: restart sshd

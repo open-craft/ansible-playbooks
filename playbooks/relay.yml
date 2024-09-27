@@ -8,5 +8,8 @@
     - role: common-server
       tags: 'common-server'
 
+    - role: vault-ssh
+      tags: 'vault-ssh'
+
     - role: postfix
       tags: 'postfix'
