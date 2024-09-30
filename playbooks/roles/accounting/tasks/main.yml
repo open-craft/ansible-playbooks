@@ -1,6 +1,5 @@
 - include: base.yml
 - include: accounting.yml
-- include: wkhtmltopdf.yml
 - include: google-integration.yml
   when: "{{ ACCOUNTING_ENV_TOKENS.ENABLE_GOOGLE }}"
 - include: nginx.yml
