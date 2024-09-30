@@ -29,13 +29,6 @@ ACCOUNTING_ENV_TOKENS:
   GOOGLE_AUTH_CLIENT_SERVICE_EMAIL: 'bot-name@project-name.iam.gserviceaccount.com'
   GOOGLE_DRIVE_ROOT: 'root-folder-id'
 
-# Additional tools.
-WKHTMLTOPDF_VERSION: '0.12.4'
-
-wkhtmltopdf_zipped_filename: 'wkhtmltox-{{ WKHTMLTOPDF_VERSION }}_linux-generic-amd64.tar.xz'
-wkhtmltopdf_url_path: 'https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/{{ WKHTMLTOPDF_VERSION }}/{{ wkhtmltopdf_zipped_filename }}'
-wkhtmltopdf_binary_path: '{{ www_data_home_dir }}/wkhtmltox/bin/wkhtmltopdf'
-
 accounting_root_dir: '{{ www_data_home_dir }}/accounting'
 accounting_static_files_dir: '{{ accounting_root_dir }}/static'
 accounting_media_files_dir: '{{ accounting_root_dir }}/media'
