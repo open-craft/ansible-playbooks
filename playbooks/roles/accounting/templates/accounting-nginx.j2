@@ -3,6 +3,14 @@ server {
 
     server_name {{ ACCOUNTING_DOMAIN_NAME }} www.{{ ACCOUNTING_DOMAIN_NAME }};
 
+    # Block requests not coming from the accounting domain
+    if ( $host !~* ^{{ ACCOUNTING_DOMAIN_NAME }}$ ) {
+        return 444;
+    }
+    if ( $http_host !~* ^{{ ACCOUNTING_DOMAIN_NAME }}$ ) {
+        return 444;
+    }
+
     if ($host = www.{{ ACCOUNTING_DOMAIN_NAME }}) {
         rewrite ^(.*)$ https://{{ ACCOUNTING_DOMAIN_NAME }}$1 permanent;
     }
