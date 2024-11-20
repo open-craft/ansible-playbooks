@@ -42,8 +42,8 @@ def main():
         node_name_prefix = "{{ consul_nodename }}"
         generated_node_name = '{}-{}-{}'.format(
             node_name_prefix,
-            private_ip_address.replace('.', '-'),
-            public_ip_address.replace('.', '-'),
+            private_ip_address,
+            public_ip_address,
         )
         if (public_ip_address != advertise_address or
                 generated_node_name != node_name):
