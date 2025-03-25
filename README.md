@@ -1,3 +1,8 @@
+# NOTICE
+
+This repository is now obsolete. It was superseeded by code hosted at
+https://gitlab.com/opencraft/ops.
+
 # Ansible Playbooks & Roles
 
 This repository contains all OpenCraft playbooks and roles used to deploy many different types of servers.
